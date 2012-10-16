@@ -1,0 +1,170 @@
+<generalTerms>
+  <generalTerm>
+    <name>application</name>
+    <subTerms>
+      <generalTerm>
+        <name>file</name>
+        <subTerms>
+          <generalTerm>
+            <name>open</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>close</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>exit</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>save</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>save as</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>print</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>new</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>open</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>close all</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>restart</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>import</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>export</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>properties</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+        </subTerms>
+        <parent reference="../../.."/>
+      </generalTerm>
+      <generalTerm>
+        <name>edit</name>
+        <subTerms>
+          <generalTerm>
+            <name>undo</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>redo</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>copy</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>paste</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>cut</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>remove</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>delete</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>replace</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>select all</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>find</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>replace</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>find next</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>find previous</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>search</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+        </subTerms>
+        <parent reference="../../.."/>
+      </generalTerm>
+      <generalTerm>
+        <name>window</name>
+        <subTerms>
+          <generalTerm>
+            <name>new window</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+          <generalTerm>
+            <name>preferences</name>
+            <subTerms/>
+            <parent reference="../../.."/>
+          </generalTerm>
+        </subTerms>
+        <parent reference="../../.."/>
+      </generalTerm>
+    </subTerms>
+  </generalTerm>
+</generalTerms>

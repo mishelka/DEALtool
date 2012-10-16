@@ -1,0 +1,8 @@
+optimalizovat zjednodusenie - odstranenie kontajnerov
+
+implementovat ukladanie nepotrebnych/vseobecnych funkcnych prvkov, treba jeden DSL na to.
+implementovat HIDE na nody!
+
+
+1. Separator (v GUI aj v menu) --- oddeli skupiny prvkov
+2. JMenu skupinky sa vylucuju (tie megamenu)

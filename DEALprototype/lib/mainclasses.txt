@@ -1,0 +1,7 @@
+jedit					org.gjt.sp.jedit.jEdit
+BaseFormApplication		baseformapplication.BaseFormApplication
+Calculator				Calculator
+Calculator2				jscicalc/CalculatorApplet
+GuitarScaleAssistant	GuitarKey.GuitarKey
+JavaNotePad				JavaNotePad
+SweetHome3D				com.eteks.sweethome3d.SweetHome3DBootstrap
