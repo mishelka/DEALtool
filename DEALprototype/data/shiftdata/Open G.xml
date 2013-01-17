@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tuning>
+<Name>Open G</Name>
+<Shifts>
+<Shift>
+<String>1</String>
+<Offset>2</Offset>
+</Shift>
+<Shift>
+<String>2</String>
+<Offset>2</Offset>
+</Shift>
+<Shift>
+<String>3</String>
+<Offset>0</Offset>
+</Shift>
+<Shift>
+<String>4</String>
+<Offset>0</Offset>
+</Shift>
+<Shift>
+<String>5</String>
+<Offset>0</Offset>
+</Shift>
+<Shift>
+<String>6</String>
+<Offset>2</Offset>
+</Shift>
+</Shifts>
+</Tuning>
