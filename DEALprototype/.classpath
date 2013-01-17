@@ -3,66 +3,44 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/Calculator2.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/JavaNotePad.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/BaseFormApplication.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jarsbrowser.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="/GUIDomainAnalysis/lib/launch4j/lib/commons-beanutils.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/launch4j/lib/commons-logging.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/launch4j/lib/forms.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/launch4j/lib/formsrt.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/launch4j/lib/foxtrot.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/launch4j/lib/looks.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/launch4j/lib/xstream.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/launch4j/launch4j.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/xstream-1.4.3/lib/xstream-1.4.3.jar"/>
+	<classpathentry kind="lib" path="examples/Calculator2.jar">
+		<attributes>
+			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/xstream-1.4.3/lib/xstream-hibernate/xmlpull-1.1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/xstream-1.4.3/lib/xstream/kxml2-2.3.0.jar"/>
+	<classpathentry kind="lib" path="examples/BaseFormApplication.jar">
+		<attributes>
+			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="examples/jarsbrowser.jar">
+		<attributes>
+			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="examples/JavaNotePad.jar">
+		<attributes>
+			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="examples/guitar/GuitarScaleAssistant.jar">
+		<attributes>
+			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/forms.jar"/>
+	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/formsrt.jar"/>
+	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/foxtrot.jar"/>
+	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/looks.jar"/>
+	<classpathentry kind="lib" path="examples/launch4j/launch4j.jar">
+		<attributes>
+			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/commons-logging.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
