@@ -36,5 +36,10 @@
 			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.1/commons-lang3-3.1.jar" sourcepath="lib/commons-lang3-3.1/commons-lang3-3.1-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/DEALprototype/lib/commons-lang3-3.1/commons-lang3-3.1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -32,8 +32,8 @@ public class CalculatorButtonHandler extends
 		}
 		
 		String label = component.getText();
+		
 		label = Util.htmlToText(label);
-		System.out.println(">>>>>>>>>>>>>>>>>>");
 		return label;
 	}
 
@@ -49,9 +49,6 @@ public class CalculatorButtonHandler extends
 		String toolTip = component.getToolTipText();
 
 		toolTip = Util.htmlToText(toolTip);
-		
-		System.out.println(">>>>>>>>>>>>>>>>>>");
-
 		return toolTip;
 	}
 
