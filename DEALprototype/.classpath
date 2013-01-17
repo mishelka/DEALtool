@@ -31,16 +31,5 @@
 			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/forms.jar"/>
-	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/formsrt.jar"/>
-	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/foxtrot.jar"/>
-	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/looks.jar"/>
-	<classpathentry kind="lib" path="examples/launch4j/launch4j.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/commons-beanutils.jar"/>
-	<classpathentry kind="lib" path="examples/launch4j/launch4jLib/commons-logging.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
