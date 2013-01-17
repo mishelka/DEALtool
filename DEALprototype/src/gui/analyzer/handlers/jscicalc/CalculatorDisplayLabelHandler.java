@@ -3,6 +3,7 @@ package gui.analyzer.handlers.jscicalc;
 import gui.analyzer.handlers.CommandHandler;
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.analyzer.util.PathFinder;
+import gui.analyzer.util.Util;
 import gui.model.domain.relation.RelationType;
 
 import javax.swing.Icon;
@@ -22,6 +23,7 @@ public class CalculatorDisplayLabelHandler extends
 	public String getDomainDescriptor(DisplayLabel component) {
 		String desc = "<TEXT>";
 		desc += " [SIZE=" + component.getDigits() + "]";
+		desc = Util.htmlToText(desc);
 		return desc + " ";
 	}
 
@@ -32,6 +34,7 @@ public class CalculatorDisplayLabelHandler extends
 		if (l != null) {
 			label = l.getText();
 		}
+		label = Util.htmlToText(label);
 		return label;
 	}
 

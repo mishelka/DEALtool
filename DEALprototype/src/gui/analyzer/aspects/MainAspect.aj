@@ -1,8 +1,5 @@
 package gui.analyzer.aspects;
 
-import gui.analyzer.filter.GeneralTerm;
-import gui.analyzer.filter.GeneralTermsFilter;
-
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
@@ -18,7 +15,6 @@ public aspect MainAspect {
 
 	before(): mainPointcut() {
 		install();
-		loadGeneralTerms();
 	}
 
 	private void install() {
@@ -31,19 +27,6 @@ public aspect MainAspect {
 				}
 			}, AWTEvent.WINDOW_EVENT_MASK);
 			System.out.println("window listener was added");
-		}
-	}
-	
-	private void loadGeneralTerms() {
-		GeneralTermsFilter filter = new GeneralTermsFilter();
-		filter.serialize();
-		
-		//-----
-		System.out.println(">>>> <<<<");
-		filter.setGeneralTerms(new ArrayList<GeneralTerm>());
-		filter.deserialize();
-		for(GeneralTerm gt : filter.getGeneralTerms()) {
-			System.out.println(gt);
 		}
 	}
 }

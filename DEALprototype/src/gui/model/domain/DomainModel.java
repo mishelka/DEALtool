@@ -4,6 +4,7 @@ import gui.model.application.Scene;
 import gui.model.domain.relation.RelationType;
 
 import java.awt.Point;
+import java.awt.Window;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,12 +12,6 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.Vector;
-
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
 
 public class DomainModel {// implements PropertyConstants {
 	private Term root;
@@ -26,8 +21,6 @@ public class DomainModel {// implements PropertyConstants {
 	private ArrayList<String> termOrderList = new ArrayList<String>();
 	private final LinkedList<PropertyChangeListener> listenerList = new LinkedList<PropertyChangeListener>();
 	private Scene scene;
-	
-	private Vector<TreeModelListener> treeModelListeners = new Vector<TreeModelListener>();
 
 	/**
 	 * @return the termTable
@@ -61,7 +54,7 @@ public class DomainModel {// implements PropertyConstants {
 		if (root != null) {
 			while (root.hasChildren()) {
 				Term child = root.getLastChild();
-				deleteAllDescendants(child);
+				deleteChildTerms(child);
 				root.removeChild(child);
 				termTable.remove(child.getName());
 			}
@@ -71,10 +64,10 @@ public class DomainModel {// implements PropertyConstants {
 		termOrderList.clear();
 	}
 	
-	private void deleteAllDescendants(Term term) {
+	private void deleteChildTerms(Term term) {
 		while (term.hasChildren()) {
 			Term child = term.getLastChild();
-			deleteAllDescendants(child);
+			deleteChildTerms(child);
 			term.removeChild(child);
 			termTable.remove(child.getName());
 		}
@@ -293,7 +286,7 @@ public class DomainModel {// implements PropertyConstants {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @return the termOrderList
 	 */

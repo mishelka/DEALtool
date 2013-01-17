@@ -27,6 +27,8 @@ public class DomainModelGenerator {
 		rootTerm.setRelation(RelationType.MODEL);
 
 		model.setRoot(rootTerm);
+
+		System.out.println(">>>> rootTerm: " + rootTerm);
 		
 		createTermGroup(scene.getSceneContainer(), rootTerm);
 		model.setScene(scene);

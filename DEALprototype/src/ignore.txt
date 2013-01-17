@@ -1,0 +1,9 @@
+New
+Open
+Save
+Save As
+OK
+Cancel
+Reset
+Exit
+Close

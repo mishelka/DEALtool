@@ -94,6 +94,7 @@ public class DomainModelEditor extends javax.swing.JFrame {
 		if (domainModels.values().size() == 0) {
 			domainModels.put(scene, newDomainModel);
 		} else {
+			System.out.println(">>>> DALSI DM PRIDAVAM ");
 			boolean pridany = false;
 			for (Scene s : domainModels.keySet()) {
 				if (s.getSceneContainer().equals(scene.getSceneContainer())) {
