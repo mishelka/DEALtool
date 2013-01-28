@@ -4,7 +4,13 @@ import gui.analyzer.handlers.DomainIdentifiable;
 import gui.analyzer.util.Util;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
+import gui.model.domain.constraint.Constraint;
+import gui.model.domain.constraint.DataTypeConstraint;
+import gui.model.domain.constraint.Enumeration;
 import gui.model.domain.relation.RelationType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.JComboBox;
@@ -23,13 +29,14 @@ public class JComboBoxHandler extends DomainIdentifiable<JComboBox> {
 
 	@Override
 	public String getDomainDescriptor(JComboBox component) {
-		// TODO Auto-generated method stub
-		return null;
+		String ttt = component.getToolTipText();
+		if (ttt == null || ttt.isEmpty())
+			return null;
+		return ttt;
 	}
 
 	@Override
 	public Icon getIcon(JComboBox component) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -53,6 +60,25 @@ public class JComboBoxHandler extends DomainIdentifiable<JComboBox> {
 		}
 
 		return thisFeature;
+	}
+	
+	@Override
+	public List<Constraint> getConstraints(JComboBox component) {
+		List<Constraint> constraints = super.getConstraints(component);
+		
+		List<String> values = new ArrayList<String>();
+		
+		for (int i = 0; i < component.getItemCount(); i++) {
+			String item = component.getItemAt(i).toString();
+			values.add(item);
+		}
+		
+		Enumeration enumeration = new Enumeration();
+		enumeration.setValues(values.toArray(new String[]{}));
+		
+		constraints.add(enumeration);
+		
+		return constraints;
 	}
 
 }

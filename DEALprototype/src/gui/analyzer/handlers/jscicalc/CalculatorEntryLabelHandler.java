@@ -16,7 +16,7 @@ public class CalculatorEntryLabelHandler extends DomainIdentifiable<EntryLabel>
 
 	@Override
 	public String getDomainIdentifier(EntryLabel component) {
-		return "Entry Label";
+		return "Entry";
 	}
 
 	@Override

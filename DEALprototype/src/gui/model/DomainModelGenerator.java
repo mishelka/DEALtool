@@ -28,8 +28,6 @@ public class DomainModelGenerator {
 
 		model.setRoot(rootTerm);
 
-		System.out.println(">>>> rootTerm: " + rootTerm);
-		
 		createTermGroup(scene.getSceneContainer(), rootTerm);
 		model.setScene(scene);
 
@@ -177,38 +175,54 @@ public class DomainModelGenerator {
 		
 		Term root = model.getRoot();
 
-		// ak v modeli nic nie je, nie je co odstranovat
+		// if there is nothing in the model, then there's nothing to remove
 		if (root == null || root.getChildrenCount() == 0)
 			return;
 
 		simplify(root);
-		
-		if(root.canHide()) {
-			shiftRoot(model);
-		}
 	}
 	
+	/**
+	 * Removes root from the model and sets the first child of root as a new root (shifts the first child of root up).
+	 * @param model the model, in which the root should be removed.
+	 */
 	private void shiftRoot(DomainModel model) {
 		Term child = model.getRoot().getFirstChild();
 		model.setRoot(child);
 		child.setParent(null);
 	}
 
+	//TODO: prerobit toto aby sa vykonavali cykly dovtedy, kym sa este budu odstranovat nove nody.
 	private void simplify(Term thisFeature) {
 		boolean go = false;
+		//because of having to remove nodes, we have to go from the leaf nodes to the root.
+		//this removes empty leafs.
 		for (int i = thisFeature.getChildrenCount() - 1; i >= 0; i--) {
 			Term fg = thisFeature.getChildAt(i);
 			go = !removeVoidContainers(thisFeature, fg);
 			if (go)
 				simplify(fg);
 		}
-
+		
+		//removes multiple nesting of containers which have only one child (container).
 		for (int i = thisFeature.getChildrenCount() - 1; i >= 0; i--) {
 			Term fg = thisFeature.getChildAt(i);
 
 			go = go && !removeMultipleNesting(thisFeature, fg);
 			if (go)
 				simplify(fg);
+		}
+		
+		//removes containers which contain no domain information and have only one parent.
+		for(int i = thisFeature.getChildrenCount() - 1; i >= 0; i--) {
+			Term fg = thisFeature.getChildAt(i);
+			
+			if(thisFeature.getChildrenCount() == 1 && fg.canHide()) {
+				for(Term child : fg.getChildren()) {
+					thisFeature.addChild(child);
+				}
+				thisFeature.removeChild(fg);
+			}
 		}
 	}
 

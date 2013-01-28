@@ -41,6 +41,10 @@ public class TreeNode extends DefaultMutableTreeNode {
 		return (TreeNode) super.getChildAt(i);
 	}
 	
+	public int getChildCount() {
+		return super.getChildCount();
+	}
+	
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}

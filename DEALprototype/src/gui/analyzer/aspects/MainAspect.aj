@@ -1,5 +1,7 @@
 package gui.analyzer.aspects;
 
+import gui.analyzer.util.Logger;
+
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
@@ -14,10 +16,11 @@ public aspect MainAspect {
 	pointcut mainPointcut(): execution(* *.main(*));
 
 	before(): mainPointcut() {
-		install();
+		String className = thisJoinPoint.getSignature().getDeclaringType().getName();
+		install(className);
 	}
 
-	private void install() {
+	private void install(String className) {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		if (!toolkits.contains(toolkit)) {
 			toolkits.add(toolkit);
@@ -26,7 +29,8 @@ public aspect MainAspect {
 					// ModelGeneratorAspect/windowPointcut will be executed here
 				}
 			}, AWTEvent.WINDOW_EVENT_MASK);
-			System.out.println("window listener was added");
+			
+			Logger.logError(">>> Window listener was added to \"" + className + "\"");
 		}
 	}
 }

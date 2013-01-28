@@ -1,5 +1,6 @@
 package gui.ui.tree;
 
+import gui.analyzer.util.Logger;
 import gui.model.application.Application;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -46,10 +47,10 @@ public class TreeModel extends DefaultTreeModel {
 	}
 
 	public boolean hasNodeForFrame(Object frame) {
-		return getRootNodeForFrame(frame) != null;
+		return findRootNodeForFrame(frame) != null;
 	}
 
-	public TreeNode getRootNodeForFrame(Object frame) {
+	public TreeNode findRootNodeForFrame(Object frame) {
 		for (TreeNode child : getTermRoots()) {
 			Term term = child.getTerm();
 			Object component = term.getComponent();
@@ -58,6 +59,36 @@ public class TreeModel extends DefaultTreeModel {
 				return child;
 			}
 		}
+		return null;
+	}
+	
+	public Term findTermForComponent(Object targetComponent) {
+		Term t = null;
+		
+		for (TreeNode tn : getTermRoots()) {
+			t = findTermForComponent(targetComponent, tn);
+			if (t != null)
+				return t;
+		}
+		
+		return null;
+	}
+
+	public Term findTermForComponent(Object targetComponent, TreeNode thisNode) {
+		Term thisTerm = (Term) thisNode.getTerm();
+		Object thisComponent = thisTerm.getComponent();
+
+		if (targetComponent.equals(thisComponent)) {
+			return thisTerm;
+		}
+		
+		for (int i = 0; i < thisNode.getChildCount(); i++) {
+			thisTerm = findTermForComponent(targetComponent, thisNode.getChildAt(i));
+			if (thisTerm != null) {
+				return thisTerm;
+			}
+		}
+
 		return null;
 	}
 

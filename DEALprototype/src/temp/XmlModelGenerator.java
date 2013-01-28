@@ -1,5 +1,6 @@
 package temp;
 
+import gui.analyzer.util.Logger;
 import gui.model.application.WindowScene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -31,7 +32,7 @@ public class XmlModelGenerator {
 		try {
 			generateXml();
 		} catch (Exception e) {
-			System.out.println(">>> EXCEPTION DURING GENERATING FEATURE MODEL");
+			Logger.logError("EXCEPTION DURING GENERATING FEATURE MODEL");
 		}
 	}
 
@@ -49,7 +50,7 @@ public class XmlModelGenerator {
 
 		generate(w.getComponents());
 
-		System.out.println(model);
+		Logger.log(model);
 	}
 
 	private void generate(Component[] components) {

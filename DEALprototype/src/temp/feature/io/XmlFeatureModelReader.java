@@ -1,5 +1,6 @@
 package temp.feature.io;
 
+import gui.analyzer.util.Logger;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 import gui.model.domain.relation.RelationType;
@@ -289,7 +290,7 @@ public class XmlFeatureModelReader extends AbstractFeatureModelReader {
 			if (temp.equals("or"))
 				featureModel.getTerm(parent).setRelation(RelationType.MUTUALLY_EXCLUSIVE);
 			else {
-				System.out.println(">>>> " + featureModel + " "
+				Logger.log(featureModel + " "
 						+ featureModel.getTerm(parent) + " " + parent);
 				featureModel.getTerm(parent)
 						.setRelation(RelationType.MUTUALLY_NOT_EXCLUSIVE);

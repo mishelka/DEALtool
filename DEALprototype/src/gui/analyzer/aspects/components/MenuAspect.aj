@@ -14,13 +14,13 @@ public aspect MenuAspect {
 	after(ActionEvent actionEvent): menuPointcut(actionEvent) {
 		//Object o = actionEvent.getSource();
 //		if(o instanceof JMenu)
-//			System.out.println(">>> jmenu clicked " + ((JMenu)o).getText());
+//			Logger.log("jmenu clicked " + ((JMenu)o).getText());
 //		else if(o instanceof JRadioButtonMenuItem)
-//			System.out.println(">>> radiomenu clicked " + ((JRadioButtonMenuItem)o).getText());
+//			Logger.log("radiomenu clicked " + ((JRadioButtonMenuItem)o).getText());
 //		else if(o instanceof JCheckBoxMenuItem)
-//			System.out.println(">>> checkboxmenu clicked " + ((JCheckBoxMenuItem)o).getText());
+//			Logger.log("checkboxmenu clicked " + ((JCheckBoxMenuItem)o).getText());
 //		else if(o instanceof JMenuItem)
-//			System.out.println(">>> jmenuitem clicked " + ((JMenuItem)o).getText());
+//			Logger.log("jmenuitem clicked " + ((JMenuItem)o).getText());
 		// if (o instanceof EnhancedButton) {
 		// EnhancedButton b = (EnhancedButton) o;
 		// System.out.println("Enhanced button name: " + b.getText());
@@ -41,7 +41,7 @@ public aspect MenuAspect {
 	
 	after() returning(JMenuItem m): call(public JMenuItem+.new(..)) {
 		if (m != null  && !(m instanceof JMenu) && !(m instanceof JRadioButtonMenuItem) && !(m instanceof JCheckBoxMenuItem)) {
-			//System.out.println(">>> adding menuItem listener for " + m.getText());
+			//Logger.log("adding menuItem listener for " + m.getText());
 			ActionListener listener = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -54,7 +54,7 @@ public aspect MenuAspect {
 	
 	after() returning(JCheckBoxMenuItem m): call(public JCheckBoxMenuItem+.new(..)) {
 		if (m != null) {
-			//System.out.println(">>> adding checkBox listener for " + m.getText());
+			//Logger.log("adding checkBox listener for " + m.getText());
 			ActionListener listener = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -67,7 +67,7 @@ public aspect MenuAspect {
 	
 	after() returning(JRadioButtonMenuItem m): call(public JRadioButtonMenuItem+.new(..)) {
 		if (m != null) {
-			//System.out.println(">>> adding radioMenu listener for " + m.getText());
+			//Logger.log("adding radioMenu listener for " + m.getText());
 			ActionListener listener = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

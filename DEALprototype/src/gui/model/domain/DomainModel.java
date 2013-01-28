@@ -13,15 +13,37 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Set;
 
-public class DomainModel {// implements PropertyConstants {
+public class DomainModel {
+	/**The root term of the Domain model.*/
 	private Term root;
+	/**The name of the domain model. Usually the name of the main window (the window, which first appears when the application starts).*/
 	private String name;
-	private Point legendPosition = new Point(0, 0);
+//	private Point legendPosition = new Point(0, 0);
+	/**
+	 * The termTable is used for saving terms for each new dialog. The keys are names of the existing frames and the values are Term instances.
+	 * The problem with adding new dialogs/windows into the term tree is that if the same dialog opens multiple times, it's not clear whether it is the same dialog or not. It could be exactly the same dialog, or it could be a new dialog, changed by the events in the application.
+	 * For example, if there is a new document in MS Word, then the name of the main window is the default name of the document, e.g. Document1. As soon as the user saves this document under a different name, for example "My new document", the title of the main window will change to this name. But the main window is still the same, the application just slightly changed its state.
+	 * Therefore this is just a temporary solution until we find an appropriate way of defining windows and dialogs uniquely.
+	 */
 	private Hashtable<String, Term> termTable = new Hashtable<String, Term>();
-	private ArrayList<String> termOrderList = new ArrayList<String>();
+//	private ArrayList<String> termOrderList = new ArrayList<String>();
 	private final LinkedList<PropertyChangeListener> listenerList = new LinkedList<PropertyChangeListener>();
+	/** Each domain model is associated to a scene - a window or a frame - which it is created from. */
 	private Scene scene;
 
+	public DomainModel(String name) {
+		this.name = name;
+		reset();
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
 	/**
 	 * @return the termTable
 	 */
@@ -37,19 +59,6 @@ public class DomainModel {// implements PropertyConstants {
 		this.termTable = termTable;
 	}
 
-	public DomainModel(String name) {
-		this.name = name;
-		reset();
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
 	public void reset() {
 		if (root != null) {
 			while (root.hasChildren()) {
@@ -61,7 +70,7 @@ public class DomainModel {// implements PropertyConstants {
 			root = null;
 		}
 		termTable.clear();
-		termOrderList.clear();
+//		termOrderList.clear();
 	}
 	
 	private void deleteChildTerms(Term term) {
@@ -94,11 +103,7 @@ public class DomainModel {// implements PropertyConstants {
 	}
 
 	public void addTerm(Term term) {
-		// String name = term.getName();
-		// if (termTable.containsKey(name))
-		// return false;
 		termTable.put(name, term);
-		// return true;
 	}
 
 	public void deleteTermFromTable(Term term) {
@@ -244,13 +249,13 @@ public class DomainModel {// implements PropertyConstants {
 //		return fm;
 //	}
 
-	public Point getLegendPosition() {
-		return legendPosition;
-	}
-
-	public void setLegendPosition(int x, int y) {
-		this.legendPosition = new Point(x, y);
-	}
+//	public Point getLegendPosition() {
+//		return legendPosition;
+//	}
+//
+//	public void setLegendPosition(int x, int y) {
+//		this.legendPosition = new Point(x, y);
+//	}
 
 	/**
 	 * @return true if term model contains and group otherwise false
@@ -287,19 +292,19 @@ public class DomainModel {// implements PropertyConstants {
 		return false;
 	}
 
-	/**
-	 * @return the termOrderList
-	 */
-	public ArrayList<String> getTermOrderList() {
-		// TODO should return getConcreteTermNames() if null.
-		return termOrderList;
-	}
-
-	/**
-	 * @param termOrderList
-	 *            the termOrderList to set
-	 */
-	public void setTermOrderList(ArrayList<String> termOrderList) {
-		this.termOrderList = termOrderList;
-	}
+//	/**
+//	 * @return the termOrderList
+//	 */
+//	public ArrayList<String> getTermOrderList() {
+//		// TODO should return getConcreteTermNames() if null.
+//		return termOrderList;
+//	}
+//
+//	/**
+//	 * @param termOrderList
+//	 *            the termOrderList to set
+//	 */
+//	public void setTermOrderList(ArrayList<String> termOrderList) {
+//		this.termOrderList = termOrderList;
+//	}
 }

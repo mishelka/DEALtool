@@ -1,4 +1,6 @@
-package temp.gui.analyzer.filter;
+package temp.filter;
+
+import gui.analyzer.util.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -87,7 +89,7 @@ public class GeneralTermsFilter {
 		}
 		
 		if(!f.exists() || generalTerms == null) {
-			System.out.println("ERROR: File " + fileName + " does not exist or it's empty. Initializing default general terms database.");
+			Logger.logError("ERROR: File " + fileName + " does not exist or it's empty. Initializing default general terms database.");
 			defaultInit();
 		}
 	}

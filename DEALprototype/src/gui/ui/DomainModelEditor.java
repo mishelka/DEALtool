@@ -1,5 +1,6 @@
 package gui.ui;
 
+import gui.analyzer.util.Logger;
 import gui.analyzer.util.PathFinder;
 import gui.model.application.Application;
 import gui.model.application.Scene;
@@ -18,6 +19,8 @@ import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -47,7 +50,7 @@ public class DomainModelEditor extends javax.swing.JFrame {
 	private static DomainModelEditor instance;
 
 	private static Application application = new Application();
-	private static LinkedHashMap<Scene, DomainModel> domainModels = new LinkedHashMap<Scene, DomainModel>();
+	private static LinkedHashMap<Scene<?>, DomainModel> domainModels = new LinkedHashMap<Scene<?>, DomainModel>();
 
 	private Component clickedComponent;
 	private Color clickedComponentColor;
@@ -77,24 +80,17 @@ public class DomainModelEditor extends javax.swing.JFrame {
 		ToolTipManager.sharedInstance().registerComponent(domainJTree);
 		domainJTree.setCellRenderer(new TreeCellRenderer());
 
-		domainJTree
-				.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-					public void valueChanged(
-							javax.swing.event.TreeSelectionEvent evt) {
-						componentTreeValueChanged(evt);
-					}
-				});
-
 		expandAll(domainJTree, true);
 	}
 
 	/******************* Methods for domain model setup *************************/
 
+	@SuppressWarnings("rawtypes")
 	public void addDomainModel(Scene scene, DomainModel newDomainModel) {
 		if (domainModels.values().size() == 0) {
 			domainModels.put(scene, newDomainModel);
 		} else {
-			System.out.println(">>>> DALSI DM PRIDAVAM ");
+			Logger.logError("Adding next subgraph!");
 			boolean pridany = false;
 			for (Scene s : domainModels.keySet()) {
 				if (s.getSceneContainer().equals(scene.getSceneContainer())) {
@@ -103,7 +99,7 @@ public class DomainModelEditor extends javax.swing.JFrame {
 					break;
 				}
 			}
-			
+
 			if (!pridany) {
 				domainModels.put(scene, newDomainModel);
 			}
@@ -138,7 +134,7 @@ public class DomainModelEditor extends javax.swing.JFrame {
 				.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
 					public void valueChanged(
 							javax.swing.event.TreeSelectionEvent evt) {
-						componentTreeValueChanged(evt);
+						treeValueChanged(evt, DOMAIN_TREE);
 					}
 				});
 
@@ -164,7 +160,8 @@ public class DomainModelEditor extends javax.swing.JFrame {
 			dmtn.add(setupPartOfTreeModelExtended(ws.getSceneContainer()));
 		}
 
-		componentJTree = new JTree(dmtn);
+		componentJTree = new JTree(new DefaultTreeModel(dmtn));
+
 		parseTreeAndClearStrings(componentJTree.getModel());
 		componentJTree.setScrollsOnExpand(true);
 
@@ -172,15 +169,9 @@ public class DomainModelEditor extends javax.swing.JFrame {
 				.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
 					public void valueChanged(
 							javax.swing.event.TreeSelectionEvent evt) {
-						componentTreeValueChanged(evt);
+						treeValueChanged(evt, COMPONENT_TREE);
 					}
 				});
-
-		// componentTree.addMouseListener(new MouseAdapter() {
-		// public void mouseClicked(MouseEvent e) {
-		// doMouseClicked(e);
-		// }
-		// });
 
 		expandAll(componentJTree, true);
 
@@ -278,47 +269,15 @@ public class DomainModelEditor extends javax.swing.JFrame {
 		return application;
 	}
 
-	public static HashMap<Scene, DomainModel> getDomainModels() {
+	public static HashMap<Scene<?>, DomainModel> getDomainModels() {
 		return domainModels;
 	}
-
 	/******************* Events for mouse clicking *******************************/
+	private static final int DOMAIN_TREE = 1;
+	private static final int COMPONENT_TREE = 2;
 
-	// void doDomainTreeMouseClicked(MouseEvent e) {
-	// if (clickedComponent != null) {
-	// clickedComponent.setBackground(clickedComponentColor);
-	// if (clickedComponent instanceof JComponent)
-	// ((JComponent) clickedComponent)
-	// .setOpaque(isClickedComponentOpaque());
-	// }
-	// TreePath tp = domainTree.getPathForLocation(e.getX(), e.getY());
-	//
-	// if (tp != null) {
-	// Object o = tp.getLastPathComponent();
-	// if (o instanceof TreeNode) {
-	//
-	// Object targetObject = ((Term) ((TreeNode) o).getUserObject())
-	// .getComponent();
-	//
-	// if (targetObject != null && targetObject instanceof Component) {
-	// setClickedComponent((Component) targetObject);
-	// setClickedComponentColor(clickedComponent
-	// .getBackground());
-	// clickedComponent.setBackground(Color.YELLOW);
-	// if (clickedComponent instanceof JComponent) {
-	// JComponent jc = (JComponent) clickedComponent;
-	// setClickedComponentOpaque(jc.isOpaque());
-	// jc.setOpaque(true);
-	// }
-	// }
-	// }
-	// }
-	//
-	// showComponentInTree(e.getSource(), componentTree);
-	// }
-
-	private void componentTreeValueChanged(
-			javax.swing.event.TreeSelectionEvent evt) {
+	private void treeValueChanged(javax.swing.event.TreeSelectionEvent evt,
+			int treeType) {
 		if (clickedComponent != null) {
 			clickedComponent.setBackground(clickedComponentColor);
 			if (clickedComponent instanceof JComponent)
@@ -344,7 +303,14 @@ public class DomainModelEditor extends javax.swing.JFrame {
 			}
 			showComponentInTrees(clickedComponent);
 		}
+		
+		if (clickedComponent != null) {
+			Term targetTerm = ((gui.ui.tree.TreeModel) domainJTree.getModel())
+					.findTermForComponent(clickedComponent);
+			updateInfoPanel(targetTerm, clickedComponent);
+		}
 	}
+
 
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
@@ -357,11 +323,12 @@ public class DomainModelEditor extends javax.swing.JFrame {
 		domainInfoLabel = new javax.swing.JLabel();
 		domainInfoSeparator = new javax.swing.JSeparator();
 		nameLabel = new javax.swing.JLabel();
-		nameField = new javax.swing.JTextField();
+		nameField = new javax.swing.JTextArea();
 		descriptionLabel = new javax.swing.JLabel();
 		descriptionField = new javax.swing.JTextField();
 		typeLabel = new javax.swing.JLabel();
-		typeComboBox = new javax.swing.JComboBox(RelationType.values());
+		typeComboBox = new javax.swing.JComboBox<RelationType>(
+				RelationType.values());
 		iconLabel = new javax.swing.JLabel();
 		iconField = new javax.swing.JLabel();
 		componentInfoPanel = new javax.swing.JPanel();
@@ -394,6 +361,8 @@ public class DomainModelEditor extends javax.swing.JFrame {
 		saveMenuItem = new javax.swing.JMenuItem();
 		openMenuItem = new javax.swing.JMenuItem();
 		exitMenuItem = new javax.swing.JMenuItem();
+
+		nameField.setLineWrap(true);
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("DEAL");
@@ -790,111 +759,120 @@ public class DomainModelEditor extends javax.swing.JFrame {
 	public void showComponentInTrees(Object source) {
 		showComponentInTree(source, componentJTree);
 		showComponentInTree(source, domainJTree);
-		// TODO: doplnit aby sa to zobrazilo aj v infopaneli
-		updateInfoPanel(source);
 	}
 
-	public void updateInfoPanel(Object source) {
-		Object root = domainJTree.getModel().getRoot();
-		Object[] treePath = createTreePathToComponent(source, root);
+	private void resetInfoPanel() {
+		nameField.setText("");
+		descriptionField.setText("");
+		typeComboBox.setSelectedIndex(0);
+		iconField.setText("no icon");
+		iconField.setIcon(null);
 
-		if (treePath != null && treePath.length > 0) {
-			Object last = treePath[treePath.length - 1];
-			if (last instanceof TreeNode) {
-				TreeNode tn = (TreeNode) last;
-				Object userObject = tn.getUserObject();
-				if (userObject instanceof Term) {
-					Term f = (Term) tn.getUserObject();
+		classField.setText("");
+		contentField.setText("");
+		tooltipField.setText("");
+		labelField.setText("");
+		actionCommandField.setText("");
+	}
 
-					nameField.setText(f.getName());
-					descriptionField.setText(f.getDescription());
-					typeComboBox.setSelectedItem(f.getRelation());
+	public void updateInfoPanel(Term term, Object component) {
+		resetInfoPanel();
+		
+		//update term info fields
+		if (term != null) {
+			nameField.setText(term.getName());
+			descriptionField.setText(term.getDescription());
+			typeComboBox.setSelectedItem(term.getRelation());
+	
+			Icon ii = term.getIcon();
+			if (ii != null) {
+				iconField.setText("");
+				iconField.setIcon(ii);
+			} else {
+				iconField.setText("no icon");
+				iconField.setIcon(null);
+			}
+		}
 
-					Icon ii = f.getIcon();
-					if (ii != null) {
-						iconField.setText("");
-						iconField.setIcon(ii);
-					} else {
-						iconField.setText("no icon");
-						iconField.setIcon(null);
-					}
+		//update component info fields
+		updateInfoPanel(component);
+	}
+	
+	public void updateInfoPanel(Object component) {
+		if(component == null) return;
+		
+		String text = "";
 
-					Object c = f.getComponent();
-					String text = "";
+		classField.setText(component.getClass().getName());
 
-					classField.setText(c.getClass().getName());
+		// ///// action command text field
+		if (component instanceof JMenu) {
+			text = ((JMenu) component).getActionCommand();
+		} else if (component instanceof AbstractButton) {
+			text = ((AbstractButton) component).getActionCommand();
+		} else
+			text = "";
+		actionCommandField.setText(text);
 
-					// ///// action command text field
-					if (c instanceof JMenu) {
-						text = ((JMenu) c).getActionCommand();
-					} else if (c instanceof AbstractButton) {
-						text = ((AbstractButton) c).getActionCommand();
-					} else
-						text = "";
-					actionCommandField.setText(text);
-
-					// ///// text / content text field
-					if (c instanceof JTextComponent) {
-						text = ((JTextComponent) c).getText();
-					} else if (c instanceof AbstractButton) {
-						text = ((AbstractButton) c).getText();
-					} else if (c instanceof JSpinner) {
-						text = ((JSpinner) c).getValue().toString();
-					} else if (c instanceof JMenu) {
-						text = ((JMenu) c).getText();
-					} else if (c instanceof JComboBox) {
-						Object[] objects = ((JComboBox) c).getSelectedObjects();
-						text = "";
-						for (int i = 0; i < objects.length; i++) {
-							text = text + objects[i].toString();
-							if (i != objects.length - 1) {
-								text = text + ", ";
-							}
-						}
-					} else if (c instanceof JList) {
-						Object[] objects = ((JList) c).getSelectedValues();
-						for (int i = 0; i < objects.length; i++) {
-							text = text + objects[i].toString();
-							if (i != objects.length - 1) {
-								text = text + ", ";
-							}
-						}
-					} else if (c instanceof JTabbedPane) {
-						text = ((JTabbedPane) c).getSelectedIndex() + "";
-					} else if (c instanceof JTree) {
-						TreePath[] objects = ((JTree) c).getSelectionPaths();
-						if (objects != null && objects.length != 0) {
-							for (int i = 0; i < objects.length; i++) {
-								text = text
-										+ objects[i].getLastPathComponent()
-												.toString();
-								if (i != objects.length - 1) {
-									text = text + ", ";
-								}
-							}
-						} else
-							text = "";
-					} else
-						text = "";
-					contentField.setText(text);
-
-					if (c instanceof JComponent) {
-						JComponent jc = (JComponent) c;
-
-						// /////tooltip text field
-						tooltipField.setText(((JComponent) c).getToolTipText());
-
-						// /////labelfor text field
-						PathFinder apf = PathFinder.getInstance();
-						JLabel label = apf.findLabelFor(jc);
-						if (label != null) {
-							text = label.getText();
-						} else
-							text = "";
-						labelField.setText(text);
-					}
+		// ///// text / content text field
+		if (component instanceof JTextComponent) {
+			text = ((JTextComponent) component).getText();
+		} else if (component instanceof AbstractButton) {
+			text = ((AbstractButton) component).getText();
+		} else if (component instanceof JSpinner) {
+			text = ((JSpinner) component).getValue().toString();
+		} else if (component instanceof JMenu) {
+			text = ((JMenu) component).getText();
+		} else if (component instanceof JComboBox) {
+			Object[] objects = ((JComboBox<?>) component).getSelectedObjects();
+			text = "";
+			for (int i = 0; i < objects.length; i++) {
+				text = text + objects[i].toString();
+				if (i != objects.length - 1) {
+					text = text + ", ";
 				}
 			}
+		} else if (component instanceof JList) {
+			@SuppressWarnings("deprecation")
+			Object[] objects = ((JList<?>) component).getSelectedValues();
+			for (int i = 0; i < objects.length; i++) {
+				text = text + objects[i].toString();
+				if (i != objects.length - 1) {
+					text = text + ", ";
+				}
+			}
+		} else if (component instanceof JTabbedPane) {
+			text = ((JTabbedPane) component).getSelectedIndex() + "";
+		} else if (component instanceof JTree) {
+			TreePath[] objects = ((JTree) component).getSelectionPaths();
+			if (objects != null && objects.length != 0) {
+				for (int i = 0; i < objects.length; i++) {
+					text = text
+							+ objects[i].getLastPathComponent().toString();
+					if (i != objects.length - 1) {
+						text = text + ", ";
+					}
+				}
+			} else
+				text = "";
+		} else
+			text = "";
+		contentField.setText(text);
+
+		if (component instanceof JComponent) {
+			JComponent jc = (JComponent) component;
+
+			// /////tooltip text field
+			tooltipField.setText(((JComponent) component).getToolTipText());
+
+			// /////labelfor text field
+			PathFinder apf = PathFinder.getInstance();
+			JLabel label = apf.findLabelFor(jc);
+			if (label != null) {
+				text = label.getText();
+			} else
+				text = "";
+			labelField.setText(text);
 		}
 	}
 
@@ -1041,13 +1019,13 @@ public class DomainModelEditor extends javax.swing.JFrame {
 	private javax.swing.JLabel labelLabel;
 	private javax.swing.JMenuBar menuBar;
 	private javax.swing.JSplitPane modelSplitPane;
-	private javax.swing.JTextField nameField;
+	private javax.swing.JTextArea nameField;
 	private javax.swing.JLabel nameLabel;
 	private javax.swing.JMenuItem openMenuItem;
 	private javax.swing.JMenuItem saveMenuItem;
 	private javax.swing.JTextField tooltipField;
 	private javax.swing.JLabel tooltipLabel;
-	private javax.swing.JComboBox typeComboBox;
+	private javax.swing.JComboBox<RelationType> typeComboBox;
 	private javax.swing.JLabel typeLabel;
 	// End of variables declaration//GEN-END:variables
 }

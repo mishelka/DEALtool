@@ -1,4 +1,4 @@
-package temp.gui.analyzer.filter;
+package temp.filter;
 
 import java.util.ArrayList;
 import java.util.List;

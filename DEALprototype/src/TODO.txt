@@ -6,3 +6,10 @@ implementovat HIDE na nody!
 
 1. Separator (v GUI aj v menu) --- oddeli skupiny prvkov
 2. JMenu skupinky sa vylucuju (tie megamenu)
+
+
+- Import/Export to XML or OWL
+- Graphical visualisation of the Term graph and of the event sequences using jGraphX
+- Assisted extraction and analysis of DOMAIN PROCESSES in the form of event sequences
+- Experiments with more open source Java target application examples
+- References in Wiki

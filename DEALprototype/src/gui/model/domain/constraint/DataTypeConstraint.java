@@ -3,12 +3,16 @@ package gui.model.domain.constraint;
 public class DataTypeConstraint extends Constraint {
 	private DataType dataType = null;
 	
+	public DataTypeConstraint(DataType dataType) {
+		this.dataType = dataType;
+	}
+	
 	public DataType getType() {
 		return dataType;
 	}
 	
-	public void getType(DataType type) {
-		this.dataType = type;
+	public void setType(DataType dataType) {
+		this.dataType = dataType;
 	}
 	
 	@Override

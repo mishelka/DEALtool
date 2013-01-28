@@ -16,28 +16,46 @@ import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 
-public class Term { //implements PropertyConstants {
+public class Term {
+	/** Each term has its name, which is a primary information extracted from a component. 
+	 * If a term has no name and no description, then the term is not important for the domain model 
+	 * (it was created from a component, which does not provide any usable domain information). */
 	private String name;
+	/** Optionally each term can have its description, which is secondary information extracted from a component. For example from tooltip text, or from actionCommand field.*/
 	private String description;
-	//TODO: remove this and set outgoingRelations instead of this!!! priority highest!
+	//TODO: remove relation and set outgoingRelations instead of this!!! priority highest!
+	/** If it is possible to extract any relations from components, which they have between ich other in one group, then this relation is saved in this variable. */
 	private RelationType relation = RelationType.AND;
+	/** This is a relation which a parent generates for its children. For example a TabbedPane component generates a mutual exclusive relation between its children. */
 	private RelationType parentRelation = null;
+	/** Sometimes, an icon contains domain information either graphically or textually. This information is difficult to parse, therefore we extract the whole icon and it is on user (domain analyst) to review the important icons. */
 	private Icon icon;
 	
 	//TODO: add everything for this, priority highest
 	private List<AbstractRelation> outgoingRelations;
+	
+	/** For textual components (like text area, text field, etc.) we can also extract some constraints, like text length, possible values, type, etc. 
+	 * This is not implemented yet. 
+	 */
 	private List<Constraint> constraints;
 
+	/** Each term is located in a domain model, this is a reference to the domain model. */
 	private DomainModel domainModel;
 
+	/** The parent of this term in the term graph.
+	 * If this term is a root term, then this term has no parent and the value of this field is null. */
 	private Term parent;
-
+	/** The child terms of this term in the term graph.
+	 * If this term is a leaf, then the children array contains no item. */
 	private List<Term> children = new ArrayList<Term>();
-
+	
+	/** Each term is created from a component. The componentClass and component fields are references to this component. */
 	@SuppressWarnings("rawtypes")
 	private Class componentClass;
+	/** Each term is created from a component. The componentClass and component fields are references to this component. */
 	private Object component;
 
+	
 	public Term(DomainModel domainModel) {
 		this.domainModel = domainModel;
 	}
@@ -66,6 +84,14 @@ public class Term { //implements PropertyConstants {
 
 	public RelationType getRelation() {
 		return relation;
+	}
+	
+	public List<Constraint> getConstraints() {
+		return constraints;
+	}
+	
+	public void setConstraints(List<Constraint> constraints) {
+		this.constraints = constraints;
 	}
 
 	public void setComponentClass(
@@ -277,9 +303,11 @@ public class Term { //implements PropertyConstants {
 			Matcher m = p.matcher(name);
 			b = m.matches();
 		}
-
-		return relation == RelationType.AND && b
-				&& componentClass.getName().equals(description) && icon == null;
+		
+		b = (relation == RelationType.AND && b
+				&& componentClass.getName().equals(description) && icon == null);
+		
+		return b;
 	}
 
 	public Term copy() {
@@ -306,17 +334,6 @@ public class Term { //implements PropertyConstants {
 			listener.propertyChange(event);
 	}
 
-	//
-	// @Override
-	// public Feature clone() {
-	// Feature feature = new Feature(featureModel, name);
-	// for (Feature child : children) {
-	// feature.addChild(child.clone());
-	// }
-	// feature.relationType = relationType;
-	// return feature;
-	// }
-
 	@Override
 	public String toString() {
 		if (!Util.isEmpty(name))
@@ -324,8 +341,7 @@ public class Term { //implements PropertyConstants {
 		if (!Util.isEmpty(description))
 			return description;
 		if (componentClass != null)
-			return "Term with componentClass ["
-					+ componentClass.getSimpleName() + "]";
+			return "\"\"";
 		return null;
 	}
 	

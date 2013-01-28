@@ -4,9 +4,12 @@ import gui.analyzer.util.PathFinder;
 import gui.analyzer.util.Util;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
+import gui.model.domain.constraint.Constraint;
 import gui.model.domain.relation.RelationType;
 
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -19,29 +22,31 @@ public abstract class DomainIdentifiable<T> {
 	public abstract Icon getIcon(T component);
 
 	public Term getTerm(T component, DomainModel featureModel) {
-		Term f = new Term(featureModel);
+		Term t = new Term(featureModel);
 
 		String str = this.getDomainIdentifier(component);
 		if (!Util.isEmpty(str))
-			f.setName(str);
+			t.setName(str);
 
 		str = this.getDomainDescriptor(component);
 		if (!Util.isEmpty(str))
-			f.setDescription(str);
+			t.setDescription(str);
 
 		RelationType ft = getRelation(component);
-		f.setRelation(ft == null ? RelationType.AND : ft);
+		t.setRelation(ft == null ? RelationType.AND : ft);
 
-		f.setComponentClass(component.getClass());
-		f.setComponent(component);
+		t.setComponentClass(component.getClass());
+		t.setComponent(component);
 
-		f.setIcon(this.getIcon(component));
+		t.setIcon(this.getIcon(component));
+		
+		t.setConstraints(this.getConstraints(component));
 
 		RelationType parentRelation = getParentRelation(component);
 		if (parentRelation != null)
-			f.setParentRelation(parentRelation);
+			t.setParentRelation(parentRelation);
 
-		return f;
+		return t;
 	}
 
 	/**
@@ -75,5 +80,9 @@ public abstract class DomainIdentifiable<T> {
 				return l.getText();
 		}
 		return null;
+	}
+	
+	public List<Constraint> getConstraints(T component) {
+		return new ArrayList<Constraint>();
 	}
 }

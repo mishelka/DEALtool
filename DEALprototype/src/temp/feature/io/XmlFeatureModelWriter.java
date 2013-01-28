@@ -55,16 +55,16 @@ public class XmlFeatureModelWriter extends AbstractFeatureModelWriter {
 	 *            document to write
 	 */
 	private void createXmlDoc(Document doc) {
-		System.out.println(">>> creating xml doc");
+		Logger.log("creating xml doc");
 		Element root = doc.createElement("featureModel");
 		Element struct = doc.createElement("struct");
 
 		root.setAttribute("chosenLayoutAlgorithm", "" + 1);
-		System.out.println(">>> chosenLayoutAlgorithm 1");
+		Logger.log("chosenLayoutAlgorithm 1");
 
 		doc.appendChild(root);
 		root.appendChild(struct);
-		System.out.println("appending children: struct, featureModel, chosenLayoutAlgorithm");
+		Logger.log("appending children: struct, featureModel, chosenLayoutAlgorithm");
 		createXmlDocRec(doc, struct, featureModel.getRoot());
 	}
 
@@ -79,7 +79,7 @@ public class XmlFeatureModelWriter extends AbstractFeatureModelWriter {
 	 *            current feature
 	 */
 	private void createXmlDocRec(Document doc, Element node, Term feat) {
-		System.out.println(">>> writing feature " + feat);
+		Logger.log("writing feature " + feat);
 		if (feat == null)
 			return;
 

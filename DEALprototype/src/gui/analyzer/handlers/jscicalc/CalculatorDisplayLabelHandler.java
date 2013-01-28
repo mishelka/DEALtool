@@ -16,12 +16,12 @@ public class CalculatorDisplayLabelHandler extends
 
 	@Override
 	public String getDomainIdentifier(DisplayLabel component) {
-		return "Display Label";
+		return "Display";
 	}
 
 	@Override
 	public String getDomainDescriptor(DisplayLabel component) {
-		String desc = "<TEXT>";
+		String desc = "";
 		desc += " [SIZE=" + component.getDigits() + "]";
 		desc = Util.htmlToText(desc);
 		return desc + " ";

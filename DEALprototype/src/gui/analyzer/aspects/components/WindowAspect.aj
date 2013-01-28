@@ -2,6 +2,9 @@ package gui.analyzer.aspects.components;
 
 import java.awt.event.WindowEvent;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+
 public aspect WindowAspect {
 	// for windows and dialogs
 	pointcut windowPointcut(WindowEvent windowEvent): execution(*
@@ -14,13 +17,13 @@ public aspect WindowAspect {
 //			Object o = windowEvent.getSource();
 //
 //			if (o instanceof Dialog)
-//				System.out.println(" it's a dialog");
+//				Logger.log(" it's a dialog");
 //			else if (o instanceof JFrame)
-//				System.out.println(" it's a frame");
+//				Logger.log(" it's a frame");
 //			else if (o instanceof Window)
-//				System.out.println(" it's a window");
+//				Logger.log(" it's a window");
 //			else
-//				System.out.println("it's something else: "
+//				Logger.log("it's something else: "
 //						+ o.getClass().getSimpleName());
 		}
 	}
