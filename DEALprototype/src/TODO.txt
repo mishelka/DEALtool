@@ -1,15 +1,27 @@
-optimalizovat zjednodusenie - odstranenie kontajnerov
+1. recorder rozchodeny, treba spravit recordsupport handlery
+2. rozchodit player 
+	- nahrate prikazy zatial budu ulozene ako? serializovane ci textovo ako doteraz? Serializacia nemusi pomoct, ak je tam iny class loader, pripadne ak pri spusteni aplikacia neobsahuje dane komponenty
+	- budu musiet byt vyhodene referencie na komponenty.
+	- referencie na komponenty mozu byt nahradene (v pripade komponentov, ktore nemaju jednoznacny identifikator) komponentovou cestou
+		- druhou moznostou je, ze ak neexistuje jedinecny identifikator komponentu, potom dana udalost prehrata nebude
+		- toto je mozne pouzit aj pre pouzitelnost
+3. optimalizacia vzhladu
+
 
 implementovat ukladanie nepotrebnych/vseobecnych funkcnych prvkov, treba jeden DSL na to.
-implementovat HIDE na nody!
 
 
 1. Separator (v GUI aj v menu) --- oddeli skupiny prvkov
 2. JMenu skupinky sa vylucuju (tie megamenu)
 
-
-- Import/Export to XML or OWL
-- Graphical visualisation of the Term graph and of the event sequences using jGraphX
-- Assisted extraction and analysis of DOMAIN PROCESSES in the form of event sequences
+- Import/Export to XML or OWL (spravi Nitkulinec)
+- Graphical visualisation
+	- of the Term graph (spravi Surgent)
+	- and of the event sequences using jGraphX (spravi Kozlovsky)
+- Assisted extraction and analysis of DOMAIN PROCESSES in the form of event sequences - spravim teraz ja PRIORITA!!!
 - Experiments with more open source Java target application examples
-- References in Wiki
+
+- HTML analysis along with Java apps!!!
+	- pridat do dokumentacie na svn!!
+	
+
