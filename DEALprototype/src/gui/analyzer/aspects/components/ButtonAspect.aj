@@ -12,16 +12,16 @@ privileged public aspect ButtonAspect {
 //	after(ActionEvent actionEvent): buttonPointcut(actionEvent) {
 //		Object o = actionEvent.getSource();
 //
-//		System.out.println(">>> button clicked " + ((AbstractButton) o).getText());
+//		Logger.log(">>> button clicked " + ((AbstractButton) o).getText());
 //
 //		// if (o instanceof EnhancedButton) {
 //		// EnhancedButton b = (EnhancedButton) o;
-//		// System.out.println("Enhanced button name: " + b.getText());
+//		// Logger.log("Enhanced button name: " + b.getText());
 //		// }
 //	}
 //
 //	// after(): call(public *.*(*)) && target(AbstractButton+) {
-//	// System.out.println(">>> " );
+//	// Logger.log(">>> " );
 //	// }
 //
 //	// for buttons that have no listener
@@ -30,7 +30,7 @@ privileged public aspect ButtonAspect {
 //	// IS THERE ANY OTHER WAY OF HOW TO DETECT BUTTON CLICK?
 //	after() returning(AbstractButton b): call(public AbstractButton+.new(..)) {
 //		if (b != null) {
-//			System.out.println(">>> adding button listener for " + b.getText());
+//			Logger.log(">>> adding button listener for " + b.getText());
 //			ActionListener listener = new ActionListener() {
 //				@Override
 //				public void actionPerformed(ActionEvent e) {
@@ -47,7 +47,7 @@ privileged public aspect ButtonAspect {
 //	// // su z druheho... nezdetekuje to v jEdit
 //	// after() returning(EnhancedButton b): call(public EnhancedButton+.new(..))
 //	// {
-//	// System.out.println(">>> adding an EnhancedButton listener");
+//	// Logger.log(">>> adding an EnhancedButton listener");
 //	// ActionListener listener = new ActionListener() {
 //	// @Override
 //	// public void actionPerformed(ActionEvent e) {

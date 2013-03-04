@@ -23,7 +23,7 @@ public aspect MenuAspect {
 //			Logger.log("jmenuitem clicked " + ((JMenuItem)o).getText());
 		// if (o instanceof EnhancedButton) {
 		// EnhancedButton b = (EnhancedButton) o;
-		// System.out.println("Enhanced button name: " + b.getText());
+		// Logger.log("Enhanced button name: " + b.getText());
 		// }
 	}
 	

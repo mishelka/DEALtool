@@ -1,6 +1,7 @@
 package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.model.domain.ComponentInfoType;
 import gui.model.domain.constraint.Constraint;
 import gui.model.domain.constraint.DataType;
 import gui.model.domain.constraint.DataTypeConstraint;
@@ -49,5 +50,10 @@ public class JTextComponentHandler extends DomainIdentifiable<JTextComponent> {
 		constraints.add(new DataTypeConstraint(DataType.STRING));
 		
 		return constraints;
+	}
+
+	@Override
+	public ComponentInfoType getComponentInfoType(JTextComponent component) {
+		return ComponentInfoType.INFORMATIVE_AND_TEXTUAL;
 	}
 }

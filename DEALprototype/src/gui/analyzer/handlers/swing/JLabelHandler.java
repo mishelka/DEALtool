@@ -2,6 +2,7 @@ package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.analyzer.util.Util;
+import gui.model.domain.ComponentInfoType;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -27,5 +28,10 @@ public class JLabelHandler extends DomainIdentifiable<JLabel> {
 	@Override
 	public Icon getIcon(JLabel component) {
 		return component.getIcon();
+	}
+	
+	@Override
+	public ComponentInfoType getComponentInfoType(JLabel component) {
+		return ComponentInfoType.INFORMATIVE_AND_TEXTUAL;
 	}
 }

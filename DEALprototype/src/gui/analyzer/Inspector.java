@@ -1,6 +1,6 @@
 package gui.analyzer;
 
-import gui.ui.DomainModelEditor;
+import gui.editor.DomainModelEditor;
 
 import java.awt.AWTEvent;
 import java.awt.Color;

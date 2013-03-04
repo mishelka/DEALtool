@@ -2,6 +2,7 @@ package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.analyzer.util.Util;
+import gui.model.domain.ComponentInfoType;
 import gui.model.domain.relation.RelationType;
 
 import javax.swing.Icon;
@@ -24,12 +25,16 @@ public class JTabbedPaneComposite extends DomainIdentifiable<JTabbedPane> {
 
 	@Override
 	public Icon getIcon(JTabbedPane component) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public RelationType getRelation(JTabbedPane component) {
 		return RelationType.MUTUALLY_EXCLUSIVE;
+	}
+	
+	@Override
+	public ComponentInfoType getComponentInfoType(JTabbedPane component) {
+		return ComponentInfoType.LOGICALLY_GROUPING;
 	}
 }

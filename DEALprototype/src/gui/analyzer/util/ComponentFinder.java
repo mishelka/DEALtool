@@ -1,30 +1,32 @@
 package gui.analyzer.util;
 
+import gui.model.application.Scene;
+import gui.model.application.componentPath.ComponentPath;
+
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
 
 /**
- * Ponúka rôzne pomocné metódy pre vyhľadávanie v komponentovom strome
- * - získanie okna, ktoré obsahuje daný komponent
- * - získanie komponentovej cesty pre komponent (využíva sa v PathFinder)
- * - nájdenie komponentu v strome podľa rôznych parametrov
- * - transfromácia komponentového stromu do zoznamu komponentov
+ * Offers different methods for searching in the component tree. - obtaining a
+ * scene containing the given component, from the given list of scenes -
+ * obtaining a component path for the given component - searching a component in
+ * a tree according to various parameters - transformation of component tree to
+ * a list of components
  */
 public class ComponentFinder {
 
-	/** Inštancia triedy ComponentFinder. */
+	/** ComponentFinder singleton instance. */
 	private static ComponentFinder instance;
 
 	private ComponentFinder() {
 	}
 
 	/**
-	 * @return inštancia triedy ComponentFinder
+	 * @return ComponentFinder singleton instance.
 	 */
 	public static ComponentFinder getInstance() {
 		if (instance == null) {
@@ -34,39 +36,56 @@ public class ComponentFinder {
 	}
 
 	/**
-	 * Vráti inštanciu triedy Window, ktorá obsahuje zadaný komponent.
+	 * Each Scene contains a reference to the scene container, which is of type
+	 * Object by default. This method selects the sceneContainer, which is of
+	 * type Object by default, and if it is of type Component, then returns the
+	 * sceneContainer as Component. If it is null or the sceneContainer is not
+	 * of type Component, returns null.
 	 * 
-	 * @param windows
-	 *            zoznam otvorených okien (inštancii tried Window) spustenej
-	 *            aplikácie.
-	 * @param component
-	 *            komponent, ktorý sa má nájsť.
-	 * @return inštancia triedy Window, v ktorom sa nachádza zadaný komponent.
+	 * @param scene
+	 *            a scene to select the sceneContainer from.
+	 * @return The sceneContainer of type Component, if there is such, null
+	 *         otherwise.
 	 */
-	public Window getWindowContainingComponent(Window[] windows,
-			Component component) {
-		for (Window w : windows) {
-			ArrayList<Component> components = (ArrayList<Component>) windowToComponentsList(w);
-			if (components.contains(component)) {
-				return w;
+	public Component getSceneContainerAsComponent(Scene<?> scene) {
+		Object sceneContainer = scene.getSceneContainer();
+		if (sceneContainer instanceof Component)
+			return (Component) sceneContainer;
+		return null;
+	}
+
+	/**
+	 * Finds a scene, which contains the given component.
+	 * 
+	 * @param scenes
+	 *            a list of all scenes where the component should be searched
+	 *            in.
+	 * @param component
+	 *            the component which should be found in a scene.
+	 * @return a scene from the list of scenes which contains the given
+	 *         component.
+	 */
+	public Scene<?> getSceneContainingComponent(List<Scene<?>> scenes,
+			Object component) {
+		for (Scene<?> s : scenes) {
+			Component sceneContainer = getSceneContainerAsComponent(s);
+			if (sceneContainer != null) {
+				List<Component> components = componentToComponentsList(sceneContainer);
+				if (components.contains(component))
+					return s;
 			}
 		}
 		return null;
 	}
 
-	/**
-	 * Vráti komponent podľa zadanej komponentovej cesty v danom okne.
-	 * 
-	 * @param window
-	 *            okno, v ktorom sa komponent nachádza.
-	 * @param path
-	 *            komponentová cesta komponentu.
-	 * @return inštancia komponentu, ktorý bol nájdený podľa zadanej
-	 *         komponentovej cesty.
-	 */
-	public Component getComponentFromPath(Window window, ArrayList<Integer> path) {
-		Component component = window;
-		for (int i : path) {
+	public Component getComponentFromPath(Scene<?> scene,
+			ComponentPath componentPath) {
+		Component component = getSceneContainerAsComponent(scene);
+
+		if (component == null)
+			return null;
+
+		for (Integer i : componentPath.getComponentPath()) {
 			if (component instanceof Container) {
 				Component temp = ((Container) component).getComponents()[i];
 				if (temp != null) {
@@ -79,41 +98,44 @@ public class ComponentFinder {
 		return component;
 	}
 
-	/**
-	 * Vráti komponentovú cestu zadaného komponentu v zadanom okne, v tvare
-	 * zoznamu �?ísel.
-	 * 
-	 * @param window
-	 *            okno, v ktorom sa má komponent nachádzať.
-	 * @param component
-	 *            komponent, pre ktorého sa má nájsť cesta.
-	 * @return komponentová cesta zadaného komponentu v zadanom okne v tvare
-	 *         zoznamu �?ísel. V prípade, že window neobsahuje component, vráti
-	 *         null.
-	 */
-	public ArrayList<Integer> getPathForComponent(Window window,
+	public List<Integer> getPathForComponent(Scene<?> scene,
 			Component component) {
-		ArrayList<Component> allComponents = (ArrayList<Component>) windowToComponentsList(window);
+		Component sceneComponent = getSceneContainerAsComponent(scene);
+
+		if (sceneComponent == null)
+			return null;
+
+		List<Component> allComponents = (List<Component>) componentToComponentsList(sceneComponent);
 		if (!allComponents.contains(component))
 			return null;
-		ArrayList<Integer> path = new ArrayList<Integer>();
-		path.add(0); // moze to byt aj window
-		if (component.equals(window)) {
+
+		List<Integer> path = new ArrayList<Integer>();
+
+		// if the scene is a root component, then return path with only one path
+		// item - root (0).
+		path.add(0);
+		if (component.equals(sceneComponent)) {
 			return path;
 		}
-		Component[] components = window.getComponents();
-		getPathForComponent(components, path, component);
-		return path;
+
+		if (sceneComponent instanceof Container) {
+			Component[] components = ((Container) sceneComponent)
+					.getComponents();
+			getPathForComponent(components, path, component);
+			return path;
+		}
+
+		return null;
 	}
 
 	private void getPathForComponent(Component[] components,
-			ArrayList<Integer> path, Component component) {
+			List<Integer> path, Component component) {
 		for (int i = 0; i < components.length; i++) {
 			if (component.equals(components[i])) {
 				path.add(i);
 				return;
 			} else {
-				ArrayList<Component> componentsOfComponent = (ArrayList<Component>) componentToComponentsList(components[i]);
+				List<Component> componentsOfComponent = (List<Component>) componentToComponentsList(components[i]);
 				if (componentsOfComponent.contains(component)) {
 					path.add(i);
 					if (components[i] instanceof Container) {
@@ -125,54 +147,39 @@ public class ComponentFinder {
 				}
 			}
 		}
-		// TODO: neviem ci toto nespadne...
+
 		path.removeAll(path);
-		// ak tam bude -1, tak komponent sa nenasiel v okne... teda nema cestu,
-		// teda nic sa neda robit, neda sa nahrat ani prehrat....
+		// if the path contains -1, then the component was not found in the
+		// scene - it has no path and then it is not possible to play anything.
 		path.add(-1);
-		return;
-	}
-
-	ArrayList<Component> componentList;
-
-	/**
-	 * Získa zoznam všetkých komponentov okna.
-	 * 
-	 * @param window
-	 *            okno, pre ktoré chceme získať zoznam komponentov.
-	 * @return Zoznam všetkých komponentov okna.
-	 */
-	public List<Component> windowToComponentsList(Window window) {
-		componentList = new ArrayList<Component>();
-		Component[] components = window.getComponents();
-		componentsToList(components);
-		return componentList;
 	}
 
 	/**
-	 * Získa zoznam všetkých subkomponentov komponentu.
+	 * Retrieves the list of all subcomponents of the given component.
 	 * 
 	 * @param component
-	 *            komponent, ktorého zoznam subkomponentov sa má získať.
-	 * @return Zoznam všetkých subkomponentov komponentu component.
+	 *            the component, from which the list of all subcomponent should
+	 *            be retrieved.
+	 * @return a list of all subcomponents of the given component.
 	 */
 	public List<Component> componentToComponentsList(Component component) {
-		componentList = new ArrayList<Component>();
+		List<Component> componentList = new ArrayList<Component>();
 		if (component instanceof Container) {
 			Component[] components = ((Container) component).getComponents();
-			componentsToList(components);
+			componentsToList(components, componentList);
 		}
 		return componentList;
 	}
 
-	private void componentsToList(Component[] components) {
+	private void componentsToList(Component[] components,
+			List<Component> componentList) {
 		for (Component component : components) {
 			if (component instanceof Container) {
 				Container container = (Container) component;
 				if (component instanceof JComponent) {
 					componentList.add(component);
 				}
-				componentsToList(container.getComponents());
+				componentsToList(container.getComponents(), componentList);
 			}
 		}
 	}

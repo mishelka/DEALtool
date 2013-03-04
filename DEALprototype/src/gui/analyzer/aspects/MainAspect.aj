@@ -10,11 +10,15 @@ import java.util.ArrayList;
 public aspect MainAspect {
 	private ArrayList<Toolkit> toolkits = new ArrayList<Toolkit>();
 
-	// for the main method to be able to use windowpointcut
-	// THIS IS THE OLD WAY, HOW TO DETECT WINDOW OPENING IN OTHER WAYS? Is it
+	// For the main method to be able to use windowpointcut
+	// THIS IS THE OLD WAY. HOW TO DETECT WINDOW OPENING IN OTHER WAYS? Is it
 	// possible?
 	pointcut mainPointcut(): execution(* *.main(*));
 
+	/**
+	 * Pointcut for the main method.
+	 * Also Installs a Window event listener.
+	 */
 	before(): mainPointcut() {
 		String className = thisJoinPoint.getSignature().getDeclaringType().getName();
 		install(className);

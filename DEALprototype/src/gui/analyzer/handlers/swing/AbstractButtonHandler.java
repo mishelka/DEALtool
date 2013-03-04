@@ -2,6 +2,7 @@ package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.analyzer.util.Util;
+import gui.model.domain.ComponentInfoType;
 import gui.model.domain.relation.RelationType;
 
 import java.util.ArrayList;
@@ -9,7 +10,10 @@ import java.util.ArrayList;
 import javax.swing.AbstractButton;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButton;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JToggleButton;
 
 public class AbstractButtonHandler extends DomainIdentifiable<AbstractButton> {
 
@@ -43,10 +47,25 @@ public class AbstractButtonHandler extends DomainIdentifiable<AbstractButton> {
 
 	@Override
 	public RelationType getParentRelation(AbstractButton component) {
-		if (component instanceof JRadioButton)
+		if (component instanceof JRadioButton
+				|| component instanceof JRadioButtonMenuItem
+				|| component instanceof JToggleButton)
 			return RelationType.MUTUALLY_EXCLUSIVE;
-		if (component instanceof JCheckBox)
+		if (component instanceof JCheckBox
+				|| component instanceof JCheckBoxMenuItem)
 			return RelationType.MUTUALLY_NOT_EXCLUSIVE;
 		return super.getParentRelation(component);
+	}
+
+	@Override
+	public ComponentInfoType getComponentInfoType(AbstractButton component) {
+		if (component instanceof JRadioButton
+				|| component instanceof JRadioButtonMenuItem
+				|| component instanceof JCheckBox
+				|| component instanceof JCheckBoxMenuItem
+				|| component instanceof JToggleButton)
+			return ComponentInfoType.LOGICALLY_GROUPING;
+
+		return ComponentInfoType.FUNCTIONAL;
 	}
 }

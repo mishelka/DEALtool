@@ -3,15 +3,10 @@ package gui.model.domain;
 import gui.model.application.Scene;
 import gui.model.domain.relation.RelationType;
 
-import java.awt.Point;
-import java.awt.Window;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Hashtable;
 import java.util.LinkedList;
-import java.util.Set;
+import java.util.List;
 
 public class DomainModel {
 	/**The root term of the Domain model.*/
@@ -25,11 +20,13 @@ public class DomainModel {
 	 * For example, if there is a new document in MS Word, then the name of the main window is the default name of the document, e.g. Document1. As soon as the user saves this document under a different name, for example "My new document", the title of the main window will change to this name. But the main window is still the same, the application just slightly changed its state.
 	 * Therefore this is just a temporary solution until we find an appropriate way of defining windows and dialogs uniquely.
 	 */
-	private Hashtable<String, Term> termTable = new Hashtable<String, Term>();
+	private List<Term> terms = new ArrayList<Term>();
 //	private ArrayList<String> termOrderList = new ArrayList<String>();
 	private final LinkedList<PropertyChangeListener> listenerList = new LinkedList<PropertyChangeListener>();
 	/** Each domain model is associated to a scene - a window or a frame - which it is created from. */
-	private Scene scene;
+	private Scene<?> scene;
+	
+	private boolean showComponentInfoTypes = false;
 
 	public DomainModel(String name) {
 		this.name = name;
@@ -45,18 +42,18 @@ public class DomainModel {
 	}
 	
 	/**
-	 * @return the termTable
+	 * @return the terms
 	 */
-	public Hashtable<String, Term> getTermTable() {
-		return termTable;
+	public List<Term> getTerms() {
+		return terms;
 	}
 
 	/**
-	 * @param termTable
-	 *            the termTable to set
+	 * @param terms
+	 *            the terms to set
 	 */
-	public void setTermTable(Hashtable<String, Term> termTable) {
-		this.termTable = termTable;
+	public void setTerms(List<Term> terms) {
+		this.terms = terms;
 	}
 
 	public void reset() {
@@ -65,11 +62,11 @@ public class DomainModel {
 				Term child = root.getLastChild();
 				deleteChildTerms(child);
 				root.removeChild(child);
-				termTable.remove(child.getName());
+				terms.remove(child.getName());
 			}
 			root = null;
 		}
-		termTable.clear();
+		terms.clear();
 //		termOrderList.clear();
 	}
 	
@@ -78,7 +75,7 @@ public class DomainModel {
 			Term child = term.getLastChild();
 			deleteChildTerms(child);
 			term.removeChild(child);
-			termTable.remove(child.getName());
+			terms.remove(child.getName());
 		}
 	}
 
@@ -94,20 +91,20 @@ public class DomainModel {
 		addTerm(root);
 	}
 
-	public Scene getScene() {
+	public Scene<?> getScene() {
 		return scene;
 	}
 	
-	public void setScene(Scene scene) {
+	public void setScene(Scene<?> scene) {
 		this.scene = scene;
 	}
 
 	public void addTerm(Term term) {
-		termTable.put(name, term);
+		terms.add(term);
 	}
 
 	public void deleteTermFromTable(Term term) {
-		termTable.remove(term.getName());
+		terms.remove(term.getName());
 	}
 
 	public boolean deleteTerm(Term term) {
@@ -117,8 +114,7 @@ public class DomainModel {
 			return false;
 
 		// check if it exists
-		String name = term.getName();
-		if (!termTable.containsKey(name))
+		if (!terms.contains(term))
 			return false;
 
 		// use the group type of the term to delete
@@ -131,29 +127,29 @@ public class DomainModel {
 
 		// delete term
 		parent.removeChild(term);
-		termTable.remove(name);
+		terms.remove(term);
 		return true;
 	}
 
-	public Term getTerm(String name) {
-
-		if (termTable.isEmpty()) {
+	public List<Term> getTerm(String name) {
+		List<Term> result = new ArrayList<Term>();
+		
+		if (terms.isEmpty()) {
 			// create the root term (it is the only one without a reference)
 			root = new Term(this, name);
 			addTerm(root);
-			return root;
+			result.add(root);
+			return result;
 		}
-		return termTable.get(name);
-	}
-
-	public boolean renameTerm(String oldName, String newName) {
-		if (!termTable.containsKey(oldName)
-				|| termTable.containsKey(newName))
-			return false;
-		Term term = termTable.remove(oldName);
-		term.setName(newName);
-		termTable.put(newName, term);
-		return true;
+		
+		
+		for(Term t : terms) {
+			if(t.getName().equals(name)) {
+				result.add(t);
+			}
+		}
+		
+		return result;
 	}
 
 	public void addListener(PropertyChangeListener listener) {
@@ -164,57 +160,22 @@ public class DomainModel {
 	public void removeListener(PropertyChangeListener listener) {
 		listenerList.remove(listener);
 	}
-//
-//	/**
-//	 * Fires event for listeners when the model has new data
-//	 */
-//	public void handleModelDataLoaded() {
-//		PropertyChangeEvent event = new PropertyChangeEvent(this,
-//				MODEL_DATA_LOADED, false, true);
-//		for (PropertyChangeListener listener : listenerList)
-//			listener.propertyChange(event);
-//	}
-//
-//	/**
-//	 * Fires event for listeners when the model has changed data
-//	 */
-//	public void handleModelDataChanged() {
-//		PropertyChangeEvent event = new PropertyChangeEvent(this,
-//				MODEL_DATA_CHANGED, false, true);
-//		for (PropertyChangeListener listener : listenerList)
-//			listener.propertyChange(event);
-//	}
-//
-//	/**
-//	 * Fires event for listeners when the context menu needs to be refreshed
-//	 */
-//	public void refreshContextMenu() {
-//		PropertyChangeEvent event = new PropertyChangeEvent(this,
-//				REFRESH_CONTEXT_MENU, false, true);
-//		for (PropertyChangeListener listener : listenerList)
-//			listener.propertyChange(event);
-//	}
-//
-//	/**
-//	 * Fires event for listeners when the diagram needs to be redrawn
-//	 */
-//	public void redrawDiagram() {
-//		PropertyChangeEvent event = new PropertyChangeEvent(this,
-//				REDRAW_DIAGRAM, false, true);
-//		for (PropertyChangeListener listener : listenerList)
-//			listener.propertyChange(event);
-//	}
-
-	public Collection<Term> getTerms() {
-		return Collections.unmodifiableCollection(termTable.values());
+	
+	public Term getTermForComponent(Object component) {
+		for(Term t : terms) {
+			if(t.getComponent() != null && t.getComponent().equals(component)) {
+				return t;
+			}
+		}
+		return null;
 	}
 
 	public void createDefaultValues(String projectName) {
-		Term root;
+		Term root = new Term(this);
 		if (!projectName.equals("")) {
-			root = getTerm(projectName);
+			root.setName(projectName);
 		} else {
-			root = getTerm("Root");
+			root.setName("Root");
 		}
 		Term term = new Term(this, "Base");
 		root.addChild(term);
@@ -222,46 +183,27 @@ public class DomainModel {
 	}
 
 	public void replaceRoot(Term term) {
-		termTable.remove(root.getName());
+		terms.remove(root.getName());
 		root = term;
 	}
 
-	public Set<String> getTermNames() {
-		return Collections.unmodifiableSet(termTable.keySet());
+	public List<String> getTermNames() {
+		List<String> names = new ArrayList<String>();
+		for(Term t : terms) {
+			names.add(t.getName());
+		}
+		return names;
 	}
 
 	public int getNumberOfTerms() {
-		return termTable.size();
+		return terms.size();
 	}
-
-//	@Override
-//	public DomainModel clone() {
-//		DomainModel fm = new DomainModel(name);
-//		fm.root = root != null ? root.clone() : new Term(fm, "Root");
-//		List<Term> list = new LinkedList<Term>();
-//		list.add(fm.root);
-//		while (!list.isEmpty()) {
-//			Term term = list.remove(0);
-//			fm.termTable.put(term.getName(), term);
-//			for (Term child : term.getChildren())
-//				list.add(child);
-//		}
-//		return fm;
-//	}
-
-//	public Point getLegendPosition() {
-//		return legendPosition;
-//	}
-//
-//	public void setLegendPosition(int x, int y) {
-//		this.legendPosition = new Point(x, y);
-//	}
 
 	/**
 	 * @return true if term model contains and group otherwise false
 	 */
 	public boolean hasAndGroup() {
-		for (Term f : this.termTable.values()) {
+		for (Term f : this.terms) {
 			if (f.getChildrenCount() > 1
 					&& (f.getRelation() == RelationType.AND))
 				return true;
@@ -273,7 +215,7 @@ public class DomainModel {
 	 * @return true if term model contains alternative group otherwise false
 	 */
 	public boolean hasAlternativeGroup() {
-		for (Term f : this.termTable.values()) {
+		for (Term f : this.terms) {
 			if (f.getChildrenCount() > 1
 					&& f.getRelation() == RelationType.MUTUALLY_NOT_EXCLUSIVE)
 				return true;
@@ -285,26 +227,18 @@ public class DomainModel {
 	 * @return true if term model contains or group otherwise false
 	 */
 	public boolean hasOrGroup() {
-		for (Term f : this.termTable.values()) {
+		for (Term f : this.terms) {
 			if (f.getChildrenCount() > 1 && f.getRelation() == RelationType.MUTUALLY_EXCLUSIVE)
 				return true;
 		}
 		return false;
 	}
-
-//	/**
-//	 * @return the termOrderList
-//	 */
-//	public ArrayList<String> getTermOrderList() {
-//		// TODO should return getConcreteTermNames() if null.
-//		return termOrderList;
-//	}
-//
-//	/**
-//	 * @param termOrderList
-//	 *            the termOrderList to set
-//	 */
-//	public void setTermOrderList(ArrayList<String> termOrderList) {
-//		this.termOrderList = termOrderList;
-//	}
+	
+	public boolean isShowComponentInfoTypes() {
+		return showComponentInfoTypes;
+	}
+	
+	public void setShowComponentInfoTypes(boolean showComponentInfoTypes) {
+		this.showComponentInfoTypes = showComponentInfoTypes;
+	}
 }

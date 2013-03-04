@@ -1,6 +1,7 @@
 package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.model.domain.ComponentInfoType;
 
 import java.awt.Dialog;
 import java.awt.Image;
@@ -10,7 +11,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class DialogComposite extends DomainIdentifiable<Dialog> {
-	public static final String DIALOG = "Dialog";
 
 	@Override
 	public String getDomainIdentifier(Dialog composite) {
@@ -19,7 +19,7 @@ public class DialogComposite extends DomainIdentifiable<Dialog> {
 
 	@Override
 	public String getDomainDescriptor(Dialog component) {
-		return DIALOG;
+		return null;
 	}
 
 	@Override
@@ -36,5 +36,10 @@ public class DialogComposite extends DomainIdentifiable<Dialog> {
 		}
 
 		return null;
+	}
+	
+	@Override
+	public ComponentInfoType getComponentInfoType(Dialog component) {
+		return ComponentInfoType.GRAPHICALLY_GROUPING;
 	}
 }

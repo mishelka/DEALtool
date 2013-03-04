@@ -32,7 +32,7 @@ public class XmlModelGenerator {
 		try {
 			generateXml();
 		} catch (Exception e) {
-			Logger.logError("EXCEPTION DURING GENERATING FEATURE MODEL");
+			Logger.logError("EXCEPTION DURING GENERATING DOMAIN MODEL");
 		}
 	}
 

@@ -8,12 +8,12 @@ import java.util.List;
 public class Application {
 	// TODO: finish this, priority highest
 	private String name;
-	private List<Scene> scenes;
+	private List<Scene<?>> scenes;
 	private List<WindowScene> windowScenes;
 	private List<UiEventSequence> sequences;
 
 	public Application() {
-		this.scenes = new ArrayList<Scene>();
+		this.scenes = new ArrayList<Scene<?>>();
 		this.windowScenes = new ArrayList<WindowScene>();
 		this.sequences = new ArrayList<UiEventSequence>();
 	}
@@ -26,7 +26,7 @@ public class Application {
 		this.name = name;
 	}
 
-	public List<Scene> getScenes() {
+	public List<Scene<?>> getScenes() {
 		return scenes;
 	}
 

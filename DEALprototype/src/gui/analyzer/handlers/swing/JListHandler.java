@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.model.domain.ComponentInfoType;
 import gui.model.domain.constraint.Constraint;
 import gui.model.domain.constraint.Enumeration;
 
@@ -51,5 +52,10 @@ public class JListHandler extends DomainIdentifiable<JList> {
 		constraints.add(enumeration);
 		
 		return constraints;
+	}
+	
+	@Override
+	public ComponentInfoType getComponentInfoType(JList component) {
+		return ComponentInfoType.LOGICALLY_GROUPING;
 	}
 }

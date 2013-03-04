@@ -1,6 +1,7 @@
 package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.model.domain.ComponentInfoType;
 
 import java.awt.Frame;
 import java.awt.Image;
@@ -29,5 +30,10 @@ public class FrameComposite extends DomainIdentifiable<Frame> {
 			return new ImageIcon(i);
 		
 		return null;
+	}
+	
+	@Override
+	public ComponentInfoType getComponentInfoType(Frame component) {
+		return ComponentInfoType.GRAPHICALLY_GROUPING;
 	}
 }

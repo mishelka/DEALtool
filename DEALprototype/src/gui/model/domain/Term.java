@@ -54,6 +54,9 @@ public class Term {
 	private Class componentClass;
 	/** Each term is created from a component. The componentClass and component fields are references to this component. */
 	private Object component;
+	
+	/** Each term is extracted from a component and this component is included in a group according to what information can be extracted from this component. */
+	private ComponentInfoType componentInfoType;
 
 	
 	public Term(DomainModel domainModel) {
@@ -106,6 +109,14 @@ public class Term {
 	@SuppressWarnings("rawtypes")
 	public Class getComponentClass() {
 		return componentClass;
+	}
+	
+	public ComponentInfoType getComponentInfoType() {
+		return componentInfoType;
+	}
+	
+	public void setComponentInfoType(ComponentInfoType componentInfoType) {
+		this.componentInfoType = componentInfoType;
 	}
 
 	public DomainModel getDomainModel() {

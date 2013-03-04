@@ -10,5 +10,4 @@ public class JScrollBarComposite implements Composite<JScrollBar> {
 	public Object[] getComponents(JScrollBar container) {
 		return new Object[] {};
 	}
-
 }

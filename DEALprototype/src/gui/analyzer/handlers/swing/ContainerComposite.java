@@ -2,6 +2,7 @@ package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.Composite;
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.model.domain.ComponentInfoType;
 
 import java.awt.Container;
 
@@ -33,5 +34,10 @@ public class ContainerComposite extends DomainIdentifiable<Container> implements
 	@Override
 	public Icon getIcon(Container component) {
 		return null;
+	}
+	
+	@Override
+	public ComponentInfoType getComponentInfoType(Container component) {
+		return ComponentInfoType.GRAPHICALLY_GROUPING;
 	}
 }

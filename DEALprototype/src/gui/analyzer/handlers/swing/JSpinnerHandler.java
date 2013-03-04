@@ -2,6 +2,7 @@ package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.analyzer.util.Util;
+import gui.model.domain.ComponentInfoType;
 import gui.model.domain.constraint.Constraint;
 import gui.model.domain.constraint.DataType;
 import gui.model.domain.constraint.DataTypeConstraint;
@@ -18,14 +19,9 @@ import javax.swing.SpinnerNumberModel;
 
 public class JSpinnerHandler extends DomainIdentifiable<JSpinner> {
 
-	private static final String SPINNER = "Spinner";
-
 	@Override
 	public String getDomainIdentifier(JSpinner component) {
-		String l = getDomainLabelDescriptor(component);
-		if (Util.isEmpty(l))
-			l = SPINNER;
-		return l;
+		return null;
 	}
 
 	@Override
@@ -67,5 +63,10 @@ public class JSpinnerHandler extends DomainIdentifiable<JSpinner> {
 		}
 
 		return constraints;
+	}
+	
+	@Override
+	public ComponentInfoType getComponentInfoType(JSpinner component) {
+		return ComponentInfoType.INFORMATIVE_AND_TEXTUAL;
 	}
 }

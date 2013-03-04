@@ -2,6 +2,7 @@ package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.Composite;
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.model.domain.ComponentInfoType;
 import gui.model.domain.relation.RelationType;
 
 import javax.swing.Icon;
@@ -36,5 +37,10 @@ public class JMenuBarComposite extends DomainIdentifiable<JMenuBar> implements
 	@Override
 	public RelationType getRelation(JMenuBar component) {
 		return RelationType.MUTUALLY_EXCLUSIVE;
+	}
+	
+	@Override
+	public ComponentInfoType getComponentInfoType(JMenuBar component) {
+		return ComponentInfoType.GRAPHICALLY_GROUPING;
 	}
 }
