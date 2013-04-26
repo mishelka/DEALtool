@@ -7,6 +7,8 @@ import gui.model.domain.ComponentInfoType;
 import java.awt.Container;
 
 import javax.swing.Icon;
+import javax.swing.JScrollPane;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 /**
  * Ovladac pre kontajnery typu Container.
@@ -14,7 +16,7 @@ import javax.swing.Icon;
 public class ContainerComposite extends DomainIdentifiable<Container> implements
 		Composite<Container> {
 
-	public static final String CONTAINER = "Container";
+//	public static final String CONTAINER = "Container";
 
 	@Override
 	public Object[] getComponents(Container container) {
@@ -23,12 +25,12 @@ public class ContainerComposite extends DomainIdentifiable<Container> implements
 
 	@Override
 	public String getDomainIdentifier(Container component) {
-		return CONTAINER + " [" + component.getClass().getSimpleName() + "]";
+		return null;
 	}
 
 	@Override
 	public String getDomainDescriptor(Container component) {
-		return component.getClass().getName();
+		return null;
 	}
 
 	@Override
@@ -38,6 +40,8 @@ public class ContainerComposite extends DomainIdentifiable<Container> implements
 	
 	@Override
 	public ComponentInfoType getComponentInfoType(Container component) {
-		return ComponentInfoType.GRAPHICALLY_GROUPING;
+		if(component instanceof JScrollPane) return ComponentInfoType.UNKNOWN;
+		if(component instanceof BasicSplitPaneDivider) return ComponentInfoType.UNKNOWN;
+		return ComponentInfoType.CONTAINERS;
 	}
 }

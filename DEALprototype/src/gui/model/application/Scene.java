@@ -2,11 +2,23 @@ package gui.model.application;
 
 import gui.model.domain.DomainModel;
 
+import java.awt.Component;
+import java.util.List;
+
 public class Scene<T> {
 	protected String name;
 	protected T sceneContainer;
 	protected DomainModel domainModel;
+	protected List<Component> componentList;
 	
+	public List<Component> getComponentList() {
+		return componentList;
+	}
+
+	public void setComponentList(List<Component> componentList) {
+		this.componentList = componentList;
+	}
+
 	public Scene(T sceneContainer) {
 		this.sceneContainer = sceneContainer;
 	}

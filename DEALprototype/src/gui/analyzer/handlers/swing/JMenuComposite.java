@@ -50,6 +50,6 @@ public class JMenuComposite extends DomainIdentifiable<JMenu> implements
 	public ComponentInfoType getComponentInfoType(JMenu component) {
 		if(component instanceof JMenuItem) {
 			return ComponentInfoType.FUNCTIONAL;
-		} else return ComponentInfoType.GRAPHICALLY_GROUPING;
+		} else return ComponentInfoType.CONTAINERS;
 	}
 }

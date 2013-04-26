@@ -129,7 +129,7 @@ public class JLabelFinder {
 
 			if (sceneComponent != null) {
 				List<Component> list = ComponentFinder.getInstance()
-						.componentToComponentsList(sceneComponent);
+						.toComponentList(sceneComponent);
 				for (Component comp : list) {
 					if (comp instanceof JLabel) {
 						JLabel label = (JLabel) comp;

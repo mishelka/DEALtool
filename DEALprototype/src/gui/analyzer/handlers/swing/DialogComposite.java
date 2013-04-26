@@ -40,6 +40,6 @@ public class DialogComposite extends DomainIdentifiable<Dialog> {
 	
 	@Override
 	public ComponentInfoType getComponentInfoType(Dialog component) {
-		return ComponentInfoType.GRAPHICALLY_GROUPING;
+		return ComponentInfoType.CONTAINERS;
 	}
 }

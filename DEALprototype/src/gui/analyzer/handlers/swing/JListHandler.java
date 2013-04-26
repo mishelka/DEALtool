@@ -56,6 +56,6 @@ public class JListHandler extends DomainIdentifiable<JList> {
 	
 	@Override
 	public ComponentInfoType getComponentInfoType(JList component) {
-		return ComponentInfoType.LOGICALLY_GROUPING;
+		return ComponentInfoType.TEXTUAL;
 	}
 }

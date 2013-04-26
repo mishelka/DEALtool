@@ -1,0 +1,28 @@
+Configuration Tips:
+
+1. Go to HOME_FOLDER* locate and enter a folder named ".finanx12c". This folder is where all configurations and registers data are stored.
+2. Open the file "cfg.xml". This file has tags that represent specific configurations of the calculator.
+3. Change the values in the tags you need to change. Here is a list of tags and their respective meanings:
+
+<lang> Language used. It uses a two char international code for languages.
+<stksize> Size of the stack. In a real HP12C, the stack has only 4 registers. You can increase it if you want but there's no utility in changing this.
+<memsize> Size of the memory. The default value is 100 registers in the memory. So, one can store 100 values in the memory. You can increase it if you need more registers to store values.
+<prgsize> Size of the programming memory. The default value is 1000 steps in the programming memory. So, one can store 1000 steps in the programming memory. You can increase it if you need to store more programs in the calculator.
+<keymap> Used to associate a computer keyboard key with a calculator button. The computer keyboard char number uses the ASCII standard, e.p., 10 means [ENTER]. The button code number is the same used in the HP12C, e.p., 36 means [ENTER]. 
+<size> The size of the calculator. The default is 1.0, that means 100%. So if one wants to recise the calculator to a size that is a half of the original size (50%) the value should be changed to 0.5. 
+<xpos> The horizontal position of the calculator in the screen.
+<ypos> The vertical position of the calculator in the screen.
+<skin> The skin used. The default value is "default".
+<c> The "C" flag. Possible values: 1 or 0. If 1, the C flag is enabled.
+<dmy> The "DMY" flag. Possible values: 1 or 0. 
+<com> The decimal dot used. Possible values: 1 or 0. If 1, a comma is used as decimal dot.
+<alg> The "ALG" flag. Possible values: 1 or 0.
+<beg> The "BEG" flag. Possible values: 1 or 0.
+<fix> The quantity of digits after the decimal dot. Possible values: 0 to 9.
+<mode> The execution mode. It tells how the calculator has to behave: like an HP12C Gold or Platinum. It is not implemented yet. So, just ignore it.
+
+*HOME_FOLDER: the folder where the personal files and configurations of a specific user are stored. The common paths for each operating system are: 
+Windows XP: C:\Documents and Settings\USER_NAME
+Windos 7: C:\Users\USER_NAME
+Linux/Unix: /home/USER_NAME
+Mac: /Users/USER_NAME

@@ -203,6 +203,12 @@ public class Term {
 		newChild.setParent(this);
 //		fireChildrenChanged();
 	}
+	
+	public void addAll(List<Term> childrenToAdd) {
+		for(Term t : childrenToAdd) {
+			addChild(t);
+		}
+	}
 
 	public void replaceChild(Term oldChild, Term newChild) {
 		int index = children.indexOf(oldChild);
@@ -225,7 +231,15 @@ public class Term {
 //		fireChildrenChanged();
 		return child;
 	}
-
+	
+	public void removeAll(List<Term> childrenToRemove) {
+		for(Term t : childrenToRemove) {
+			if(children.contains(childrenToRemove)) {
+				removeChild(t);
+			}
+		}
+	}
+	
 	private LinkedList<PropertyChangeListener> listenerList = new LinkedList<PropertyChangeListener>();
 
 	public void addListener(PropertyChangeListener listener) {
@@ -304,19 +318,14 @@ public class Term {
 		this.component = component;
 	}
 
-	public boolean canHide() {
+	public boolean canBeRemoved() {
 		boolean b = false;
-		Pattern p = Pattern.compile(ContainerComposite.CONTAINER + " \\["
-				+ "[A-Za-z]*" + "\\]");
-		if (name == null)
-			b = true;
-		else {
-			Matcher m = p.matcher(name);
-			b = m.matches();
-		}
 		
-		b = (relation == RelationType.AND && b
-				&& componentClass.getName().equals(description) && icon == null);
+		b = (name==null || name.isEmpty()) 
+				&& (relation == RelationType.AND
+				&& (componentClass.getName().equals(description) 
+						|| description == null || description.isEmpty()) 
+				&& icon == null);
 		
 		return b;
 	}
@@ -332,6 +341,18 @@ public class Term {
 		f.setComponentClass(componentClass);
 		f.setComponent(component);
 		return f;
+	}
+	
+	public boolean hasName() {
+		return name != null && !name.isEmpty();
+	}
+	
+	public boolean hasDescription() {
+		return description != null && !description.isEmpty();
+	}
+	
+	public boolean hasIcon() {
+		return icon != null;
 	}
 
 	/**

@@ -1,5 +1,9 @@
 package gui.model.domain;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * This enumeration class represents the basic categories of components based on
  * what domain-relevant information can be extracted from them.
@@ -22,7 +26,8 @@ public enum ComponentInfoType {
 	 * Example: labels, spinner, text components (text areas, text fields,
 	 * etc.), tree, graph, picture image
 	 */
-	INFORMATIVE_AND_TEXTUAL,
+	DESCRIPTIVE,
+	TEXTUAL,
 	/**
 	 * A group including all logically grouping components. Logically grouping
 	 * components are components which components or content related logically. <br/>
@@ -35,7 +40,11 @@ public enum ComponentInfoType {
 	 * grouping components related graphically (and/or logically). <br/>
 	 * Examples: container, tabbed pane, menu, window, dialog, panels
 	 */
-	GRAPHICALLY_GROUPING,
+	CONTAINERS,
+	/**
+	 * Separators divide groups of components into logically related subgroups.
+	 */
+	SEPARATORS,
 	/**
 	 * Custom components are components created by programmers. <br/>
 	 * When a programmer creates a new custom component, he inserts new terms
@@ -52,4 +61,15 @@ public enum ComponentInfoType {
 	 * of information type UNKNOWN.
 	 */
 	UNKNOWN;
+	
+	public static List<ComponentInfoType> getInfoTypes() {
+		ComponentInfoType[] infoTypes = new ComponentInfoType[] {
+				ComponentInfoType.DESCRIPTIVE,
+				ComponentInfoType.TEXTUAL,
+				ComponentInfoType.FUNCTIONAL,
+				ComponentInfoType.CONTAINERS,
+				ComponentInfoType.LOGICALLY_GROUPING,
+				ComponentInfoType.CUSTOM, ComponentInfoType.UNKNOWN};
+		return Arrays.asList(infoTypes);
+	}
 }

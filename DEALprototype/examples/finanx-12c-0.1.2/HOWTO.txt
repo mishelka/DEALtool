@@ -1,0 +1,30 @@
+How to use:
+
+1. Check if the Java is installed. If not, install it.
+
+2. Click the file finanx.jar;
+
+3. If it does not work:
+  a) click the finanx.bat (windows) or finanx.sh (linux);
+  b) If it does not work, open the command line and type this:
+
+     prompt> java -jar finanx.jar
+
+  c) If it does not work, let us know in the website above.
+
+6. But if works, congratulations! :) You are ready to use it.
+
+
+If you have doubts on how to use the the calculator, find the HP12C manual.
+The Finanx 12C mimics the HP12C behaviour and functions.
+
+Please if you find any errors, or you want to make a sugestion, 
+help us to improve it. Tell us in this website:
+    
+    www.sourceforge.net/projects/finanx
+
+THANK YOU!
+
+Fabio Lima
+Fortaleza, Brazil
+

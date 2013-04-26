@@ -67,6 +67,6 @@ public class JSpinnerHandler extends DomainIdentifiable<JSpinner> {
 	
 	@Override
 	public ComponentInfoType getComponentInfoType(JSpinner component) {
-		return ComponentInfoType.INFORMATIVE_AND_TEXTUAL;
+		return ComponentInfoType.TEXTUAL;
 	}
 }

@@ -70,7 +70,7 @@ public class ComponentFinder {
 		for (Scene<?> s : scenes) {
 			Component sceneContainer = getSceneContainerAsComponent(s);
 			if (sceneContainer != null) {
-				List<Component> components = componentToComponentsList(sceneContainer);
+				List<Component> components = toComponentList(sceneContainer);
 				if (components.contains(component))
 					return s;
 			}
@@ -105,7 +105,7 @@ public class ComponentFinder {
 		if (sceneComponent == null)
 			return null;
 
-		List<Component> allComponents = (List<Component>) componentToComponentsList(sceneComponent);
+		List<Component> allComponents = (List<Component>) toComponentList(sceneComponent);
 		if (!allComponents.contains(component))
 			return null;
 
@@ -135,7 +135,7 @@ public class ComponentFinder {
 				path.add(i);
 				return;
 			} else {
-				List<Component> componentsOfComponent = (List<Component>) componentToComponentsList(components[i]);
+				List<Component> componentsOfComponent = (List<Component>) toComponentList(components[i]);
 				if (componentsOfComponent.contains(component)) {
 					path.add(i);
 					if (components[i] instanceof Container) {
@@ -153,6 +153,15 @@ public class ComponentFinder {
 		// scene - it has no path and then it is not possible to play anything.
 		path.add(-1);
 	}
+	
+	public List<Component> toComponentList(Scene scene) {
+		Component sceneContainer = getSceneContainerAsComponent(scene);
+		if (sceneContainer != null) {
+			List<Component> components = toComponentList(sceneContainer);
+			return components;
+		}
+		return null;
+	}
 
 	/**
 	 * Retrieves the list of all subcomponents of the given component.
@@ -162,7 +171,7 @@ public class ComponentFinder {
 	 *            be retrieved.
 	 * @return a list of all subcomponents of the given component.
 	 */
-	public List<Component> componentToComponentsList(Component component) {
+	public List<Component> toComponentList(Component component) {
 		List<Component> componentList = new ArrayList<Component>();
 		if (component instanceof Container) {
 			Component[] components = ((Container) component).getComponents();

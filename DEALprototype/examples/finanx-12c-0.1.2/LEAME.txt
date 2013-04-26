@@ -1,0 +1,20 @@
+Finanx 12C es una calculadora que emula una calculadora financiera real.
+
+Se desarrolla con fines educativos. Nosotros NO recomendamos el uso de este 
+calculadora para los cálculos profesionales.
+
+Este programa está disponible de forma gratuita bajo la Licencia Pública 
+General (GNU / GPL). Para obtener más información acerca de la licencia 
+por favor lea el archivo COPYING.txt que viene con el software o navegar 
+por la página web del proyecto GNU: https://www.gnu.org.
+
+Apreciamos su opinión acerca de este software. Si usted desea hacer 
+sugerencias, hacer preguntas o informar de errores, por favor visite el 
+sitio web del proyecto y utilize la herramienta Tracker.
+
+http://sourceforge.net/projects/finanx
+
+Gracias por descargar y probarlo!
+
+Fabio Lima
+Fortaleza, Brasil

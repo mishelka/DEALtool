@@ -1,0 +1,53 @@
+Keyboard Shortcuts:
+
+List of characters that can be used as shortcuts while using the calculator.
+Notice that some characters are uppercase.
+
+RIGHT SIDE:
+0 - Number 0
+1 - Number 1
+2 - Number 2
+3 - Number 3
+4 - Number 4
+5 - Number 5
+6 - Number 6
+7 - Number 7
+8 - Number 8
+9 - Number 9
++ - plus/add
+- - minus
+* - multiply
+/ - divide
+. - decimal point
+w - [Sum+] statistic sum
+
+LEFT SIDE:
+FIRST LINE
+n - [n] periods
+i - [i] interest rate
+p - [PV] present value
+m - [PMT] payments
+v - [FV] future value
+c - [CHS] Change sign
+
+SECOND LINE
+y - [Y^x] power
+x - [1/x] reverse
+t - [%T] total percent
+d - [Delta%] percent difference
+% - [%percent]
+e - [EEX] exponential
+
+THIRD LINE
+R - [R/S] run stop program
+S - [SST] single step
+D - [R->] Roll stack down
+z - [x><y] - exchange x and y
+backspace - [CLx] Clear x
+
+FORTH LINE
+Q - [ON] close calcualator
+f - [f] yellow function
+g - [g] blue function
+s - [STO] storage into register
+r - [RCL] restore from register

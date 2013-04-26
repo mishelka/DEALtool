@@ -84,7 +84,6 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 					}
 				}
 
-				
 				// set the node icon
 				if (icon == null)
 					icon = IMAGE_BLANK;
@@ -98,27 +97,39 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 				setIcon(icon);
 				setToolTipText(term.getDescription());
 
-				
 				// set node background
 				DomainModel model = term.getDomainModel();
 				Color bgColor = BG_COLOR_NORMAL;
-				
+
 				if (model != null && model.isShowComponentInfoTypes()) {
 					ComponentInfoType infoType = term.getComponentInfoType();
-					if(infoType != null) {
-						switch(infoType) {
-							case INFORMATIVE_AND_TEXTUAL: bgColor = BG_COLOR_INFORMATIVE_AND_TEXTUAL; break;
-							case FUNCTIONAL: bgColor = BG_COLOR_FUNCTIONAL; break;
-							case GRAPHICALLY_GROUPING: bgColor = BG_COLOR_GRAPHICALLY_GROUPING; break;
-							case LOGICALLY_GROUPING: bgColor = BG_COLOR_LOGICALLY_GROUPING; break;
-							case CUSTOM: bgColor = BG_COLOR_CUSTOM; break;
-							case UNKNOWN: bgColor = BG_COLOR_NORMAL; break;						
+					if (infoType != null) {
+						switch (infoType) {
+						case DESCRIPTIVE:
+						case TEXTUAL:
+							bgColor = BG_COLOR_INFORMATIVE_AND_TEXTUAL;
+							break;
+						case FUNCTIONAL:
+							bgColor = BG_COLOR_FUNCTIONAL;
+							break;
+						case CONTAINERS:
+							bgColor = BG_COLOR_GRAPHICALLY_GROUPING;
+							break;
+						case LOGICALLY_GROUPING:
+							bgColor = BG_COLOR_LOGICALLY_GROUPING;
+							break;
+						case CUSTOM:
+							bgColor = BG_COLOR_CUSTOM;
+							break;
+						case UNKNOWN:
+							bgColor = BG_COLOR_NORMAL;
+							break;
 						}
 					}
 				}
 
 				setBackgroundNonSelectionColor(bgColor);
-				
+
 			} else if (node.isRoot()) {
 				setIcon(IMAGE_MODEL);
 			} else
@@ -187,7 +198,11 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 		g.drawImage(overlay, 0, 0, null);
 		g.drawImage(overlay, 0, 0, null);
 
-		icon.paintIcon(new JLabel(), g, 0, 0);
+		try {
+			icon.paintIcon(new JLabel(), g, 0, 0);
+		} catch (Exception e) {
+			//can not be done
+		}
 
 		return combined;
 	}
@@ -227,7 +242,11 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 		GraphicsConfiguration gc = gd.getDefaultConfiguration();
 		BufferedImage image = gc.createCompatibleImage(w, h);
 		Graphics2D g = image.createGraphics();
+		try {
 		icon.paintIcon(new JLabel(), g, 0, 0);
+		} catch(Exception ex) {
+			//do nothing, can not be done
+		}
 		g.dispose();
 		return image;
 	}

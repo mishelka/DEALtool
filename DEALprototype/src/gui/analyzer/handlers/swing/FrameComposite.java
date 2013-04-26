@@ -34,6 +34,6 @@ public class FrameComposite extends DomainIdentifiable<Frame> {
 	
 	@Override
 	public ComponentInfoType getComponentInfoType(Frame component) {
-		return ComponentInfoType.GRAPHICALLY_GROUPING;
+		return ComponentInfoType.CONTAINERS;
 	}
 }

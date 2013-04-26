@@ -1,3 +1,7 @@
+----> transformacia ide z kombinacie komponent+komponenttree a parentRelation generovat z getParent struktury priamo v domainidentifiable!
+
+
+
 1. recorder rozchodeny, treba spravit recordsupport handlery
 2. rozchodit player 
 	- nahrate prikazy zatial budu ulozene ako? serializovane ci textovo ako doteraz? Serializacia nemusi pomoct, ak je tam iny class loader, pripadne ak pri spusteni aplikacia neobsahuje dane komponenty

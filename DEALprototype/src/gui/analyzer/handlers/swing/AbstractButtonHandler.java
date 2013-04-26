@@ -14,6 +14,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToggleButton;
+import javax.swing.plaf.metal.MetalComboBoxButton;
 
 public class AbstractButtonHandler extends DomainIdentifiable<AbstractButton> {
 
@@ -66,6 +67,10 @@ public class AbstractButtonHandler extends DomainIdentifiable<AbstractButton> {
 				|| component instanceof JToggleButton)
 			return ComponentInfoType.LOGICALLY_GROUPING;
 
+		if(component instanceof MetalComboBoxButton) {
+			return ComponentInfoType.UNKNOWN;
+		}
+		
 		return ComponentInfoType.FUNCTIONAL;
 	}
 }

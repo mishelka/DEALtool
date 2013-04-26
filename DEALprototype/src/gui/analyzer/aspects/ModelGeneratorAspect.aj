@@ -83,7 +83,11 @@ privileged aspect ModelGeneratorAspect {
 							app.setName(title);
 					}
 
-					newModel = generator.createDomainModel(scene, title);
+					try {
+						newModel = generator.createDomainModel(scene, title);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					
 					if(newModel != null) {
 						editor.addDomainModel(scene, newModel);

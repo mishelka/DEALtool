@@ -74,6 +74,6 @@ public class CalculatorDisplayLabelHandler extends
 	
 	@Override
 	public ComponentInfoType getComponentInfoType(DisplayLabel component) {
-		return ComponentInfoType.INFORMATIVE_AND_TEXTUAL;
+		return ComponentInfoType.TEXTUAL;
 	}
 }

@@ -41,6 +41,6 @@ public class JMenuBarComposite extends DomainIdentifiable<JMenuBar> implements
 	
 	@Override
 	public ComponentInfoType getComponentInfoType(JMenuBar component) {
-		return ComponentInfoType.GRAPHICALLY_GROUPING;
+		return ComponentInfoType.CONTAINERS;
 	}
 }
