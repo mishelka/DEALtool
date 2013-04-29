@@ -4,7 +4,7 @@ public class Logger {
 	public static void logError(Exception e) {
 		System.err.println(e.getMessage());
 	}
-
+	
 	public static void logError(String s) {
 		System.err.println(s);
 	}
@@ -18,6 +18,10 @@ public class Logger {
 	}
 	
 	public static void log(Object o) {
-		System.out.println(">>> " + o.toString());
+		if(o == null) {
+			log("null"); return;
+		} else {
+			log(o.toString());
+		}
 	}
 }
