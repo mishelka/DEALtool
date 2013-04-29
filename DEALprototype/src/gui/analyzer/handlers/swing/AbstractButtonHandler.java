@@ -1,6 +1,7 @@
 package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.analyzer.util.Logger;
 import gui.analyzer.util.Util;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.relation.RelationType;
@@ -48,13 +49,13 @@ public class AbstractButtonHandler extends DomainIdentifiable<AbstractButton> {
 
 	@Override
 	public RelationType getParentRelation(AbstractButton component) {
-		if (component instanceof JRadioButton
-				|| component instanceof JRadioButtonMenuItem
-				|| component instanceof JToggleButton)
-			return RelationType.MUTUALLY_EXCLUSIVE;
 		if (component instanceof JCheckBox
-				|| component instanceof JCheckBoxMenuItem)
+				|| component instanceof JCheckBoxMenuItem) {
 			return RelationType.MUTUALLY_NOT_EXCLUSIVE;
+		} else if (component instanceof JRadioButtonMenuItem //JRadioButton dedi od JToggleButton takze to mozeme dat do tej istej skupiny
+				|| component instanceof JToggleButton) {
+			return RelationType.MUTUALLY_EXCLUSIVE;
+		}
 		return super.getParentRelation(component);
 	}
 
