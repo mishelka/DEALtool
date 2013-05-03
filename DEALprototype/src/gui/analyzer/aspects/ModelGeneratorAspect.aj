@@ -61,7 +61,7 @@ privileged aspect ModelGeneratorAspect {
 	 *            a window event which contains the target scene as source.
 	 */
 	after(WindowEvent windowEvent): windowPointcut(windowEvent) {
-		if (windowEvent.getID() == WindowEvent.WINDOW_ACTIVATED) {
+		if (windowEvent.getID() == WindowEvent.WINDOW_OPENED || windowEvent.getID() == WindowEvent.WINDOW_ACTIVATED) {
 			Window w = windowEvent.getWindow();
 			if (!(w instanceof DomainModelEditor)) {
 				
