@@ -2,15 +2,12 @@ package gui.analyzer.handlers.jscicalc;
 
 import gui.analyzer.handlers.CommandHandler;
 import gui.analyzer.handlers.DomainIdentifiable;
-import gui.analyzer.util.JLabelFinder;
 import gui.analyzer.util.Util;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.relation.RelationType;
 
 import javax.swing.Icon;
-import javax.swing.JLabel;
 
-import jscicalc.EntryLabel;
 import jscicalc.button.CalculatorButton;
 import jscicalc.button.DownButton;
 import jscicalc.button.InfoButton;
@@ -52,17 +49,6 @@ public class CalculatorButtonHandler extends
 
 		toolTip = Util.htmlToText(toolTip);
 		return toolTip;
-	}
-
-	@Override
-	public String getDomainLabelDescriptor(CalculatorButton component) {
-		String label = null;
-		JLabel l = JLabelFinder.findLabelFor(component);
-		if (l != null) {
-			label = l.getText();
-			label = Util.htmlToText(label);
-		}
-		return label;
 	}
 
 	@Override

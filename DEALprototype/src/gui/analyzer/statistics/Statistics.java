@@ -2,7 +2,7 @@ package gui.analyzer.statistics;
 
 import gui.analyzer.util.ComponentFinder;
 import gui.analyzer.util.Logger;
-import gui.model.application.Scene;
+import gui.model.application.scenes.Scene;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 public class Statistics {
 	private DomainModel domainModel;
 	private Scene scene;
@@ -23,7 +24,7 @@ public class Statistics {
 		this.scene = scene;
 		componentInfoTypes = ComponentInfoType.getInfoTypes();
 		
-		for(ComponentInfoType infoType : componentInfoTypes) {
+		for(int i = 0; i < componentInfoTypes.size(); i++) {
 			infoTypeComponentGroups.add(new ArrayList<Component>());
 		}
 		
@@ -100,7 +101,7 @@ public class Statistics {
 				withoutName++;
 				if(!t.hasDescription()) {
 					withoutNameAndDesc++;
-					Logger.logError(t.getComponent().getClass().getName());
+					Logger.logError(t.getComponentClassSimpleName());
 					if(!t.hasIcon()) {
 						withoutNameAndDescAndIcon++;
 					}

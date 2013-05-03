@@ -1,7 +1,7 @@
 package gui.analyzer.util;
 
-import gui.model.application.Scene;
 import gui.model.application.componentPath.ComponentPath;
+import gui.model.application.scenes.Scene;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -154,6 +154,7 @@ public class ComponentFinder {
 		path.add(-1);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List<Component> toComponentList(Scene scene) {
 		Component sceneContainer = getSceneContainerAsComponent(scene);
 		if (sceneContainer != null) {

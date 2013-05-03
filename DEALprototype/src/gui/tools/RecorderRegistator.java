@@ -1,15 +1,14 @@
-package gui.model;
+package gui.tools;
 
 import gui.analyzer.Recorder;
 import gui.analyzer.handlers.Composite;
 import gui.analyzer.handlers.Composites;
 import gui.analyzer.handlers.RecordSupport;
 import gui.analyzer.handlers.RecordSupports;
-import gui.model.application.Scene;
+import gui.model.application.scenes.Scene;
 
 public class RecorderRegistator {
 	private Recorder recorder;
-	
 	
 	public RecorderRegistator(Recorder recorder) {
 		this.recorder = recorder;

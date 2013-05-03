@@ -1,4 +1,4 @@
-package gui.model;
+package gui.tools;
 
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -6,8 +6,10 @@ import gui.model.domain.Term;
 public class Simplifier {
 	private DomainModel domainModel;
 	
-	public Simplifier(DomainModel domainModel) {
+	public DomainModel sIMPLIFY(DomainModel domainModel) {
 		this.domainModel = domainModel;
+		
+		return sIMPLIFY();
 	}
 	
 /************************* Methods for Domain Model simplification ******************************/
@@ -29,7 +31,7 @@ public class Simplifier {
 		// if there is nothing in the model, then there's nothing to remove
 		if (root == null || root.getChildrenCount() == 0)
 			return domainModel;
-
+		
 		simplifyTerm(root);
 		
 		return domainModel;
@@ -57,18 +59,20 @@ public class Simplifier {
 	private boolean simplifyTerm(Term thisTerm) {
 		//each cycle is performed recursively: in reversed order (last to first - because of the deletion).
 		
-		//First step: removing empty leaves
+		//Second step: removing empty leaves
 		boolean wasRemoved = removeVoidLeafs(thisTerm);
 		
-		//Second step: removing multiple nesting of containers which have only one child (container).
+		//Third step: removing multiple nesting of containers which have only one child (container).
 		wasRemoved |= removeMultipleNestings(thisTerm);
 		
-		//Third step: removing terms which contain no domain information and have only one parent.
+		//Fourth step: removing terms which contain no domain information and have only one parent.
 		wasRemoved |= removeNonrelevantTerms(thisTerm);
 		
 		
 		return wasRemoved;
-	}	
+	}
+	
+	
 	
 	/**
 	 * The first step of the simplification phase.

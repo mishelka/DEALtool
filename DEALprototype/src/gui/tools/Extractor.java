@@ -1,11 +1,11 @@
-package gui.model;
+package gui.tools;
 
 import gui.analyzer.handlers.Composite;
 import gui.analyzer.handlers.Composites;
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.analyzer.handlers.DomainIdentifiables;
 import gui.analyzer.util.Util;
-import gui.model.application.Scene;
+import gui.model.application.scenes.Scene;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -18,34 +18,32 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
 public class Extractor {
 	private DomainModel domainModel;
+	@SuppressWarnings("rawtypes")
 	private Scene scene;
 	private Term rootTerm;
 	private String sceneName;
-
-	public Extractor(Scene scene, DomainModel domainModel)
-			throws ExtractionException {
-		if (domainModel != null) {
-			this.domainModel = domainModel;
-			this.rootTerm = domainModel.getRoot();
-		} else
-			throw new ExtractionException("domainModel must not be null");
+	
+	@SuppressWarnings("rawtypes")
+	public DomainModel eXTRACT(Scene scene) throws ExtractionException {
 		if (scene != null) {
 			this.scene = scene;
 			this.sceneName = scene.getName();
+			this.domainModel = scene.getDomainModel();
 		} else
 			throw new ExtractionException("scene must not be null");
-	}
-
-	/**
-	 * Extracts information from the given scene into the domainModel and returns the extracted domain model.
-	 * @return the extracted domain model.
-	 */
-	public DomainModel eXTRACT() {
-		eXTRACT(scene, sceneName, rootTerm);
+		
+		if (domainModel != null) {
+			this.rootTerm = domainModel.getRoot();
+		} else
+			throw new ExtractionException("domainModel must not be null");
+		
+		eXTRACT();
+		
 		return domainModel;
 	}
 
@@ -64,10 +62,13 @@ public class Extractor {
 	 * @param rootTerm
 	 *            The root term of the domain model.
 	 */
-	private void eXTRACT(Scene<?> scene, String name, Term rootTerm) {
+	private void eXTRACT() {
 		// extract subtree from the root scene
 		extractSubtree(scene.getSceneContainer(), rootTerm);
 
+		//removes all labelfors which describe other components and moves all content from the label to the component.
+		removeSimpleLabelFor(rootTerm);
+		
 		// additional derivation of relations from parents
 		findParentRelationsInModel();
 
@@ -75,10 +76,60 @@ public class Extractor {
 		findSeparatorsInModel();
 
 		// set the model root name and type and references to the scene
-		domainModel.getRoot().setName(name);
+		domainModel.getRoot().setName(sceneName);
 		domainModel.getRoot().setRelation(RelationType.MODEL);
 		domainModel.getRoot().setComponent(scene);
 		domainModel.setScene(scene);
+	}
+	
+	/**
+	 * Removes labels which describe other components and transfers all the information and children into these components.
+	 * @param thisTerm The term which should be checked for labelFors.
+	 * @return if anything was removed, returns true, false otherwise
+	 */
+	public boolean removeSimpleLabelFor(Term thisTerm) {
+		List<Term> itemsToRemove = new ArrayList<Term>();
+		
+		Iterator<Term> i = thisTerm.iterator();
+		while(i.hasNext()) {
+			//component term - this will be the new term with a description from the JLabel
+			Term ct = i.next();
+
+			if (ct.getLabelForComponent() != null) {
+				// label term - this will be deleted and all information will be
+				// transfered to ct
+				Term lt = domainModel.getTermForComponent(ct.getLabelForComponent());
+
+				if (lt != null) {
+					// move all children of label to the component
+					if (lt.hasChildren())
+						ct.addAll(lt.getChildren());
+
+					// transfer name and description from label to component
+					if (!ct.hasName())
+						ct.setName(lt.getName());
+					else if (!ct.hasDescription())
+						ct.setDescription(ct.getLabelForComponent().getText());
+					if (!ct.hasIcon())
+						ct.setIcon(lt.getIcon());
+
+					// add label term to the list of terms to be removed
+					itemsToRemove.add(lt);
+				}
+			}
+		}
+		
+		boolean wasRemoved = !itemsToRemove.isEmpty();
+		domainModel.removeAll(itemsToRemove);
+		
+		//do this for all the children of thisTerm
+		i = thisTerm.iterator();
+		while(i.hasNext()) {
+			Term next = i.next();
+			wasRemoved |= removeSimpleLabelFor(next);
+		}
+		
+		return wasRemoved;
 	}
 
 	private void findSeparatorsInModel() {
@@ -93,7 +144,7 @@ public class Extractor {
 		List<List<Term>> childrenToSeparate = new ArrayList<List<Term>>();
 		childrenToSeparate.add(new ArrayList<Term>());
 
-		Iterator<Term> i = thisTerm.getChildren().iterator();
+		Iterator<Term> i = thisTerm.iterator();
 
 		// find separators - if there are any, then the childrenToSeparate list
 		// will contain more than one list of terms.
@@ -126,7 +177,7 @@ public class Extractor {
 		}
 
 		// do the same for all children
-		i = thisTerm.getChildren().iterator();
+		i = thisTerm.iterator();
 		while (i.hasNext()) {
 			Term child = i.next();
 			findSeparators(child);
@@ -406,6 +457,7 @@ public class Extractor {
 		// for each relation type in the key set of parentRelations
 		// create a new subterm of thisTerm and add all its children with this
 		// type of parentRelation into this subterm.
+		// Remove the children from the original parent.
 		for (RelationType parentRelation : parentRelations.keySet()) {
 			// create a new term
 			Term newTerm = new Term(thisTerm.getDomainModel());
@@ -419,6 +471,15 @@ public class Extractor {
 				newTerm.addChild(f);
 				newTerm.setComponent(f.getComponent());
 				newTerm.setComponentClass(f.getComponentClass());
+				
+				JLabel lfc = f.getLabelForComponent();
+				if(lfc != null) {
+					newTerm.setName(lfc.getText());
+					newTerm.setLabelForComponent(lfc);
+					newTerm.setComponent(lfc);
+					f.setLabelForComponent(null);
+				}
+				
 				f.setParentRelation(null);
 			}
 
@@ -432,6 +493,8 @@ public class Extractor {
 	}
 
 	public class ExtractionException extends Exception {
+		private static final long serialVersionUID = 1L;
+
 		public ExtractionException(String msg) {
 			super(msg);
 		}

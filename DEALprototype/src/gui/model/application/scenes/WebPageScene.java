@@ -1,4 +1,4 @@
-package gui.model.application;
+package gui.model.application.scenes;
 
 import gui.model.application.webpage.WebPage;
 

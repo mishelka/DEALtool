@@ -1,6 +1,6 @@
 package gui.model.domain;
 
-import gui.model.application.Scene;
+import gui.model.application.scenes.Scene;
 import gui.model.domain.relation.RelationType;
 
 import java.beans.PropertyChangeListener;
@@ -162,12 +162,11 @@ public class DomainModel {
 	}
 	
 	public Term getTermForComponent(Object component) {
-		for(Term t : terms) {
-			if(t.getComponent() != null && t.getComponent().equals(component)) {
-				return t;
-			}
-		}
-		return null;
+		return root.getTermForComponent(component);
+	}
+	
+	public void removeAll(List<Term> terms) {
+		root.removeAllWithNesting(terms);
 	}
 
 	public void createDefaultValues(String projectName) {

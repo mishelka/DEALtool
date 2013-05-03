@@ -19,33 +19,33 @@ public class JTextComponentRecordSupport extends RecordSupport<JTextComponent> {
 	/** Command name for changing the whole text (alternatively: SET). */
 	private static final String TEXT = "text";
 	/** Command name for changing the whole text (alternatively: TEXT). */
-	private static final String SET = "set";
-	/** Command name for adding string to the existing text. */
-	private static final String ADD = "add";
-	/** Command name for changing the cursor position. */
-	private static final String POSITION = "position";
+//	private static final String SET = "set";
+//	/** Command name for adding string to the existing text. */
+//	private static final String ADD = "add";
+//	/** Command name for changing the cursor position. */
+//	private static final String POSITION = "position";
 	/** Shortened command name for changing the cursor position. */
 	private static final String POS = "pos";
-	/** Command name for text replacement. */
-	private static final String REPLACE = "replace";
+//	/** Command name for text replacement. */
+//	private static final String REPLACE = "replace";
 	/** Command name for text selection. */
 	private static final String SELECT = "select";
-	/** Command name for text deletion. */
-	private static final String DELETE = "delete";
-	/** Command name for selected text replacement (alternatively: REPLACE_SELECTION). */
-	private static final String REPLACE_SELECTED = "replaceSelected";
-	/** Command name for selected text replacement  (alternatively: REPLACE_SELECTED). */
-	private static final String REPLACE_SELECTION = "replaceSelection";
-	/** Command name for selected text delection (alternatively: DELETE_SELECTION). */
-	private static final String DELETE_SELECTED = "deleteSelected";
-	/** Command name for selected text delection (alternatively: DELETE_SELECTED). */
-	private static final String DELETE_SELECTION = "deleteSelection";
-	/** Command name for selecting the whole text. */
-	private static final String SELECT_ALL = "selectAll";
-	/** Command name for replacing the whole text. */
-	private static final String REPLACE_ALL = "replaceAll";
-	/** Command name for deleting the whole text. */
-	private static final String DELETE_ALL = "deleteAll";
+//	/** Command name for text deletion. */
+//	private static final String DELETE = "delete";
+//	/** Command name for selected text replacement (alternatively: REPLACE_SELECTION). */
+//	private static final String REPLACE_SELECTED = "replaceSelected";
+//	/** Command name for selected text replacement  (alternatively: REPLACE_SELECTED). */
+//	private static final String REPLACE_SELECTION = "replaceSelection";
+//	/** Command name for selected text delection (alternatively: DELETE_SELECTION). */
+//	private static final String DELETE_SELECTED = "deleteSelected";
+//	/** Command name for selected text delection (alternatively: DELETE_SELECTED). */
+//	private static final String DELETE_SELECTION = "deleteSelection";
+//	/** Command name for selecting the whole text. */
+//	private static final String SELECT_ALL = "selectAll";
+//	/** Command name for replacing the whole text. */
+//	private static final String REPLACE_ALL = "replaceAll";
+//	/** Command name for deleting the whole text. */
+//	private static final String DELETE_ALL = "deleteAll";
 
 	@Override
 	public boolean register(JTextComponent component, Recorder _recorder) {

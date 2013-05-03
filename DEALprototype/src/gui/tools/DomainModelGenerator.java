@@ -1,15 +1,10 @@
-package gui.model;
+package gui.tools;
 
 import gui.analyzer.Recorder;
-import gui.analyzer.util.ComponentFinder;
-import gui.model.Extractor.ExtractionException;
-import gui.model.application.Scene;
+import gui.model.application.scenes.Scene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
-
-import java.awt.Component;
-import java.util.ArrayList;
-import java.util.List;
+import gui.tools.Extractor.ExtractionException;
 
 /**
  * Creates a domain model based on a corresponding Scene. A Scene can be a window, a dialog, etc.
@@ -20,7 +15,17 @@ public class DomainModelGenerator {
 	 * The domain model which is created from the given scene is stored in this field - only for the purposes of this class.
 	 */
 	private DomainModel domainModel;
+	private Extractor extractor;
+	private Simplifier simplifier;
+	private RecorderRegistator registrator;
 	private Recorder recorder;
+	
+	public DomainModelGenerator(Recorder recorder) {
+		this.extractor = new Extractor();
+		this.simplifier = new Simplifier();
+		this.recorder = recorder;
+		this.registrator = new RecorderRegistator(recorder);
+	}
 	
 	/**
 	 * Creates a domain model from the given scene.
@@ -28,25 +33,27 @@ public class DomainModelGenerator {
 	 * @param name The name of the domain model / equals the name of the scene (title, application name).
 	 * @return The domain model created from the scene.
 	 */
-	public DomainModel createDomainModel(Scene<?> scene, String name) throws ExtractionException {
-		//create a new domain model with a default root
-		domainModel = new DomainModel(name);
-		Term rootTerm = new Term(domainModel, name);
-		domainModel.setRoot(rootTerm);
+	public DomainModel createDomainModel(Scene<?> scene) throws ExtractionException {
+		//create a new domain model with a default root and set it to the scene
+		createDefaultDomainModel(scene.getName());
+		scene.setDomainModel(domainModel);
 		
 		//1. PHASE, extraction algorithm
-		Extractor extractor = new Extractor(scene, domainModel);
-		domainModel = extractor.eXTRACT();
+		extractor.eXTRACT(scene);
 		
 		//2. PHASE, simplification algorithm
-		Simplifier simplifier = new Simplifier(domainModel);
-		domainModel = simplifier.sIMPLIFY();
+		simplifier.sIMPLIFY(domainModel);
 		
 		//3. PHASE, recorder registration
-		RecorderRegistator registrator = new RecorderRegistator(recorder);
 		registrator.rEGISTER_RECORDER(scene);
 		
 		return domainModel;
+	}
+	
+	private void createDefaultDomainModel(String name) {
+		domainModel = new DomainModel(name);
+		Term rootTerm = new Term(domainModel, name);
+		domainModel.setRoot(rootTerm);
 	}
 	
 	/***************************************** Recorder stuff *************************************/
@@ -56,9 +63,5 @@ public class DomainModelGenerator {
 
 	public void setRecorder(Recorder recorder) {
 		this.recorder = recorder;
-	}
-	
-	public DomainModel getDomainModel() {
-		return domainModel;
 	}
 }

@@ -1,18 +1,19 @@
 package gui.analyzer.handlers.swing;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.constraint.Constraint;
 import gui.model.domain.constraint.Enumeration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.JList;
 import javax.swing.ListModel;
 
 
+@SuppressWarnings("rawtypes")
 public class JListHandler extends DomainIdentifiable<JList> {
 
 	@Override

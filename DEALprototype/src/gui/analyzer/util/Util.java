@@ -14,6 +14,9 @@ public class Util {
 	}
 
 	public static String htmlToText(String s) {
+		if (s == null)
+			return s;
+
 		Pattern htmlTagPattern = Pattern.compile("(<.*?>)");
 
 		Matcher dataMatcher = htmlTagPattern.matcher(s);
@@ -22,10 +25,10 @@ public class Util {
 			s = s.replace(toRemove, "");
 			dataMatcher = htmlTagPattern.matcher(s);
 		}
-		
+
 		s = StringEscapeUtils.unescapeHtml3(s);
 		s = StringEscapeUtils.unescapeHtml4(s);
-		
+
 		return s;
 	}
 }

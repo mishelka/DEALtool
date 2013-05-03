@@ -1,15 +1,17 @@
 package gui.editor;
 
 import gui.analyzer.Recorder;
+import gui.analyzer.observable.ApplicationEvent;
+import gui.analyzer.observable.ApplicationEvent.ApplicationChangeState;
 import gui.analyzer.util.JLabelFinder;
-import gui.analyzer.util.Logger;
 import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
 import gui.editor.tree.TreeNode;
 import gui.model.application.Application;
-import gui.model.application.Scene;
-import gui.model.application.WindowScene;
+import gui.model.application.scenes.DialogScene;
+import gui.model.application.scenes.Scene;
+import gui.model.application.scenes.WindowScene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 import gui.model.domain.relation.RelationType;
@@ -33,9 +35,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.AbstractButton;
 import javax.swing.Icon;
@@ -67,13 +69,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-public class DomainModelEditor extends JFrame {
+@SuppressWarnings("rawtypes")
+public class DomainModelEditor extends JFrame implements Observer {
 	private static final long serialVersionUID = 1L;
 
 	private static DomainModelEditor instance;
 
 	private static Application application = new Application();
-	private static LinkedHashMap<Scene<?>, DomainModel> domainModels = new LinkedHashMap<Scene<?>, DomainModel>();
 
 	private Component clickedComponent;
 	private Color clickedComponentColor;
@@ -94,11 +96,6 @@ public class DomainModelEditor extends JFrame {
 
 	/** default constructor */
 	private DomainModelEditor() {
-		this(new DomainModel(""));
-	}
-
-	/** Constructor for a new domainModel (used only in the default constructor) */
-	private DomainModelEditor(DomainModel domainModel) {
 		UIManager.put("TabbedPane.textIconGap", new Integer(-8));
 		initComponents();
 
@@ -110,7 +107,7 @@ public class DomainModelEditor extends JFrame {
 		expandAll(domainJTree, true);
 	}
 	
-/******************* Recorder stuff *****************************************/
+	/******************* Recorder stuff *****************************************/
 	
 	/** Thread for recording */
 	private Thread recordingThread;
@@ -131,44 +128,22 @@ public class DomainModelEditor extends JFrame {
 
 	/******************* Methods for domain model setup *************************/
 
-	@SuppressWarnings("rawtypes")
-	public void addDomainModel(Scene scene, DomainModel newDomainModel) {
-		if (domainModels.values().size() == 0) {
-			Logger.logError("Adding a new domain model");
-			domainModels.put(scene, newDomainModel);
-		} else {
-			boolean pridany = false;
-			for (Scene s : domainModels.keySet()) {
-				if (s.getSceneContainer().equals(scene.getSceneContainer())) {
-					Logger.logError("Replacing domain model or subgraph");
-					//if this domainModel is created for the same scene, then add it to the hashmap under the same scene key
-					domainModels.put(s, newDomainModel);
-					pridany = true;
-					break;
-				}
-			}
-
-			//else add it with the given scene as a new key
-			if (!pridany) {
-				Logger.logError("Adding a new subgraph");
-				domainModels.put(scene, newDomainModel);
-			}
+	@Override
+	public void update(Observable application, Object event) {
+		ApplicationEvent appEvt = (ApplicationEvent) event;
+		
+		if(appEvt.getChangeState() == ApplicationChangeState.ADDED) {
+			addDomainModel(appEvt.getTargetScene());
+			setupComponentTreeModel();
 		}
-
-		updateDomainTree();
 	}
-
-	public void updateDomainTree() {
+	
+	public void addDomainModel(Scene scene) {
 		TreeModel newModel = new TreeModel(application);
 
-		for (DomainModel dm : domainModels.values()) {
-			// domainModel = dm;
-			// if (domainModels.indexOf(domainModel) == 0) {
-			// newModel = new TreeModel(domainModel);
-			// } else {
-			TreeModel toAdd = new TreeModel(dm);
+		for (Scene s : application.getScenes()) {
+			TreeModel toAdd = new TreeModel(s.getDomainModel());
 			newModel.add(toAdd);
-			// }
 		}
 
 		setupDomainTreeModel(newModel);
@@ -210,8 +185,10 @@ public class DomainModelEditor extends JFrame {
 		DefaultMutableTreeNode dmtn = new DefaultMutableTreeNode(
 				"Component tree");
 
-		for (WindowScene ws : application.getWindowScenes()) {
-			dmtn.add(setupPartOfTreeModelExtended(ws.getSceneContainer()));
+		for (Scene scene : application.getScenes()) {
+			if(scene instanceof WindowScene || scene instanceof DialogScene) {
+				dmtn.add(setupPartOfTreeModelExtended((Window) scene.getSceneContainer()));
+			}
 		}
 
 		componentJTree = new JTree(new DefaultTreeModel(dmtn));
@@ -323,8 +300,8 @@ public class DomainModelEditor extends JFrame {
 		return application;
 	}
 
-	public static HashMap<Scene<?>, DomainModel> getDomainModels() {
-		return domainModels;
+	public static List<DomainModel> getDomainModels() {
+		return application.getDomainModels();
 	}
 
 	/******************* Events for mouse clicking *******************************/
@@ -472,7 +449,7 @@ public class DomainModelEditor extends JFrame {
 	   }
 	   
 	   private void showInfoTypesCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {
-		   for(DomainModel domainModel : domainModels.values()) {
+		   for(DomainModel domainModel : application.getDomainModels()) {
 			   domainModel.setShowComponentInfoTypes(showInfoTypesCheckBox.isSelected());
 		   }
 		   
@@ -495,7 +472,7 @@ public class DomainModelEditor extends JFrame {
 		descriptionLabel = new javax.swing.JLabel();
 		descriptionField = new javax.swing.JTextField();
 		typeLabel = new javax.swing.JLabel();
-		typeComboBox = new javax.swing.JComboBox(
+		typeComboBox = new javax.swing.JComboBox<RelationType>(
 				RelationType.values());
 		iconLabel = new javax.swing.JLabel();
 		iconField = new javax.swing.JLabel();

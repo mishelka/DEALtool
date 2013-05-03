@@ -1,6 +1,6 @@
 package gui.model.application.events;
 
-import gui.model.application.Scene;
+import gui.model.application.scenes.Scene;
 import gui.model.domain.Term;
 
 import java.util.Arrays;

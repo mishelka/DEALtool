@@ -124,6 +124,9 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 						case UNKNOWN:
 							bgColor = BG_COLOR_NORMAL;
 							break;
+						default:
+							bgColor = BG_COLOR_NORMAL;
+							break;
 						}
 					}
 				}

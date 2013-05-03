@@ -37,6 +37,10 @@ public class Inspector implements AWTEventListener {
 			registered = true;
 		}
 	}
+	
+	public static boolean isRegistered() {
+		return registered;
+	}
 
 	/**
 	 * Ak je mys nad komponentom, tento komponent sa vysvieti zltou farbou Ak sa

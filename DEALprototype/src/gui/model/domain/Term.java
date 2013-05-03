@@ -1,20 +1,15 @@
 package gui.model.domain;
 
-import gui.analyzer.handlers.swing.ContainerComposite;
 import gui.analyzer.util.Util;
 import gui.model.domain.constraint.Constraint;
-import gui.model.domain.relation.AbstractRelation;
 import gui.model.domain.relation.RelationType;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.Icon;
+import javax.swing.JLabel;
 
 public class Term {
 	/** Each term has its name, which is a primary information extracted from a component. 
@@ -31,8 +26,8 @@ public class Term {
 	/** Sometimes, an icon contains domain information either graphically or textually. This information is difficult to parse, therefore we extract the whole icon and it is on user (domain analyst) to review the important icons. */
 	private Icon icon;
 	
-	//TODO: add everything for this, priority highest
-	private List<AbstractRelation> outgoingRelations;
+	/** a label describing this component will be temporarily saved here */
+	private JLabel labelForComponent;
 	
 	/** For textual components (like text area, text field, etc.) we can also extract some constraints, like text length, possible values, type, etc. 
 	 * This is not implemented yet. 
@@ -76,13 +71,8 @@ public class Term {
 		this.parentRelation = parentRelation;
 	}
 
-	public boolean generatesParentRelation() {
-		return parentRelation != null;
-	}
-
 	public void setRelation(RelationType relation) {
 		this.relation = relation;
-//		fireChildrenChanged();
 	}
 
 	public RelationType getRelation() {
@@ -129,23 +119,14 @@ public class Term {
 
 	public void setName(String name) {
 		this.name = name;
-//		fireNameChanged();
 	}
 
-	/**
-	 * @return the description
-	 */
 	public String getDescription() {
 		return description;
 	}
-
-	/**
-	 * @param description
-	 *            the description to set
-	 */
+	
 	public void setDescription(String description) {
 		this.description = description;
-//		fireDescriptionChanged();
 	}
 
 	public Icon getIcon() {
@@ -154,6 +135,14 @@ public class Term {
 
 	public void setIcon(Icon icon) {
 		this.icon = icon;
+	}
+	
+	public JLabel getLabelForComponent() {
+		return labelForComponent;
+	}
+	
+	public void setLabelForComponent(JLabel labelFor) {
+		this.labelForComponent = labelFor;
 	}
 
 	public void setParent(Term newParent) {
@@ -166,22 +155,8 @@ public class Term {
 		return parent;
 	}
 
-	public boolean isRoot() {
-		return parent == null;
-	}
-
 	public List<Term> getChildren() {
 		return children;
-	}
-
-	public void setChildren(List<Term> children) {
-		if (this.children == children)
-			return;
-		for (Term child : children) {
-			child.setParent(this);
-		}
-		this.children = children;
-//		fireChildrenChanged();
 	}
 
 	public boolean hasChildren() {
@@ -195,13 +170,11 @@ public class Term {
 	public void addChild(Term newChild) {
 		children.add(newChild);
 		newChild.setParent(this);
-//		fireChildrenChanged();
 	}
 
 	public void addChildAtPosition(int index, Term newChild) {
 		children.add(index, newChild);
 		newChild.setParent(this);
-//		fireChildrenChanged();
 	}
 	
 	public void addAll(List<Term> childrenToAdd) {
@@ -215,74 +188,38 @@ public class Term {
 		children.set(index, newChild);
 		oldChild.setParent(null);
 		newChild.setParent(this);
-//		fireChildrenChanged();
 	}
 
 	public void removeChild(Term child) {
 		children.remove(child);
 		child.setParent(null);
-//		fireChildrenChanged();
 	}
 
 	public Term removeLastChild() {
 		Term child = children.get(children.size() - 1);
 		children.remove(child);
 		child.setParent(null);
-//		fireChildrenChanged();
 		return child;
 	}
 	
 	public void removeAll(List<Term> childrenToRemove) {
 		for(Term t : childrenToRemove) {
-			if(children.contains(childrenToRemove)) {
+			if(children.contains(t)) {
 				removeChild(t);
 			}
 		}
 	}
 	
-	private LinkedList<PropertyChangeListener> listenerList = new LinkedList<PropertyChangeListener>();
-
-	public void addListener(PropertyChangeListener listener) {
-		if (!listenerList.contains(listener))
-			listenerList.add(listener);
-	}
-
-	public void removeListener(PropertyChangeListener listener) {
-		listenerList.remove(listener);
-	}
-
-//	private void fireNameChanged() {
-//		PropertyChangeEvent event = new PropertyChangeEvent(this, NAME_CHANGED,
-//				false, true);
-//		for (PropertyChangeListener listener : listenerList)
-//			listener.propertyChange(event);
-//	}
-//
-//	private void fireDescriptionChanged() {
-//		PropertyChangeEvent event = new PropertyChangeEvent(this,
-//				DESCRIPTION_CHANGED, false, true);
-//		for (PropertyChangeListener listener : listenerList)
-//			listener.propertyChange(event);
-//	}
-//
-//	private void fireChildrenChanged() {
-//		PropertyChangeEvent event = new PropertyChangeEvent(this,
-//				CHILDREN_CHANGED, false, true);
-//		for (PropertyChangeListener listener : listenerList)
-//			listener.propertyChange(event);
-//	}
-
-	public boolean isAncestorOf(Term next) {
-		while (next.getParent() != null) {
-			if (next.getParent() == this)
-				return true;
-			next = next.getParent();
+	public void removeAllWithNesting(List<Term> childrenToRemove) {
+		for(Term t : childrenToRemove) {
+			if(children.contains(t)) {
+				removeChild(t);
+			}
 		}
-		return false;
-	}
-
-	public boolean isFirstChild(Term child) {
-		return children.indexOf(child) == 0;
+		
+		for(Term t : children) {
+			t.removeAllWithNesting(childrenToRemove);
+		}
 	}
 
 	public int getChildrenCount() {
@@ -325,24 +262,12 @@ public class Term {
 				&& (relation == RelationType.AND
 				&& (componentClass.getName().equals(description) 
 						|| description == null || description.isEmpty()) 
+				&& labelForComponent == null
 				&& icon == null);
 		
 		return b;
 	}
 
-	public Term copy() {
-		Term f = new Term(domainModel);
-		f.setName(name);
-		f.setDescription(description);
-		f.setRelation(relation);
-		f.setIcon(icon);
-		f.setParent(parent);
-		f.setChildren(children);
-		f.setComponentClass(componentClass);
-		f.setComponent(component);
-		return f;
-	}
-	
 	public boolean hasName() {
 		return name != null && !name.isEmpty();
 	}
@@ -353,17 +278,6 @@ public class Term {
 	
 	public boolean hasIcon() {
 		return icon != null;
-	}
-
-	/**
-	 * used externally to fire events, eg for graphical changes not anticipated
-	 * in the core implementation
-	 * 
-	 * @param event
-	 */
-	public void fire(PropertyChangeEvent event) {
-		for (PropertyChangeListener listener : listenerList)
-			listener.propertyChange(event);
 	}
 
 	@Override
@@ -377,7 +291,19 @@ public class Term {
 		return null;
 	}
 	
-	public boolean isEmpty() {
-		return Util.isEmpty(name) && Util.isEmpty(description) && getChildrenCount() <= 1 && this.relation == RelationType.AND;
+	public Iterator<Term> iterator() {
+		return this.children.iterator();
+	}
+	
+	public Term getTermForComponent(Object component) {
+		if(this.component != null && this.component.equals(component))
+			return this;
+		Term result = null;
+		for(Term t : children) {
+			if((result = t.getTermForComponent(component)) != null) {
+				return result;
+			}
+		}
+		return null;
 	}
 }

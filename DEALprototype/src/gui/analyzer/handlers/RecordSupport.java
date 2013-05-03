@@ -2,10 +2,9 @@ package gui.analyzer.handlers;
 
 import gui.analyzer.Recorder;
 import gui.analyzer.util.ComponentFinder;
-import gui.analyzer.util.Logger;
 import gui.editor.DomainModelEditor;
-import gui.model.application.Scene;
 import gui.model.application.events.UiEvent;
+import gui.model.application.scenes.Scene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 
@@ -68,7 +67,7 @@ public abstract class RecordSupport<T> implements RecordSupportRegister<T> {
 
 	private Term getTermForComponent(T component) {
 		Collection<DomainModel> domainModels = DomainModelEditor
-				.getDomainModels().values();
+				.getDomainModels();
 		
 		Term term = null;
 

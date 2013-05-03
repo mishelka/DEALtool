@@ -1,7 +1,7 @@
 package gui.model.application.componentPath;
 
 import gui.analyzer.util.ComponentFinder;
-import gui.model.application.Scene;
+import gui.model.application.scenes.Scene;
 
 import java.awt.Component;
 import java.util.List;

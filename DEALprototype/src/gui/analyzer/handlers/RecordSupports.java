@@ -1,7 +1,6 @@
 package gui.analyzer.handlers;
 
 import gui.analyzer.ProcessingException;
-import gui.analyzer.Recorder;
 
 import java.util.HashMap;
 import java.util.Map;

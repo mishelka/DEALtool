@@ -2,9 +2,6 @@ package gui.analyzer.aspects.components;
 
 import java.awt.event.WindowEvent;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-
 public aspect WindowAspect {
 	// for windows and dialogs
 	pointcut windowPointcut(WindowEvent windowEvent): execution(*

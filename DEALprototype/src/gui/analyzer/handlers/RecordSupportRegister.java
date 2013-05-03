@@ -1,7 +1,6 @@
 package gui.analyzer.handlers;
 
 import gui.analyzer.Recorder;
-import gui.model.domain.DomainModel;
 
 /**
  * An abstract class defining an interface for a record support handler.

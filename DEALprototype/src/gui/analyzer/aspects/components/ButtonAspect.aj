@@ -1,7 +1,5 @@
 package gui.analyzer.aspects.components;
 
-import gui.analyzer.util.Logger;
-
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractButton;
@@ -18,7 +16,7 @@ privileged public aspect ButtonAspect {
 	after(ActionEvent actionEvent): buttonPointcut(actionEvent) {
 		Object o = actionEvent.getSource();
 
-		Logger.log(">>> button clicked " + ((AbstractButton) o).getText());
+//		Logger.log(">>> button clicked " + ((AbstractButton) o).getText() + " [" + o.getClass().getSimpleName() + "]");
 
 		// if (o instanceof EnhancedButton) {
 		// EnhancedButton b = (EnhancedButton) o;

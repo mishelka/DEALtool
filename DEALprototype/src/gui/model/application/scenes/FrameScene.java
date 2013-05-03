@@ -1,4 +1,5 @@
-package gui.model.application;
+package gui.model.application.scenes;
+
 
 import java.awt.Frame;
 

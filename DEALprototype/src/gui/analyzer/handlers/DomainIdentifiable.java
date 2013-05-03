@@ -1,7 +1,6 @@
 package gui.analyzer.handlers;
 
 import gui.analyzer.util.JLabelFinder;
-import gui.analyzer.util.Util;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -43,19 +42,11 @@ public abstract class DomainIdentifiable<T> {
 	public Term createTerm(T component, DomainModel domainModel) {
 		Term t = new Term(domainModel);
 
-		String str = this.getDomainIdentifier(component);
-		if (!Util.isEmpty(str)) {
-			t.setName(str);
-		} else {
-			str = this.getDomainLabelDescriptor(component);
-			if(!Util.isEmpty(str)) {
-				t.setName(str);
-			}
-		}
+		t.setName(this.getDomainIdentifier(component));
 
-		str = this.getDomainDescriptor(component);
-		if (!Util.isEmpty(str))
-			t.setDescription(str);
+		t.setDescription(this.getDomainDescriptor(component));
+		
+		t.setLabelForComponent(this.getDomainLabelDescriptor(component));
 
 		RelationType ft = getRelation(component);
 		t.setRelation(ft == null ? RelationType.AND : ft);
@@ -100,18 +91,20 @@ public abstract class DomainIdentifiable<T> {
 	}
 	
 	/**
-	 * In Java, a labelFor attribute is available in the JLabel components.
-	 * This can be set, if the JLabel component is a label for other component.
-	 * Using this attribute we can extract a domain descriptor.
-	 * @param component the component for which the JLabel should be found.
-	 * @return the textual label for the provided component extracted from a JLabel component with the labelFor attribute set to the provided component.
+	 * In Java, a labelFor attribute is available in the JLabel components. This
+	 * can be set, if the JLabel component is a label for other component. Using
+	 * this attribute we can extract a domain descriptor.
+	 * 
+	 * @param component
+	 *            the component for which the JLabel should be found.
+	 * @return the textual label for the provided component extracted from a
+	 *         JLabel component with the labelFor attribute set to the provided
+	 *         component.
 	 */
-	public String getDomainLabelDescriptor(T component) {
+	public JLabel getDomainLabelDescriptor(T component) {
 		if (component instanceof Component) {
-			JLabel l = JLabelFinder.findLabelFor(
-					(Component) component);
-			if (l != null)
-				return l.getText();
+			JLabel l = JLabelFinder.findLabelFor((Component) component);
+			return l;
 		}
 		return null;
 	}
