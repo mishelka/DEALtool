@@ -1,7 +1,7 @@
 package temp;
 
 import gui.analyzer.util.Logger;
-import gui.model.application.WindowScene;
+import gui.model.application.scenes.WindowScene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 
