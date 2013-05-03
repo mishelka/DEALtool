@@ -43,4 +43,9 @@ public class JTreeHandler extends DomainIdentifiable<JTree> {
 		
 		return thisTerm;
 	}
+	
+	@Override
+	public boolean extractChildren() {
+		return false;
+	}
 }

@@ -168,6 +168,14 @@ public class DomainModel {
 	public void removeAll(List<Term> terms) {
 		root.removeAllWithNesting(terms);
 	}
+	
+	public boolean removeEmptyLeafs() {
+		return root.removeEmptyLeafs();
+	}
+	
+	public boolean removeMultipleNestings() {
+		return root.removeMultipleNestings();
+	}
 
 	public void createDefaultValues(String projectName) {
 		Term root = new Term(this);

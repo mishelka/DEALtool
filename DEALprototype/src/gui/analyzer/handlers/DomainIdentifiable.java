@@ -22,6 +22,10 @@ public abstract class DomainIdentifiable<T> {
 	public abstract Icon getIcon(T component);
 	
 	public abstract ComponentInfoType getComponentInfoType(T component);
+	
+	public boolean extractChildren() {
+		return true;
+	}
 
 	/**
 	 * Creates a new term with the information extracted from the provided component.
@@ -60,6 +64,8 @@ public abstract class DomainIdentifiable<T> {
 		
 		t.setComponentInfoType(this.getComponentInfoType(component));
 
+		t.setExtractChildren(extractChildren());
+		
 		RelationType parentRelation = getParentRelation(component);
 		if (parentRelation != null)
 			t.setParentRelation(parentRelation);

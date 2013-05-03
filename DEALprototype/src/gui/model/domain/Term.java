@@ -29,6 +29,9 @@ public class Term {
 	/** a label describing this component will be temporarily saved here */
 	private JLabel labelForComponent;
 	
+	/** a flag telling the extractor if it should extract any children of this term's component further */
+	private boolean extractChildren = true;
+	
 	/** For textual components (like text area, text field, etc.) we can also extract some constraints, like text length, possible values, type, etc. 
 	 * This is not implemented yet. 
 	 */
@@ -144,6 +147,14 @@ public class Term {
 	public void setLabelForComponent(JLabel labelFor) {
 		this.labelForComponent = labelFor;
 	}
+	
+	public void setExtractChildren(boolean extractChildren) {
+		this.extractChildren = extractChildren;
+	}
+	
+	public boolean extractChildren() {
+		return extractChildren;
+	}
 
 	public void setParent(Term newParent) {
 		if (newParent == parent)
@@ -220,6 +231,50 @@ public class Term {
 		for(Term t : children) {
 			t.removeAllWithNesting(childrenToRemove);
 		}
+	}
+	
+	public boolean removeEmptyLeafs() {
+		boolean removed = false;
+		Iterator<Term> i = iterator();
+		
+		while(i.hasNext()) {
+			removed |= i.next().removeEmptyLeafs();
+		}
+		
+		//actual removing of empty leafs
+		i = iterator();
+		while(i.hasNext()) {
+			Term t = i.next();
+			if(t.isLeaf() && t.canBeRemoved()) {
+				i.remove();
+				removed = true;
+			}
+		}
+		
+		return removed;
+	}
+	
+	public boolean removeMultipleNestings() {
+		boolean removed = false;
+		Iterator<Term> i = iterator();
+		
+		while(i.hasNext()) {
+			removed |= i.next().removeMultipleNestings();
+		}
+		
+		//actual removing of a multiple nesting
+		if(getChildrenCount() == 1) {
+			Term son = this.getFirstChild();
+			if(son.canBeRemoved()) {
+				// this: o1---o2---o3
+				// is transformed to: o1---o3
+				this.addAll(son.getChildren());
+				this.removeChild(son);
+				removed = true;
+			}
+		}
+		
+		return removed;
 	}
 
 	public int getChildrenCount() {

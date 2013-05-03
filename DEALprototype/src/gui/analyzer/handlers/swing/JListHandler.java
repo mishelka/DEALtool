@@ -59,4 +59,9 @@ public class JListHandler extends DomainIdentifiable<JList> {
 	public ComponentInfoType getComponentInfoType(JList component) {
 		return ComponentInfoType.TEXTUAL;
 	}
+	
+	@Override
+	public boolean extractChildren() {
+		return false;
+	}
 }

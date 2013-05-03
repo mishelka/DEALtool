@@ -56,4 +56,9 @@ public class JTextComponentHandler extends DomainIdentifiable<JTextComponent> {
 	public ComponentInfoType getComponentInfoType(JTextComponent component) {
 		return ComponentInfoType.TEXTUAL;
 	}
+	
+	@Override
+	public boolean extractChildren() {
+		return false;
+	}
 }

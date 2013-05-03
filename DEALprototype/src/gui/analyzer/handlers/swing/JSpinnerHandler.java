@@ -68,4 +68,9 @@ public class JSpinnerHandler extends DomainIdentifiable<JSpinner> {
 	public ComponentInfoType getComponentInfoType(JSpinner component) {
 		return ComponentInfoType.TEXTUAL;
 	}
+	
+	@Override
+	public boolean extractChildren() {
+		return false;
+	}
 }

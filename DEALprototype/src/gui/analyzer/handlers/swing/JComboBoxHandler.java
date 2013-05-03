@@ -79,4 +79,9 @@ public class JComboBoxHandler extends DomainIdentifiable<JComboBox<?>> {
 	public ComponentInfoType getComponentInfoType(JComboBox<?> component) {
 		return ComponentInfoType.TEXTUAL;
 	}
+	
+	@Override
+	public boolean extractChildren() {
+		return false;
+	}
 }

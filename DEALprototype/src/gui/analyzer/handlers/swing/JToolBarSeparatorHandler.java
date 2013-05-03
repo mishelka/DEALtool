@@ -27,4 +27,9 @@ public class JToolBarSeparatorHandler extends DomainIdentifiable<Separator>{
 	public ComponentInfoType getComponentInfoType(Separator component) {
 		return ComponentInfoType.SEPARATORS;
 	}
+	
+	@Override
+	public boolean extractChildren() {
+		return false;
+	}
 }

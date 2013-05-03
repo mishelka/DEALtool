@@ -65,7 +65,7 @@ public class Extractor {
 	private void eXTRACT() {
 		// extract subtree from the root scene
 		extractSubtree(scene.getSceneContainer(), rootTerm);
-
+		
 		//removes all labelfors which describe other components and moves all content from the label to the component.
 		removeSimpleLabelFor(rootTerm);
 		
@@ -226,7 +226,9 @@ public class Extractor {
 		// fourth step: if the current component is a composite, extract
 		// subtrees from the its child components by recursively calling of the
 		// extractSubtree(..) method.
-		extractSubtreesFromChildren(component, thisTerm);
+		if(thisTerm.extractChildren()) {
+			extractSubtreesFromChildren(component, thisTerm);
+		}
 	}
 
 	/**

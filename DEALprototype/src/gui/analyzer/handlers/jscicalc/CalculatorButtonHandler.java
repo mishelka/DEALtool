@@ -65,4 +65,9 @@ public class CalculatorButtonHandler extends
 	public ComponentInfoType getComponentInfoType(CalculatorButton component) {
 		return ComponentInfoType.FUNCTIONAL;
 	}
+	
+	@Override
+	public boolean extractChildren() {
+		return false;
+	}
 }

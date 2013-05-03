@@ -57,4 +57,9 @@ public class CalculatorEntryLabelHandler extends DomainIdentifiable<EntryLabel>
 	public ComponentInfoType getComponentInfoType(EntryLabel component) {
 		return ComponentInfoType.TEXTUAL;
 	}
+	
+	@Override
+	public boolean extractChildren() {
+		return false;
+	}
 }

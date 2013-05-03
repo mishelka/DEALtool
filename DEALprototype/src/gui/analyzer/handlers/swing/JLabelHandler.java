@@ -34,4 +34,9 @@ public class JLabelHandler extends DomainIdentifiable<JLabel> {
 	public ComponentInfoType getComponentInfoType(JLabel component) {
 		return ComponentInfoType.DESCRIPTIVE;
 	}
+	
+	@Override
+	public boolean extractChildren() {
+		return false;
+	}
 }
