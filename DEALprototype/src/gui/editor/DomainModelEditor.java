@@ -3,7 +3,6 @@ package gui.editor;
 import gui.analyzer.observable.ApplicationEvent;
 import gui.analyzer.observable.ApplicationEvent.ApplicationChangeState;
 import gui.analyzer.util.JLabelFinder;
-import gui.analyzer.util.Logger;
 import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
@@ -394,7 +393,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	}
 
 	private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		JFileChooser chooser = new JFileChooser("record");
+		JFileChooser chooser = new JFileChooser("Record");
 		DealFileFilter filter = new DealFileFilter();
 		chooser.setFileFilter(filter);
 		int returnVal = chooser.showOpenDialog(this);

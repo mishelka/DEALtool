@@ -129,7 +129,7 @@ public class Recorder {
 		if (recording) {
 			if (uiEvent != null) {
 				uiEventSequence.add(uiEvent);
-				Logger.log("UiEvent recorded: " + uiEvent);
+				record(uiEvent.toString());
 			}
 		}
 	}
