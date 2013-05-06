@@ -361,4 +361,12 @@ public class Term {
 		}
 		return null;
 	}
+	
+	public List<Term> getAllTerms(List<Term> list) {
+		list.add(this);
+		for(Term t : children) {
+			t.getAllTerms(list);
+		}
+		return list;
+	}
 }

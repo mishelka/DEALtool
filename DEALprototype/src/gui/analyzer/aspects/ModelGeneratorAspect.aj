@@ -2,12 +2,14 @@ package gui.analyzer.aspects;
 
 import gui.analyzer.Inspector;
 import gui.analyzer.Recorder;
+import gui.analyzer.util.Logger;
 import gui.editor.DomainModelEditor;
 import gui.model.application.Application;
 import gui.model.application.scenes.DialogScene;
 import gui.model.application.scenes.Scene;
 import gui.model.application.scenes.WindowScene;
 import gui.tools.DomainModelGenerator;
+import gui.tools.DuplicateSceneDetector;
 
 import java.awt.Dialog;
 import java.awt.Window;
@@ -19,6 +21,7 @@ import java.awt.event.WindowEvent;
 privileged aspect ModelGeneratorAspect {
 	private DomainModelGenerator generator;
 	private DomainModelEditor editor;
+	private DuplicateSceneDetector detector;
 	private Recorder recorder;
 	private Application application;
 
@@ -34,6 +37,7 @@ privileged aspect ModelGeneratorAspect {
 		}
 
 		generator = new DomainModelGenerator(recorder);
+		detector = new DuplicateSceneDetector();
 		
 		application = editor.getApplication();
 		
@@ -61,28 +65,47 @@ privileged aspect ModelGeneratorAspect {
 	 *            a window event which contains the target scene as source.
 	 */
 	after(WindowEvent windowEvent): windowPointcut(windowEvent) {
-		if (windowEvent.getID() == WindowEvent.WINDOW_OPENED || windowEvent.getID() == WindowEvent.WINDOW_ACTIVATED) {
+		if (windowEvent.getID() == WindowEvent.WINDOW_GAINED_FOCUS) {
 			Window w = windowEvent.getWindow();
-			if (!(w instanceof DomainModelEditor)) {
-				
-				Scene<?> scene = createScene(w);
+			onWindowActivated(w);
+		}
+	}
+	
+	private void onWindowActivated(Window w) {
+		if (!(w instanceof DomainModelEditor)) {
+			
+			Scene<?> scene = createScene(w);
 
-				// register inspector
-				registerInspector();
+			// register inspector
+			registerInspector();
 
-				if (application.getSceneCount() == 0)
-					editor.setupComponentTreeModel();
-				
-				try {
-					generator.createDomainModel(scene);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				// add the scene into the application's list of scenes
-				application.addScene(scene);
+			if (application.getSceneCount() == 0)
+				editor.setupComponentTreeModel();
+			
+			try {
+				generator.createDomainModel(scene);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			detectAndDeletePreviousModel(scene, w);
+			addNewScene(scene);
+		}
+	}
+	
+	private void detectAndDeletePreviousModel(Scene<?> scene, Window w) {
+		if(application.contains(scene)) {
+			application.removeScene(scene);
+		} else {
+			Scene<?> matchedScene = detector.detect(w, scene.getDomainModel());
+			if(matchedScene != null) {
+				application.removeScene(matchedScene);
 			}
 		}
+	}
+	
+	private void addNewScene(Scene<?> scene) {
+		application.addScene(scene);
 	}
 
 	@SuppressWarnings("unchecked")

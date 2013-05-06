@@ -1,5 +1,6 @@
 package gui.model.domain;
 
+import gui.analyzer.util.Util;
 import gui.model.application.scenes.Scene;
 import gui.model.domain.relation.RelationType;
 
@@ -164,6 +165,30 @@ public class DomainModel {
 	public Term getTermForComponent(Object component) {
 		return root.getTermForComponent(component);
 	}
+	
+	public List<Term> getAllTerms() {
+		return root.getAllTerms(new ArrayList<Term>());
+	}
+	
+	public List<String> getAllTermsAsStrings() {
+		List<String> allTermsAsStrings = new ArrayList<String>();
+		
+		List<Term> allTerms = root.getAllTerms(new ArrayList<Term>());
+		
+		for(Term t : allTerms) {
+			String name = t.getName();
+			if(Util.isEmpty(name)) {
+				allTermsAsStrings.add(t.getName());
+			}
+			String desc = t.getDescription();
+			if(Util.isEmpty(desc)) {
+				allTermsAsStrings.add(t.getDescription());
+			}
+		}
+		
+		return allTermsAsStrings;
+	}
+	
 	
 	public void removeAll(List<Term> terms) {
 		root.removeAllWithNesting(terms);

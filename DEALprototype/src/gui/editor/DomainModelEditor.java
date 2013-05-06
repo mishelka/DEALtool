@@ -4,6 +4,7 @@ import gui.analyzer.Recorder;
 import gui.analyzer.observable.ApplicationEvent;
 import gui.analyzer.observable.ApplicationEvent.ApplicationChangeState;
 import gui.analyzer.util.JLabelFinder;
+import gui.analyzer.util.Logger;
 import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
@@ -127,14 +128,21 @@ public class DomainModelEditor extends JFrame implements Observer {
 	}
 
 	/******************* Methods for domain model setup *************************/
-
+	
+	/**
+	 * The Observer method - if any scene is added, edited or removed, this method is called.
+	 */
 	@Override
 	public void update(Observable application, Object event) {
 		ApplicationEvent appEvt = (ApplicationEvent) event;
-		
-		if(appEvt.getChangeState() == ApplicationChangeState.ADDED) {
+
+		if (appEvt.getChangeState() == ApplicationChangeState.ADDED) {
 			addDomainModel(appEvt.getTargetScene());
+			
 			setupComponentTreeModel();
+		} else {
+			// we're not testing remove/name_changed, because the setupDomainTreeModel and setupComponetnTreeModel() will be called to update
+			// in the future this will be used to edit/save the existing model
 		}
 	}
 	
