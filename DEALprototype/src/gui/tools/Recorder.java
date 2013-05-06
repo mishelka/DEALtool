@@ -1,4 +1,4 @@
-package gui.analyzer;
+package gui.tools;
 
 import gui.analyzer.util.Logger;
 import gui.model.application.events.UiEvent;

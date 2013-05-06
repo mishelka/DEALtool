@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
 public class Extractor {
@@ -27,7 +26,7 @@ public class Extractor {
 	private Scene scene;
 	private Term rootTerm;
 	private String sceneName;
-	
+
 	@SuppressWarnings("rawtypes")
 	public DomainModel eXTRACT(Scene scene) throws ExtractionException {
 		if (scene != null) {
@@ -36,14 +35,14 @@ public class Extractor {
 			this.domainModel = scene.getDomainModel();
 		} else
 			throw new ExtractionException("scene must not be null");
-		
+
 		if (domainModel != null) {
 			this.rootTerm = domainModel.getRoot();
 		} else
 			throw new ExtractionException("domainModel must not be null");
-		
+
 		eXTRACT();
-		
+
 		return domainModel;
 	}
 
@@ -65,10 +64,11 @@ public class Extractor {
 	private void eXTRACT() {
 		// extract subtree from the root scene
 		extractSubtree(scene.getSceneContainer(), rootTerm);
-		
-		//removes all labelfors which describe other components and moves all content from the label to the component.
+
+		// removes all labelfors which describe other components and moves all
+		// content from the label to the component.
 		removeSimpleLabelFor(rootTerm);
-		
+
 		// additional derivation of relations from parents
 		findParentRelationsInModel();
 
@@ -81,24 +81,29 @@ public class Extractor {
 		domainModel.getRoot().setComponent(scene);
 		domainModel.setScene(scene);
 	}
-	
+
 	/**
-	 * Removes labels which describe other components and transfers all the information and children into these components.
-	 * @param thisTerm The term which should be checked for labelFors.
+	 * Removes labels which describe other components and transfers all the
+	 * information and children into these components.
+	 * 
+	 * @param thisTerm
+	 *            The term which should be checked for labelFors.
 	 * @return if anything was removed, returns true, false otherwise
 	 */
 	public boolean removeSimpleLabelFor(Term thisTerm) {
 		List<Term> itemsToRemove = new ArrayList<Term>();
-		
+
 		Iterator<Term> i = thisTerm.iterator();
-		while(i.hasNext()) {
-			//component term - this will be the new term with a description from the JLabel
+		while (i.hasNext()) {
+			// component term - this will be the new term with a description
+			// from the JLabel
 			Term ct = i.next();
 
 			if (ct.getLabelForComponent() != null) {
 				// label term - this will be deleted and all information will be
 				// transfered to ct
-				Term lt = domainModel.getTermForComponent(ct.getLabelForComponent());
+				Term lt = domainModel.getTermForComponent(ct
+						.getLabelForComponent());
 
 				if (lt != null) {
 					// move all children of label to the component
@@ -118,17 +123,17 @@ public class Extractor {
 				}
 			}
 		}
-		
+
 		boolean wasRemoved = !itemsToRemove.isEmpty();
 		domainModel.removeAll(itemsToRemove);
-		
-		//do this for all the children of thisTerm
+
+		// do this for all the children of thisTerm
 		i = thisTerm.iterator();
-		while(i.hasNext()) {
+		while (i.hasNext()) {
 			Term next = i.next();
 			wasRemoved |= removeSimpleLabelFor(next);
 		}
-		
+
 		return wasRemoved;
 	}
 
@@ -226,7 +231,7 @@ public class Extractor {
 		// fourth step: if the current component is a composite, extract
 		// subtrees from the its child components by recursively calling of the
 		// extractSubtree(..) method.
-		if(thisTerm.extractChildren()) {
+		if (thisTerm.extractChildren()) {
 			extractSubtreesFromChildren(component, thisTerm);
 		}
 	}
@@ -434,6 +439,44 @@ public class Extractor {
 	 *            The term, which generates the relations for its children.
 	 */
 	private void findParentRelations(Term thisTerm) {
+		HashMap<RelationType, List<Term>> parentRelations = collectParentRelations(thisTerm);
+
+		detectDirectSiblings(parentRelations);
+
+		shiftTermsWithParentRelations(parentRelations, thisTerm);
+
+		// do this recursively
+		for (int i = 0; i < thisTerm.getChildrenCount(); i++) {
+			findParentRelations(thisTerm.getChildAt(i));
+		}
+	}
+
+	private void shiftTermsWithParentRelations(
+			HashMap<RelationType, List<Term>> parentRelations, Term thisTerm) {
+		// for each relation type in the key set of parentRelations
+		// create a new subterm of thisTerm and add all its children with this
+		// type of parentRelation into this subterm.
+		// Remove the children from the original parent.
+		for (RelationType pr : parentRelations.keySet()) {
+			// create a new term
+			Term newTerm = new Term(thisTerm.getDomainModel());
+			// set its relation to parentRelation
+			newTerm.setRelation(pr);
+
+			// for each term in the list under the parentRelation key
+			// shift every term from thisTerm to the newTerm
+			for (Term t : parentRelations.get(pr)) {
+				thisTerm.removeChild(t);
+				newTerm.addChild(t);
+				t.setParentRelation(null);
+			}
+
+			thisTerm.addChild(newTerm);
+		}
+	}
+
+	private HashMap<RelationType, List<Term>> collectParentRelations(
+			Term thisTerm) {
 		HashMap<RelationType, List<Term>> parentRelations = new HashMap<RelationType, List<Term>>();
 
 		// put all children of thisTerm into a list under the parentRelation key
@@ -444,54 +487,62 @@ public class Extractor {
 			// get parentRelation from term - this is stored during the Term
 			// creation
 			// @see gui.analyzer.handlers.DomainIdentifiable.createTerm(..)
-			RelationType parentRelation = t.getParentRelation();
-			if (parentRelation != null) {
+			RelationType pr = t.getParentRelation();
+			if (pr != null) {
 				// for each relation type there is a list of components, to
 				// which this relation should be applied - add the child into
 				// this list.
-				if (!parentRelations.keySet().contains(parentRelation)) {
-					parentRelations.put(parentRelation, new ArrayList<Term>());
+				if (!parentRelations.keySet().contains(pr)) {
+					parentRelations.put(pr, new ArrayList<Term>());
 				}
-				parentRelations.get(parentRelation).add(t);
+				parentRelations.get(pr).add(t);
 			}
 		}
 
-		// for each relation type in the key set of parentRelations
-		// create a new subterm of thisTerm and add all its children with this
-		// type of parentRelation into this subterm.
-		// Remove the children from the original parent.
-		for (RelationType parentRelation : parentRelations.keySet()) {
-			// create a new term
-			Term newTerm = new Term(thisTerm.getDomainModel());
-			// set its relation to parentRelation
-			newTerm.setRelation(parentRelation);
+		return parentRelations;
+	}
 
-			// for each term in the list under the parentRelation key
-			// shift every term from thisTerm to the newTerm
-			for (Term f : parentRelations.get(parentRelation)) {
-				thisTerm.removeChild(f);
-				newTerm.addChild(f);
-				newTerm.setComponent(f.getComponent());
-				newTerm.setComponentClass(f.getComponentClass());
-				
-				JLabel lfc = f.getLabelForComponent();
-				if(lfc != null) {
-					newTerm.setName(lfc.getText());
-					newTerm.setLabelForComponent(lfc);
-					newTerm.setComponent(lfc);
-					f.setLabelForComponent(null);
+	private void detectDirectSiblings(
+			HashMap<RelationType, List<Term>> parentRelations) {
+		Iterator<RelationType> prIterator = parentRelations.keySet().iterator();
+		while (prIterator.hasNext()) {
+			RelationType pr = prIterator.next();
+
+			List<Term> list = parentRelations.get(pr);
+			list = removeTermsWhichAreNotDirectSiblings(list);
+
+			if (list.isEmpty()) {
+				prIterator.remove();
+			}
+		}
+	}
+
+	private List<Term> removeTermsWhichAreNotDirectSiblings(List<Term> terms) {
+		List<Term> termsToRemove = new ArrayList<Term>();
+
+		Iterator<Term> i1 = terms.iterator();
+		while (i1.hasNext()) {
+			boolean isSibling = false;
+			Term t = i1.next();
+
+			Iterator<Term> i2 = terms.iterator();
+			while (i2.hasNext()) {
+				Term sibling = i2.next();
+				if (!t.equals(sibling) && t.isDirectSiblingTo(sibling)) {
+					isSibling = true;
 				}
-				
-				f.setParentRelation(null);
 			}
 
-			thisTerm.addChild(newTerm);
+			if (!isSibling)
+				termsToRemove.add(t);
 		}
 
-		// do this recursively
-		for (int i = 0; i < thisTerm.getChildrenCount(); i++) {
-			findParentRelations(thisTerm.getChildAt(i));
+		for (Term t : termsToRemove) {
+			t.setParentRelation(null);
+			terms.remove(t);
 		}
+
+		return terms;
 	}
 
 	public class ExtractionException extends Exception {

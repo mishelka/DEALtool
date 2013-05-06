@@ -1,6 +1,5 @@
 package gui.tools;
 
-import gui.analyzer.Recorder;
 import gui.model.application.scenes.Scene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;

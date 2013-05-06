@@ -1,8 +1,6 @@
 package gui.analyzer.aspects;
 
 import gui.analyzer.Inspector;
-import gui.analyzer.Recorder;
-import gui.analyzer.util.Logger;
 import gui.editor.DomainModelEditor;
 import gui.model.application.Application;
 import gui.model.application.scenes.DialogScene;
@@ -10,6 +8,7 @@ import gui.model.application.scenes.Scene;
 import gui.model.application.scenes.WindowScene;
 import gui.tools.DomainModelGenerator;
 import gui.tools.DuplicateSceneDetector;
+import gui.tools.Recorder;
 
 import java.awt.Dialog;
 import java.awt.Window;

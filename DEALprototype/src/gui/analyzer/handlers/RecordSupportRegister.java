@@ -1,6 +1,6 @@
 package gui.analyzer.handlers;
 
-import gui.analyzer.Recorder;
+import gui.tools.Recorder;
 
 /**
  * An abstract class defining an interface for a record support handler.

@@ -1,6 +1,5 @@
 package gui.tools;
 
-import gui.analyzer.Recorder;
 import gui.analyzer.handlers.Composite;
 import gui.analyzer.handlers.Composites;
 import gui.analyzer.handlers.RecordSupport;

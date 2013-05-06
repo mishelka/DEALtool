@@ -18,7 +18,7 @@ public class UiEvent {
 	private Object component;
 	// TODO: in the future this will be replaced by a list of default actions,
 	// for now it is a list of strings
-	private List<String> commands;
+	private String[] commands;
 
 	public UiEvent(Object component) {
 		this.component = component;
@@ -52,15 +52,11 @@ public class UiEvent {
 		return component;
 	}
 
-	public void setComponent(Object component) {
-		this.component = component;
-	}
-
-	public List<String> getCommands() {
+	public String[] getCommands() {
 		return commands;
 	}
 
-	public void setCommands(List<String> commands) {
+	public void setCommands(String[] commands) {
 		this.commands = commands;
 	}
 
@@ -68,12 +64,15 @@ public class UiEvent {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(cause);
+		sb.append("{" + cause + "}");
 
 		sb.append(" ");
 
-		if (commands != null)
-			sb.append(Arrays.toString(commands.toArray(new String[] {})));
+		if (commands != null && commands.length != 0) {
+			sb.append("[");
+			sb.append(Arrays.toString(commands));
+			sb.append("]");
+		}
 
 		return sb.toString();
 	}

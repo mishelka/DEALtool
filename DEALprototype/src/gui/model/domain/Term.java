@@ -12,51 +12,93 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 
 public class Term {
-	/** Each term has its name, which is a primary information extracted from a component. 
-	 * If a term has no name and no description, then the term is not important for the domain model 
-	 * (it was created from a component, which does not provide any usable domain information). */
+	/**
+	 * Each term has its name, which is a primary information extracted from a
+	 * component. If a term has no name and no description, then the term is not
+	 * important for the domain model (it was created from a component, which
+	 * does not provide any usable domain information).
+	 */
 	private String name;
-	/** Optionally each term can have its description, which is secondary information extracted from a component. For example from tooltip text, or from actionCommand field.*/
+	/**
+	 * Optionally each term can have its description, which is secondary
+	 * information extracted from a component. For example from tooltip text, or
+	 * from actionCommand field.
+	 */
 	private String description;
-	//TODO: remove relation and set outgoingRelations instead of this!!! priority highest!
-	/** If it is possible to extract any relations from components, which they have between ich other in one group, then this relation is saved in this variable. */
+	// TODO: remove relation and set outgoingRelations instead of this!!!
+	// priority highest!
+	/**
+	 * If it is possible to extract any relations from components, which they
+	 * have between ich other in one group, then this relation is saved in this
+	 * variable.
+	 */
 	private RelationType relation = RelationType.AND;
-	/** This is a relation which a parent generates for its children. For example a TabbedPane component generates a mutual exclusive relation between its children. */
+	/**
+	 * This is a relation which a parent generates for its children. For example
+	 * a TabbedPane component generates a mutual exclusive relation between its
+	 * children.
+	 */
 	private RelationType parentRelation = null;
-	/** Sometimes, an icon contains domain information either graphically or textually. This information is difficult to parse, therefore we extract the whole icon and it is on user (domain analyst) to review the important icons. */
+	/**
+	 * Sometimes, an icon contains domain information either graphically or
+	 * textually. This information is difficult to parse, therefore we extract
+	 * the whole icon and it is on user (domain analyst) to review the important
+	 * icons.
+	 */
 	private Icon icon;
-	
+
 	/** a label describing this component will be temporarily saved here */
 	private JLabel labelForComponent;
-	
-	/** a flag telling the extractor if it should extract any children of this term's component further */
+
+	/**
+	 * a flag telling the extractor if it should extract any children of this
+	 * term's component further
+	 */
 	private boolean extractChildren = true;
-	
-	/** For textual components (like text area, text field, etc.) we can also extract some constraints, like text length, possible values, type, etc. 
-	 * This is not implemented yet. 
+
+	/**
+	 * For textual components (like text area, text field, etc.) we can also
+	 * extract some constraints, like text length, possible values, type, etc.
+	 * This is not implemented yet.
 	 */
 	private List<Constraint> constraints;
 
-	/** Each term is located in a domain model, this is a reference to the domain model. */
+	/**
+	 * Each term is located in a domain model, this is a reference to the domain
+	 * model.
+	 */
 	private DomainModel domainModel;
 
-	/** The parent of this term in the term graph.
-	 * If this term is a root term, then this term has no parent and the value of this field is null. */
+	/**
+	 * The parent of this term in the term graph. If this term is a root term,
+	 * then this term has no parent and the value of this field is null.
+	 */
 	private Term parent;
-	/** The child terms of this term in the term graph.
-	 * If this term is a leaf, then the children array contains no item. */
+	/**
+	 * The child terms of this term in the term graph. If this term is a leaf,
+	 * then the children array contains no item.
+	 */
 	private List<Term> children = new ArrayList<Term>();
-	
-	/** Each term is created from a component. The componentClass and component fields are references to this component. */
+
+	/**
+	 * Each term is created from a component. The componentClass and component
+	 * fields are references to this component.
+	 */
 	@SuppressWarnings("rawtypes")
 	private Class componentClass;
-	/** Each term is created from a component. The componentClass and component fields are references to this component. */
+	/**
+	 * Each term is created from a component. The componentClass and component
+	 * fields are references to this component.
+	 */
 	private Object component;
-	
-	/** Each term is extracted from a component and this component is included in a group according to what information can be extracted from this component. */
+
+	/**
+	 * Each term is extracted from a component and this component is included in
+	 * a group according to what information can be extracted from this
+	 * component.
+	 */
 	private ComponentInfoType componentInfoType;
 
-	
 	public Term(DomainModel domainModel) {
 		this.domainModel = domainModel;
 	}
@@ -81,11 +123,11 @@ public class Term {
 	public RelationType getRelation() {
 		return relation;
 	}
-	
+
 	public List<Constraint> getConstraints() {
 		return constraints;
 	}
-	
+
 	public void setConstraints(List<Constraint> constraints) {
 		this.constraints = constraints;
 	}
@@ -103,11 +145,11 @@ public class Term {
 	public Class getComponentClass() {
 		return componentClass;
 	}
-	
+
 	public ComponentInfoType getComponentInfoType() {
 		return componentInfoType;
 	}
-	
+
 	public void setComponentInfoType(ComponentInfoType componentInfoType) {
 		this.componentInfoType = componentInfoType;
 	}
@@ -127,7 +169,7 @@ public class Term {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -139,19 +181,19 @@ public class Term {
 	public void setIcon(Icon icon) {
 		this.icon = icon;
 	}
-	
+
 	public JLabel getLabelForComponent() {
 		return labelForComponent;
 	}
-	
+
 	public void setLabelForComponent(JLabel labelFor) {
 		this.labelForComponent = labelFor;
 	}
-	
+
 	public void setExtractChildren(boolean extractChildren) {
 		this.extractChildren = extractChildren;
 	}
-	
+
 	public boolean extractChildren() {
 		return extractChildren;
 	}
@@ -178,6 +220,21 @@ public class Term {
 		return children.isEmpty();
 	}
 
+	public boolean isDirectSiblingTo(Term to) {
+		Term parent = this.getParent();
+
+		if (parent == null || !parent.getChildren().contains(to))
+			return false;
+
+		int index = parent.getChildIndex(this);
+		int indexTo = parent.getChildIndex(to);
+
+		if ((index + 1) == indexTo || (index - 1) == indexTo)
+			return true;
+
+		return false;
+	}
+
 	public void addChild(Term newChild) {
 		children.add(newChild);
 		newChild.setParent(this);
@@ -187,9 +244,9 @@ public class Term {
 		children.add(index, newChild);
 		newChild.setParent(this);
 	}
-	
+
 	public void addAll(List<Term> childrenToAdd) {
-		for(Term t : childrenToAdd) {
+		for (Term t : childrenToAdd) {
 			addChild(t);
 		}
 	}
@@ -212,60 +269,60 @@ public class Term {
 		child.setParent(null);
 		return child;
 	}
-	
+
 	public void removeAll(List<Term> childrenToRemove) {
-		for(Term t : childrenToRemove) {
-			if(children.contains(t)) {
+		for (Term t : childrenToRemove) {
+			if (children.contains(t)) {
 				removeChild(t);
 			}
 		}
 	}
-	
+
 	public void removeAllWithNesting(List<Term> childrenToRemove) {
-		for(Term t : childrenToRemove) {
-			if(children.contains(t)) {
+		for (Term t : childrenToRemove) {
+			if (children.contains(t)) {
 				removeChild(t);
 			}
 		}
-		
-		for(Term t : children) {
+
+		for (Term t : children) {
 			t.removeAllWithNesting(childrenToRemove);
 		}
 	}
-	
+
 	public boolean removeEmptyLeafs() {
 		boolean removed = false;
 		Iterator<Term> i = iterator();
-		
-		while(i.hasNext()) {
+
+		while (i.hasNext()) {
 			removed |= i.next().removeEmptyLeafs();
 		}
-		
-		//actual removing of empty leafs
+
+		// actual removing of empty leafs
 		i = iterator();
-		while(i.hasNext()) {
+		while (i.hasNext()) {
 			Term t = i.next();
-			if(t.isLeaf() && t.canBeRemoved()) {
+			if (t.isLeaf() && t.canBeRemoved()) {
 				i.remove();
 				removed = true;
 			}
 		}
-		
+
 		return removed;
 	}
-	
+
 	public boolean removeMultipleNestings() {
 		boolean removed = false;
 		Iterator<Term> i = iterator();
-		
-		while(i.hasNext()) {
+
+		while (i.hasNext()) {
 			removed |= i.next().removeMultipleNestings();
 		}
-		
-		//actual removing of a multiple nesting
-		if(getChildrenCount() == 1) {
+
+		// actual removing of a multiple nesting
+		if (getChildrenCount() == 1) {
 			Term son = this.getFirstChild();
-			if(son.canBeRemoved()) {
+			if (son.canBeRemoved()) {
 				// this: o1---o2---o3
 				// is transformed to: o1---o3
 				this.addAll(son.getChildren());
@@ -273,7 +330,7 @@ public class Term {
 				removed = true;
 			}
 		}
-		
+
 		return removed;
 	}
 
@@ -312,27 +369,50 @@ public class Term {
 
 	public boolean canBeRemoved() {
 		boolean b = false;
-		
-		b = (name==null || name.isEmpty()) 
+
+		b = (name == null || name.isEmpty())
 				&& (relation == RelationType.AND
-				&& (componentClass.getName().equals(description) 
-						|| description == null || description.isEmpty()) 
-				&& labelForComponent == null
-				&& icon == null);
-		
+						&& (componentClass.getName().equals(description)
+								|| description == null || description.isEmpty())
+						&& labelForComponent == null && icon == null);
+
 		return b;
 	}
 
 	public boolean hasName() {
 		return name != null && !name.isEmpty();
 	}
-	
+
 	public boolean hasDescription() {
 		return description != null && !description.isEmpty();
 	}
-	
+
 	public boolean hasIcon() {
 		return icon != null;
+	}
+
+	public Term getTermForComponent(Object component) {
+		if (this.component != null && this.component.equals(component))
+			return this;
+		Term result = null;
+		for (Term t : children) {
+			if ((result = t.getTermForComponent(component)) != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	public List<Term> getAllTerms(List<Term> list) {
+		list.add(this);
+		for (Term t : children) {
+			t.getAllTerms(list);
+		}
+		return list;
+	}
+
+	public Iterator<Term> iterator() {
+		return this.children.iterator();
 	}
 
 	@Override
@@ -344,29 +424,5 @@ public class Term {
 		if (componentClass != null)
 			return "\"\"";
 		return null;
-	}
-	
-	public Iterator<Term> iterator() {
-		return this.children.iterator();
-	}
-	
-	public Term getTermForComponent(Object component) {
-		if(this.component != null && this.component.equals(component))
-			return this;
-		Term result = null;
-		for(Term t : children) {
-			if((result = t.getTermForComponent(component)) != null) {
-				return result;
-			}
-		}
-		return null;
-	}
-	
-	public List<Term> getAllTerms(List<Term> list) {
-		list.add(this);
-		for(Term t : children) {
-			t.getAllTerms(list);
-		}
-		return list;
 	}
 }

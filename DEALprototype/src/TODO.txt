@@ -1,7 +1,3 @@
-----> transformacia ide z kombinacie komponent+komponenttree a parentRelation generovat z getParent struktury priamo v domainidentifiable!
-
-
-
 1. recorder rozchodeny, treba spravit recordsupport handlery
 2. rozchodit player 
 	- nahrate prikazy zatial budu ulozene ako? serializovane ci textovo ako doteraz? Serializacia nemusi pomoct, ak je tam iny class loader, pripadne ak pri spusteni aplikacia neobsahuje dane komponenty
@@ -18,11 +14,11 @@ implementovat ukladanie nepotrebnych/vseobecnych funkcnych prvkov, treba jeden D
 1. Separator (v GUI aj v menu) --- oddeli skupiny prvkov
 2. JMenu skupinky sa vylucuju (tie megamenu)
 
-- Import/Export to XML or OWL (spravi Nitkulinec)
+- Import/Export to XML or OWL (spravi Stefan Nitkulinec)
 - Graphical visualisation
-	- of the Term graph (spravi Surgent)
-	- and of the event sequences using jGraphX (spravi Kozlovsky)
-- Assisted extraction and analysis of DOMAIN PROCESSES in the form of event sequences - spravim teraz ja PRIORITA!!!
+	- of the Term graph (spravi David Surgent)
+	- and of the event sequences using jGraphX (spravi Robert Kozlovsky)
+- Assisted extraction and analysis of DOMAIN PROCESSES in the form of event sequences
 - Experiments with more open source Java target application examples
 
 - HTML analysis along with Java apps!!!

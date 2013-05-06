@@ -1,12 +1,12 @@
 package gui.analyzer.handlers;
 
-import gui.analyzer.Recorder;
 import gui.analyzer.util.ComponentFinder;
 import gui.editor.DomainModelEditor;
 import gui.model.application.events.UiEvent;
 import gui.model.application.scenes.Scene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
+import gui.tools.Recorder;
 
 import java.util.Collection;
 import java.util.EventListener;
@@ -52,7 +52,7 @@ public abstract class RecordSupport<T> implements RecordSupportRegister<T> {
 	 * @return A list of string commands for the given component if it is
 	 *         possible to create it, null otherwise.
 	 */
-	protected abstract List<String> createCommands(T component);
+	protected abstract String[] createCommands(T component);
 
 	protected UiEvent createUiEvent(T component) {
 		UiEvent uiEvent = new UiEvent(component);

@@ -1,6 +1,5 @@
 package gui.editor;
 
-import gui.analyzer.Recorder;
 import gui.analyzer.observable.ApplicationEvent;
 import gui.analyzer.observable.ApplicationEvent.ApplicationChangeState;
 import gui.analyzer.util.JLabelFinder;
@@ -16,6 +15,7 @@ import gui.model.application.scenes.WindowScene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 import gui.model.domain.relation.RelationType;
+import gui.tools.Recorder;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -83,7 +83,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private boolean clickedComponentOpaque;
 
 	private DefaultMutableTreeNode clickedPopupNode;
-	
+
 	private static final String IMAGE_PATH = "resources/editor/";
 
 	/** Getter for singleton */
@@ -107,30 +107,32 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		expandAll(domainJTree, true);
 	}
-	
+
 	/******************* Recorder stuff *****************************************/
-	
+
 	/** Thread for recording */
 	private Thread recordingThread;
 	/** Recorder instance - Recorder enables recording to physical memory. */
 	private Recorder recorder;
-	
-	
+
 	/**
-     * @param recorder a Recorder instance responsible for recording to physical memory.
-     */
+	 * @param recorder
+	 *            a Recorder instance responsible for recording to physical
+	 *            memory.
+	 */
 	public void setRecorder(Recorder recorder) {
-        this.recorder = recorder;
-    }
-	
+		this.recorder = recorder;
+	}
+
 	public Recorder getRecorder() {
 		return recorder;
 	}
 
 	/******************* Methods for domain model setup *************************/
-	
+
 	/**
-	 * The Observer method - if any scene is added, edited or removed, this method is called.
+	 * The Observer method - if any scene is added, edited or removed, this
+	 * method is called.
 	 */
 	@Override
 	public void update(Observable application, Object event) {
@@ -138,14 +140,16 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		if (appEvt.getChangeState() == ApplicationChangeState.ADDED) {
 			addDomainModel(appEvt.getTargetScene());
-			
+
 			setupComponentTreeModel();
 		} else {
-			// we're not testing remove/name_changed, because the setupDomainTreeModel and setupComponetnTreeModel() will be called to update
+			// we're not testing remove/name_changed, because the
+			// setupDomainTreeModel and setupComponetnTreeModel() will be called
+			// to update
 			// in the future this will be used to edit/save the existing model
 		}
 	}
-	
+
 	public void addDomainModel(Scene scene) {
 		TreeModel newModel = new TreeModel(application);
 
@@ -170,8 +174,6 @@ public class DomainModelEditor extends JFrame implements Observer {
 						onTreeValueChanged(evt);
 					}
 				});
-		
-		
 
 		domainJTree.addMouseListener(new PopClickListener());
 
@@ -194,8 +196,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 				"Component tree");
 
 		for (Scene scene : application.getScenes()) {
-			if(scene instanceof WindowScene || scene instanceof DialogScene) {
-				dmtn.add(setupPartOfTreeModelExtended((Window) scene.getSceneContainer()));
+			if (scene instanceof WindowScene || scene instanceof DialogScene) {
+				dmtn.add(setupPartOfTreeModelExtended((Window) scene
+						.getSceneContainer()));
 			}
 		}
 
@@ -341,8 +344,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 		}
 
 		if (clickedComponent != null) {
-			Term targetTerm = ((gui.editor.tree.TreeModel) domainJTree.getModel())
-					.findTermForComponent(clickedComponent);
+			Term targetTerm = ((gui.editor.tree.TreeModel) domainJTree
+					.getModel()).findTermForComponent(clickedComponent);
 			updateInfoPanel(targetTerm, clickedComponent);
 		}
 	}
@@ -352,7 +355,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 			if (clickedPopupNode instanceof TreeNode) {
 				TreeNode tn = (TreeNode) clickedPopupNode;
 				tn.setHidden(!tn.isHidden());
-				
+
 				reloadTrees();
 			}
 		}
@@ -363,7 +366,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 			if (clickedPopupNode instanceof TreeNode) {
 				TreeNode tn = (TreeNode) clickedPopupNode;
 				tn.hideSubtree();
-				
+
 				reloadTrees();
 			}
 		}
@@ -374,22 +377,22 @@ public class DomainModelEditor extends JFrame implements Observer {
 			if (clickedPopupNode instanceof TreeNode) {
 				TreeNode tn = (TreeNode) clickedPopupNode;
 				tn.unhideSubtree();
-				
+
 				reloadTrees();
 			}
 		}
 	}
-	
+
 	private void reloadTrees() {
 		DefaultTreeModel cmodel = (DefaultTreeModel) componentJTree.getModel();
 		cmodel.reload();
 		DefaultTreeModel dmodel = (DefaultTreeModel) domainJTree.getModel();
 		dmodel.reload();
-		
+
 		expandAll(componentJTree, true);
 		expandAll(domainJTree, true);
 	}
-	
+
 	private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		JFileChooser chooser = new JFileChooser("record");
 		DealFileFilter filter = new DealFileFilter();
@@ -400,69 +403,76 @@ public class DomainModelEditor extends JFrame implements Observer {
 					.getAbsolutePath());
 		}
 	}
+
+	private void recordButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		if (!recorder.isRecording()) {
+			String name = fileNameTextField.getText();
+			try {
+				if (name != null && !name.equals("")) {
+					recorder.createNewFile(name);
+				} else {
+					recorder.createNewFile();
+					fileNameTextField.setText(recorder.getFileName());
+				}
+
+				recorder.setRecording(true);
+
+				updateRecordPanel();
+
+				System.out.println("\nSTARTING RECORDING\n");
+
+				recordingThread = new RecordingThread();
+				recordingThread.start();
+			} catch (IOException ex) {
+				System.out.println("CAN NOT CREATE NEW FILE: ");
+				ex.printStackTrace();
+
+				recorder.setRecording(false);
+				recorder.closeWriter();
+				
+				updateRecordPanel();
+			}
+		}
+	}
 	
-	private void recordButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-	       if (!recorder.isRecording()) {
-	           String name = fileNameTextField.getText();
-	           try {
-	               if (name != null && !name.equals("")) {
-	                   recorder.createNewFile(name);
-	               } else {
-	                   recorder.createNewFile();
-	                   fileNameTextField.setText(recorder.getFileName());
-	               }
+	private void updateRecordPanel() {
+		boolean recording = recorder.isRecording();
+		
+		recordButton.setEnabled(!recording);
+		stopButton.setEnabled(recording);
+		fileNameTextField.setEnabled(!recording);
+	}
 
-	               recorder.setRecording(true);
-	               recordButton.setEnabled(false);
-	               stopButton.setEnabled(true);
+	private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		if (recorder.isRecording()) {
+			recordingThread.interrupt();
+			try {
+				recordingThread.join();
+			} catch (InterruptedException ex) {
+				// could not stop
+			}
+			recordingProgressBar.setValue(0);
+			updateRecordPanel();
 
-	               System.out.println("\nSTARTING RECORDING\n");
-	               fileNameTextField.setEnabled(false);
+			System.out.println("\nSTOPPING RECORDING\n");
+			fileNameTextField.setText("");
 
-	               recordingThread = new RecordingThread();
-	               recordingThread.start();
-	           } catch (IOException ex) {
-	               System.out.println("CAN NOT CREATE NEW FILE: ");
-	               ex.printStackTrace();
+			recorder.setRecording(false);
+			recorder.closeWriter();
 
-	               recorder.setRecording(false);
-	               recorder.closeWriter();
-	               recordButton.setEnabled(true);
-	               stopButton.setEnabled(false);
-	           }
-	       }
-	   }                                            
+			recorder.writeResultToConsole();
+		}
+	}
 
-	   private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-	       if (recorder.isRecording()) {
-	           recordingThread.interrupt();
-	           try {
-	               recordingThread.join();
-	           } catch (InterruptedException ex) {
-	               //could not stop
-	           }
-	           recordingProgressBar.setValue(0);
-	           recordButton.setEnabled(true);
-	           stopButton.setEnabled(false);
+	private void showInfoTypesCheckBoxActionPerformed(
+			java.awt.event.ActionEvent evt) {
+		for (DomainModel domainModel : application.getDomainModels()) {
+			domainModel.setShowComponentInfoTypes(showInfoTypesCheckBox
+					.isSelected());
+		}
 
-	           System.out.println("\nSTOPPING RECORDING\n");
-	           fileNameTextField.setText("");
-	           fileNameTextField.setEnabled(true);
-
-	           recorder.setRecording(false);
-	           recorder.closeWriter();
-	           
-	           recorder.writeResultToConsole();
-	       }
-	   }
-	   
-	   private void showInfoTypesCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {
-		   for(DomainModel domainModel : application.getDomainModels()) {
-			   domainModel.setShowComponentInfoTypes(showInfoTypesCheckBox.isSelected());
-		   }
-		   
-		   reloadTrees();
-	   }
+		reloadTrees();
+	}
 
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
@@ -515,7 +525,6 @@ public class DomainModelEditor extends JFrame implements Observer {
 		openMenuItem = new javax.swing.JMenuItem();
 		exitMenuItem = new javax.swing.JMenuItem();
 		recordButtonGroup = new javax.swing.ButtonGroup();
-		
 
 		nameField.setLineWrap(true);
 
@@ -528,13 +537,13 @@ public class DomainModelEditor extends JFrame implements Observer {
 		infoSplitPane.setDividerSize(2);
 
 		GridBagLayout gbl_infoPanel = new GridBagLayout();
-		gbl_infoPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0};
-		gbl_infoPanel.columnWidths = new int[]{105, 0, 0};
-		gbl_infoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
-				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 
-				0.0, 0.0, 
-				0.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_infoPanel.columnWeights = new double[]{1.0, 1.0, 0.0};
+		gbl_infoPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0 };
+		gbl_infoPanel.columnWidths = new int[] { 105, 0, 0 };
+		gbl_infoPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+		gbl_infoPanel.columnWeights = new double[] { 1.0, 1.0, 0.0 };
 		infoPanel.setLayout(gbl_infoPanel);
 
 		domainInfoTitlePanel.setLayout(new java.awt.GridBagLayout());
@@ -764,7 +773,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gridBagConstraints_10.weightx = 1.0;
 		gridBagConstraints_10.insets = new Insets(5, 0, 5, 0);
 		infoPanel.add(actionCommandField, gridBagConstraints_10);
-		
+
 		componentInfoTypesTitlePanel = new JPanel();
 		GridBagConstraints gbc_componentInfoTypesTitlePanel = new GridBagConstraints();
 		gbc_componentInfoTypesTitlePanel.insets = new Insets(0, 0, 5, 0);
@@ -772,14 +781,19 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_componentInfoTypesTitlePanel.fill = GridBagConstraints.BOTH;
 		gbc_componentInfoTypesTitlePanel.gridx = 0;
 		gbc_componentInfoTypesTitlePanel.gridy = 12;
-		infoPanel.add(componentInfoTypesTitlePanel, gbc_componentInfoTypesTitlePanel);
+		infoPanel.add(componentInfoTypesTitlePanel,
+				gbc_componentInfoTypesTitlePanel);
 		GridBagLayout gbl_componentInfoTypesTitlePanel = new GridBagLayout();
-		gbl_componentInfoTypesTitlePanel.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_componentInfoTypesTitlePanel.rowHeights = new int[]{0, 0};
-		gbl_componentInfoTypesTitlePanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_componentInfoTypesTitlePanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		componentInfoTypesTitlePanel.setLayout(gbl_componentInfoTypesTitlePanel);
-		
+		gbl_componentInfoTypesTitlePanel.columnWidths = new int[] { 0, 0, 0, 0,
+				0 };
+		gbl_componentInfoTypesTitlePanel.rowHeights = new int[] { 0, 0 };
+		gbl_componentInfoTypesTitlePanel.columnWeights = new double[] { 0.0,
+				0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_componentInfoTypesTitlePanel.rowWeights = new double[] { 0.0,
+				Double.MIN_VALUE };
+		componentInfoTypesTitlePanel
+				.setLayout(gbl_componentInfoTypesTitlePanel);
+
 		componentInfoTypesLabel = new JLabel();
 		componentInfoTypesLabel.setText("Component Info Types");
 		componentInfoTypesLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -788,8 +802,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_componentInfoTypesLabel.insets = new Insets(0, 0, 0, 5);
 		gbc_componentInfoTypesLabel.gridx = 0;
 		gbc_componentInfoTypesLabel.gridy = 0;
-		componentInfoTypesTitlePanel.add(componentInfoTypesLabel, gbc_componentInfoTypesLabel);
-		
+		componentInfoTypesTitlePanel.add(componentInfoTypesLabel,
+				gbc_componentInfoTypesLabel);
+
 		componentInfoTypesSeparator = new JSeparator();
 		GridBagConstraints gbc_componentInfoTypesSeparator = new GridBagConstraints();
 		gbc_componentInfoTypesSeparator.weightx = 1.0;
@@ -797,10 +812,12 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_componentInfoTypesSeparator.gridwidth = 3;
 		gbc_componentInfoTypesSeparator.gridx = 1;
 		gbc_componentInfoTypesSeparator.gridy = 0;
-		componentInfoTypesTitlePanel.add(componentInfoTypesSeparator, gbc_componentInfoTypesSeparator);
-		
+		componentInfoTypesTitlePanel.add(componentInfoTypesSeparator,
+				gbc_componentInfoTypesSeparator);
+
 		componentInfoTypeBlue = new JLabel("");
-		componentInfoTypeBlue.setIcon(new ImageIcon(DomainModelEditor.class.getResource(IMAGE_PATH + "info_type_blue.png")));
+		componentInfoTypeBlue.setIcon(new ImageIcon(DomainModelEditor.class
+				.getResource(IMAGE_PATH + "info_type_blue.png")));
 		componentInfoTypeBlue.setBackground(Color.BLUE);
 		GridBagConstraints gbc_componentInfoTypeBlue = new GridBagConstraints();
 		gbc_componentInfoTypeBlue.fill = GridBagConstraints.VERTICAL;
@@ -808,25 +825,28 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_componentInfoTypeBlue.gridx = 0;
 		gbc_componentInfoTypeBlue.gridy = 13;
 		infoPanel.add(componentInfoTypeBlue, gbc_componentInfoTypeBlue);
-		
-		componentInfoTypeBlueLabel = new JLabel("Informative and Text Components");
+
+		componentInfoTypeBlueLabel = new JLabel(
+				"Informative and Text Components");
 		GridBagConstraints gbc_componentInfoTypeBlueLabel = new GridBagConstraints();
 		gbc_componentInfoTypeBlueLabel.gridwidth = 2;
 		gbc_componentInfoTypeBlueLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_componentInfoTypeBlueLabel.anchor = GridBagConstraints.WEST;
 		gbc_componentInfoTypeBlueLabel.gridx = 1;
 		gbc_componentInfoTypeBlueLabel.gridy = 13;
-		infoPanel.add(componentInfoTypeBlueLabel, gbc_componentInfoTypeBlueLabel);
-		
+		infoPanel.add(componentInfoTypeBlueLabel,
+				gbc_componentInfoTypeBlueLabel);
+
 		componentInfoTypeRed = new JLabel("");
-		componentInfoTypeRed.setIcon(new ImageIcon(DomainModelEditor.class.getResource(IMAGE_PATH + "info_type_red.png")));
+		componentInfoTypeRed.setIcon(new ImageIcon(DomainModelEditor.class
+				.getResource(IMAGE_PATH + "info_type_red.png")));
 		componentInfoTypeRed.setBackground(Color.BLUE);
 		GridBagConstraints gbc_componentInfoTypeRed = new GridBagConstraints();
 		gbc_componentInfoTypeRed.insets = new Insets(0, 0, 5, 5);
 		gbc_componentInfoTypeRed.gridx = 0;
 		gbc_componentInfoTypeRed.gridy = 14;
 		infoPanel.add(componentInfoTypeRed, gbc_componentInfoTypeRed);
-		
+
 		componentInfoTypeRedLabel = new JLabel("Functional components");
 		GridBagConstraints gbc_componentInfoTypeRedLabel = new GridBagConstraints();
 		gbc_componentInfoTypeRedLabel.gridwidth = 2;
@@ -835,34 +855,38 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_componentInfoTypeRedLabel.gridx = 1;
 		gbc_componentInfoTypeRedLabel.gridy = 14;
 		infoPanel.add(componentInfoTypeRedLabel, gbc_componentInfoTypeRedLabel);
-		
+
 		componentInfoTypeGreen = new JLabel("");
-		componentInfoTypeGreen.setIcon(new ImageIcon(DomainModelEditor.class.getResource(IMAGE_PATH + "info_type_green.png")));
+		componentInfoTypeGreen.setIcon(new ImageIcon(DomainModelEditor.class
+				.getResource(IMAGE_PATH + "info_type_green.png")));
 		componentInfoTypeGreen.setBackground(Color.BLUE);
 		GridBagConstraints gbc_componentInfoTypeGreen = new GridBagConstraints();
 		gbc_componentInfoTypeGreen.insets = new Insets(0, 0, 5, 5);
 		gbc_componentInfoTypeGreen.gridx = 0;
 		gbc_componentInfoTypeGreen.gridy = 15;
 		infoPanel.add(componentInfoTypeGreen, gbc_componentInfoTypeGreen);
-		
-		componentInfoTypeGreenLabel = new JLabel("Graphically grouping components");
+
+		componentInfoTypeGreenLabel = new JLabel(
+				"Graphically grouping components");
 		GridBagConstraints gbc_componentInfoTypeGreenLabel = new GridBagConstraints();
 		gbc_componentInfoTypeGreenLabel.gridwidth = 2;
 		gbc_componentInfoTypeGreenLabel.anchor = GridBagConstraints.WEST;
 		gbc_componentInfoTypeGreenLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_componentInfoTypeGreenLabel.gridx = 1;
 		gbc_componentInfoTypeGreenLabel.gridy = 15;
-		infoPanel.add(componentInfoTypeGreenLabel, gbc_componentInfoTypeGreenLabel);
-		
+		infoPanel.add(componentInfoTypeGreenLabel,
+				gbc_componentInfoTypeGreenLabel);
+
 		componentInfoTypeCyan = new JLabel("");
-		componentInfoTypeCyan.setIcon(new ImageIcon(DomainModelEditor.class.getResource(IMAGE_PATH + "info_type_cyan.png")));
+		componentInfoTypeCyan.setIcon(new ImageIcon(DomainModelEditor.class
+				.getResource(IMAGE_PATH + "info_type_cyan.png")));
 		componentInfoTypeCyan.setBackground(Color.BLUE);
 		GridBagConstraints gbc_componentInfoTypeCyan = new GridBagConstraints();
 		gbc_componentInfoTypeCyan.insets = new Insets(0, 0, 5, 5);
 		gbc_componentInfoTypeCyan.gridx = 0;
 		gbc_componentInfoTypeCyan.gridy = 16;
 		infoPanel.add(componentInfoTypeCyan, gbc_componentInfoTypeCyan);
-		
+
 		componentInfoTypeCyanLabel = new JLabel("Logically grouping components");
 		GridBagConstraints gbc_componentInfoTypeCyanLabel = new GridBagConstraints();
 		gbc_componentInfoTypeCyanLabel.gridwidth = 2;
@@ -870,17 +894,19 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_componentInfoTypeCyanLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_componentInfoTypeCyanLabel.gridx = 1;
 		gbc_componentInfoTypeCyanLabel.gridy = 16;
-		infoPanel.add(componentInfoTypeCyanLabel, gbc_componentInfoTypeCyanLabel);
-		
+		infoPanel.add(componentInfoTypeCyanLabel,
+				gbc_componentInfoTypeCyanLabel);
+
 		componentInfoTypeYellow = new JLabel("");
-		componentInfoTypeYellow.setIcon(new ImageIcon(DomainModelEditor.class.getResource(IMAGE_PATH + "info_type_yellow.png")));
+		componentInfoTypeYellow.setIcon(new ImageIcon(DomainModelEditor.class
+				.getResource(IMAGE_PATH + "info_type_yellow.png")));
 		componentInfoTypeYellow.setBackground(Color.BLUE);
 		GridBagConstraints gbc_componentInfoTypeYellow = new GridBagConstraints();
 		gbc_componentInfoTypeYellow.insets = new Insets(0, 0, 5, 5);
 		gbc_componentInfoTypeYellow.gridx = 0;
 		gbc_componentInfoTypeYellow.gridy = 17;
 		infoPanel.add(componentInfoTypeYellow, gbc_componentInfoTypeYellow);
-		
+
 		componentInfoTypeYellowLabel = new JLabel("Custom components");
 		GridBagConstraints gbc_componentInfoTypeYellowLabel = new GridBagConstraints();
 		gbc_componentInfoTypeYellowLabel.gridwidth = 2;
@@ -888,17 +914,19 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_componentInfoTypeYellowLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_componentInfoTypeYellowLabel.gridx = 1;
 		gbc_componentInfoTypeYellowLabel.gridy = 17;
-		infoPanel.add(componentInfoTypeYellowLabel, gbc_componentInfoTypeYellowLabel);
-		
+		infoPanel.add(componentInfoTypeYellowLabel,
+				gbc_componentInfoTypeYellowLabel);
+
 		componentInfoTypeWhite = new JLabel("");
-		componentInfoTypeWhite.setIcon(new ImageIcon(DomainModelEditor.class.getResource(IMAGE_PATH + "info_type_white.png")));
+		componentInfoTypeWhite.setIcon(new ImageIcon(DomainModelEditor.class
+				.getResource(IMAGE_PATH + "info_type_white.png")));
 		componentInfoTypeWhite.setBackground(Color.BLUE);
 		GridBagConstraints gbc_componentInfoTypeWhite = new GridBagConstraints();
 		gbc_componentInfoTypeWhite.insets = new Insets(0, 0, 5, 5);
 		gbc_componentInfoTypeWhite.gridx = 0;
 		gbc_componentInfoTypeWhite.gridy = 18;
 		infoPanel.add(componentInfoTypeWhite, gbc_componentInfoTypeWhite);
-		
+
 		showInfoTypesPanel = new JPanel();
 		showInfoTypesPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		GridBagConstraints gbc_showInfoTypesPanel = new GridBagConstraints();
@@ -907,7 +935,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_showInfoTypesPanel.gridx = 0;
 		gbc_showInfoTypesPanel.gridy = 19;
 		infoPanel.add(showInfoTypesPanel, gbc_showInfoTypesPanel);
-		
+
 		showInfoTypesCheckBox = new JCheckBox("");
 		showInfoTypesCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -915,7 +943,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 			}
 		});
 		showInfoTypesPanel.add(showInfoTypesCheckBox);
-		
+
 		componentInfoTypeWhiteLabel = new JLabel("Unknown");
 		GridBagConstraints gbc_componentInfoTypeWhiteLabel = new GridBagConstraints();
 		gbc_componentInfoTypeWhiteLabel.gridwidth = 2;
@@ -923,8 +951,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_componentInfoTypeWhiteLabel.anchor = GridBagConstraints.WEST;
 		gbc_componentInfoTypeWhiteLabel.gridx = 1;
 		gbc_componentInfoTypeWhiteLabel.gridy = 18;
-		infoPanel.add(componentInfoTypeWhiteLabel, gbc_componentInfoTypeWhiteLabel);
-		
+		infoPanel.add(componentInfoTypeWhiteLabel,
+				gbc_componentInfoTypeWhiteLabel);
+
 		lblShowInfoTypes = new JLabel("Show Info Types in Graphs");
 		GridBagConstraints gbc_lblShowInfoTypes = new GridBagConstraints();
 		gbc_lblShowInfoTypes.gridwidth = 2;
@@ -933,7 +962,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_lblShowInfoTypes.gridx = 1;
 		gbc_lblShowInfoTypes.gridy = 19;
 		infoPanel.add(lblShowInfoTypes, gbc_lblShowInfoTypes);
-		
+
 		recordingTitlePanel = new JPanel();
 		GridBagConstraints gbc_recordingTitlePanel = new GridBagConstraints();
 		gbc_recordingTitlePanel.gridwidth = 3;
@@ -943,10 +972,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_recordingTitlePanel.gridy = 20;
 		infoPanel.add(recordingTitlePanel, gbc_recordingTitlePanel);
 		GridBagLayout gbl_recordingTitlePanel = new GridBagLayout();
-		gbl_recordingTitlePanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-		gbl_recordingTitlePanel.rowWeights = new double[]{0.0};
+		gbl_recordingTitlePanel.columnWeights = new double[] { 0.0, 0.0, 0.0,
+				0.0 };
+		gbl_recordingTitlePanel.rowWeights = new double[] { 0.0 };
 		recordingTitlePanel.setLayout(gbl_recordingTitlePanel);
-		
+
 		recordingTitleLabel = new JLabel();
 		recordingTitleLabel.setText("Recording");
 		recordingTitleLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -956,7 +986,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_recordingTitleLabel.gridx = 0;
 		gbc_recordingTitleLabel.gridy = 0;
 		recordingTitlePanel.add(recordingTitleLabel, gbc_recordingTitleLabel);
-		
+
 		recordingTitleSeparator = new JSeparator();
 		GridBagConstraints gbc_recordingTitleSeparator = new GridBagConstraints();
 		gbc_recordingTitleSeparator.insets = new Insets(0, 0, 5, 0);
@@ -965,8 +995,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_recordingTitleSeparator.gridwidth = 3;
 		gbc_recordingTitleSeparator.gridx = 1;
 		gbc_recordingTitleSeparator.gridy = 0;
-		recordingTitlePanel.add(recordingTitleSeparator, gbc_recordingTitleSeparator);
-		
+		recordingTitlePanel.add(recordingTitleSeparator,
+				gbc_recordingTitleSeparator);
+
 		fineNameLabel = new JLabel();
 		fineNameLabel.setText("File name:");
 		GridBagConstraints gbc_fineNameLabel = new GridBagConstraints();
@@ -975,7 +1006,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_fineNameLabel.gridx = 0;
 		gbc_fineNameLabel.gridy = 21;
 		infoPanel.add(fineNameLabel, gbc_fineNameLabel);
-		
+
 		fileNameTextField = new JTextField();
 		GridBagConstraints gbc_fileNameTextField_1 = new GridBagConstraints();
 		gbc_fileNameTextField_1.insets = new Insets(0, 0, 5, 5);
@@ -984,7 +1015,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_fileNameTextField_1.gridy = 21;
 		infoPanel.add(fileNameTextField, gbc_fileNameTextField_1);
 		fileNameTextField.setColumns(10);
-		
+
 		browseButton = new JButton("");
 		browseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -992,14 +1023,15 @@ public class DomainModelEditor extends JFrame implements Observer {
 			}
 		});
 		browseButton.setToolTipText("Browse");
-		browseButton.setIcon(new ImageIcon(DomainModelEditor.class.getResource(IMAGE_PATH + "fileBrowser.png")));
+		browseButton.setIcon(new ImageIcon(DomainModelEditor.class
+				.getResource(IMAGE_PATH + "fileBrowser.png")));
 		GridBagConstraints gbc_browseButton_1 = new GridBagConstraints();
 		gbc_browseButton_1.anchor = GridBagConstraints.EAST;
 		gbc_browseButton_1.insets = new Insets(0, 0, 5, 0);
 		gbc_browseButton_1.gridx = 2;
 		gbc_browseButton_1.gridy = 21;
 		infoPanel.add(browseButton, gbc_browseButton_1);
-		
+
 		recordSeparator = new JSeparator();
 		GridBagConstraints gbc_recordSeparator = new GridBagConstraints();
 		gbc_recordSeparator.gridwidth = 3;
@@ -1007,7 +1039,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_recordSeparator.gridx = 0;
 		gbc_recordSeparator.gridy = 22;
 		infoPanel.add(recordSeparator, gbc_recordSeparator);
-		
+
 		recordButtonPanel = new JPanel();
 		GridBagConstraints gbc_recordButtonPanel = new GridBagConstraints();
 		gbc_recordButtonPanel.anchor = GridBagConstraints.EAST;
@@ -1017,7 +1049,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_recordButtonPanel.gridx = 0;
 		gbc_recordButtonPanel.gridy = 23;
 		infoPanel.add(recordButtonPanel, gbc_recordButtonPanel);
-		
+
 		recordButton = new JButton("");
 		recordButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -1025,16 +1057,23 @@ public class DomainModelEditor extends JFrame implements Observer {
 			}
 		});
 		recordButton.setToolTipText("Start recording");
-		recordButton.setIcon(new ImageIcon(DomainModelEditor.class.getResource(IMAGE_PATH + "record.png")));
-		recordButton.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "record_disabled.png"))); // NOI18N
-        recordButton.setDisabledSelectedIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "record_disabled.png"))); // NOI18N
-        recordButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "record.png"))); // NOI18N
-        recordButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "record_hover.png"))); // NOI18N
-        recordButton.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "record_hover.png"))); // NOI18N
-        recordButton.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "record.png"))); // NOI18N
-        
+		recordButton.setIcon(new ImageIcon(DomainModelEditor.class
+				.getResource(IMAGE_PATH + "record.png")));
+		recordButton.setDisabledIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "record_disabled.png"))); // NOI18N
+		recordButton.setDisabledSelectedIcon(new javax.swing.ImageIcon(
+				getClass().getResource(IMAGE_PATH + "record_disabled.png"))); // NOI18N
+		recordButton.setPressedIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "record.png"))); // NOI18N
+		recordButton.setRolloverIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "record_hover.png"))); // NOI18N
+		recordButton.setRolloverSelectedIcon(new javax.swing.ImageIcon(
+				getClass().getResource(IMAGE_PATH + "record_hover.png"))); // NOI18N
+		recordButton.setSelectedIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "record.png"))); // NOI18N
+
 		recordButtonPanel.add(recordButton);
-		
+
 		stopButton = new JButton("");
 		stopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -1042,20 +1081,27 @@ public class DomainModelEditor extends JFrame implements Observer {
 			}
 		});
 		stopButton.setToolTipText("Stop recording");
-		stopButton.setIcon(new ImageIcon(DomainModelEditor.class.getResource(IMAGE_PATH + "stop.png")));
-		stopButton.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "stop_disabled.png"))); // NOI18N
-        stopButton.setDisabledSelectedIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "stop_disabled.png"))); // NOI18N
-        stopButton.setEnabled(false);
-        stopButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "stop.png"))); // NOI18N
-        stopButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "stop_hover.png"))); // NOI18N
-        stopButton.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "stop_hover.png"))); // NOI18N
-        stopButton.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource(IMAGE_PATH + "stop.png"))); // NOI18N
-		
+		stopButton.setIcon(new ImageIcon(DomainModelEditor.class
+				.getResource(IMAGE_PATH + "stop.png")));
+		stopButton.setDisabledIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "stop_disabled.png"))); // NOI18N
+		stopButton.setDisabledSelectedIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "stop_disabled.png"))); // NOI18N
+		stopButton.setEnabled(false);
+		stopButton.setPressedIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "stop.png"))); // NOI18N
+		stopButton.setRolloverIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "stop_hover.png"))); // NOI18N
+		stopButton.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "stop_hover.png"))); // NOI18N
+		stopButton.setSelectedIcon(new javax.swing.ImageIcon(getClass()
+				.getResource(IMAGE_PATH + "stop.png"))); // NOI18N
+
 		recordButtonPanel.add(stopButton);
-		
+
 		recordButtonGroup.add(recordButton);
 		recordButtonGroup.add(stopButton);
-		
+
 		recordingProgressBar = new JProgressBar();
 		GridBagConstraints gbc_recordingProgressBar_1 = new GridBagConstraints();
 		gbc_recordingProgressBar_1.gridwidth = 3;
@@ -1063,14 +1109,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 		gbc_recordingProgressBar_1.gridx = 0;
 		gbc_recordingProgressBar_1.gridy = 24;
 		infoPanel.add(recordingProgressBar, gbc_recordingProgressBar_1);
-		
-		
+
 		infoSplitPane.setLeftComponent(leftPanel);
 		leftPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		leftPanel.add(infoPanel);
-		
-		
-		
+
 		rightJTabbedPane.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
 		modelSplitPane.setResizeWeight(0.5);
@@ -1093,8 +1136,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		modelSplitPane.setLeftComponent(domainTreePanel);
 
-		componentTreePanel.setLayout(new javax.swing.BoxLayout(componentTreePanel,
-				javax.swing.BoxLayout.Y_AXIS));
+		componentTreePanel.setLayout(new javax.swing.BoxLayout(
+				componentTreePanel, javax.swing.BoxLayout.Y_AXIS));
 
 		componentLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 		componentLabel.setLabelFor(componentJTree);
@@ -1125,7 +1168,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 				editorScrollPane, "Editor");
 
 		infoSplitPane.setRightComponent(rightJTabbedPane);
-		rightJTabbedPane.getAccessibleContext().setAccessibleName("jTabbedPane");
+		rightJTabbedPane.getAccessibleContext()
+				.setAccessibleName("jTabbedPane");
 
 		fileMenu.setText("File");
 
@@ -1179,7 +1223,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		pack();
 	}// </editor-fold>
-	
+
 	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		// // xml writer test
 		// currently not working
@@ -1406,9 +1450,14 @@ public class DomainModelEditor extends JFrame implements Observer {
 	/******************* Utilities for tree expanding/collapsing *****************/
 
 	/**
-	 * Expand/collapse utility method. If expand is true, expands all nodes in the tree. Otherwise collapses all nodes in the tree.
-	 * @param tree The jtree to expand/collapse
-	 * @param expand If true, the method expands all nodes in the tree, otherwise it collapses all nodes in the tree.
+	 * Expand/collapse utility method. If expand is true, expands all nodes in
+	 * the tree. Otherwise collapses all nodes in the tree.
+	 * 
+	 * @param tree
+	 *            The jtree to expand/collapse
+	 * @param expand
+	 *            If true, the method expands all nodes in the tree, otherwise
+	 *            it collapses all nodes in the tree.
 	 */
 	public void expandAll(JTree tree, boolean expand) {
 		javax.swing.tree.TreeNode root = (javax.swing.tree.TreeNode) tree
@@ -1419,10 +1468,16 @@ public class DomainModelEditor extends JFrame implements Observer {
 	}
 
 	/**
-	 * Helper method for the expandAll(JTree tree, boolean expand) method, free from root.
-	 * @param tree The tree to expand/collapse
-	 * @param parent The parent node to expand/collapse
-	 * @param expand If true, the method expands all nodes in the subtree, otherwise it collapses all nodes in the subtree.
+	 * Helper method for the expandAll(JTree tree, boolean expand) method, free
+	 * from root.
+	 * 
+	 * @param tree
+	 *            The tree to expand/collapse
+	 * @param parent
+	 *            The parent node to expand/collapse
+	 * @param expand
+	 *            If true, the method expands all nodes in the subtree,
+	 *            otherwise it collapses all nodes in the subtree.
 	 */
 	private void expandAll(JTree tree, TreePath parent, boolean expand) {
 		// Traverse children
@@ -1444,10 +1499,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 			tree.collapsePath(parent);
 		}
 	}
-	
 
 	/******************* Component variables declaration ************************************/
-	
+
 	private javax.swing.JTextField actionCommandField;
 	private javax.swing.JLabel actionCommandLabel;
 	private javax.swing.JTextField classField;
@@ -1495,57 +1549,57 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private javax.swing.JMenuItem hidePopupMenuItem;
 	private javax.swing.JMenuItem hideAllPopupMenuItem;
 	private javax.swing.JMenuItem unhideAllPopupMenuItem;
-    private GridBagConstraints gbc_domainInfoTitlePanel;
-    private GridBagConstraints gbc_componentInfoTitlePanel;
-    private GridBagConstraints gridBagConstraints_1;
-    private javax.swing.JPanel componentInfoTypesTitlePanel;
-    private javax.swing.JLabel componentInfoTypesLabel;
-    private javax.swing.JSeparator componentInfoTypesSeparator;
-    private javax.swing.JLabel componentInfoTypeBlue;
-    private javax.swing.JLabel componentInfoTypeBlueLabel;
-    private javax.swing.JLabel componentInfoTypeRed;
-    private javax.swing.JLabel componentInfoTypeRedLabel;
-    private javax.swing.JLabel componentInfoTypeGreen;
-    private javax.swing.JLabel componentInfoTypeGreenLabel;
-    private javax.swing.JLabel componentInfoTypeCyan;
-    private javax.swing.JLabel componentInfoTypeCyanLabel;
-    private javax.swing.JLabel componentInfoTypeYellow;
-    private javax.swing.JLabel componentInfoTypeYellowLabel;
-    private javax.swing.JLabel componentInfoTypeWhite;
-    private javax.swing.JLabel componentInfoTypeWhiteLabel;
-    private javax.swing.JPanel recordingTitlePanel;
-    private javax.swing.JLabel recordingTitleLabel;
-    private JSeparator recordingTitleSeparator;
-    private javax.swing.JLabel fineNameLabel;
-    private javax.swing.JTextField fileNameTextField;
-    private javax.swing.JButton browseButton;
-    private javax.swing.JProgressBar recordingProgressBar;
-    private javax.swing.JPanel recordButtonPanel;
-    private javax.swing.JButton recordButton;
-    private javax.swing.JButton stopButton;
-    private javax.swing.JCheckBox showInfoTypesCheckBox;
-    private javax.swing.JPanel showInfoTypesPanel;
-    private javax.swing.JLabel lblShowInfoTypes;
-    private GridBagConstraints gridBagConstraints_2;
-    private GridBagConstraints gridBagConstraints_3;
-    private GridBagConstraints gridBagConstraints_4;
-    private GridBagConstraints gridBagConstraints_5;
-    private GridBagConstraints gridBagConstraints_6;
-    private GridBagConstraints gridBagConstraints_7;
-    private GridBagConstraints gridBagConstraints_8;
-    private GridBagConstraints gridBagConstraints_9;
-    private GridBagConstraints gridBagConstraints_10;
-    private javax.swing.JSeparator recordSeparator;
-    private javax.swing.ButtonGroup recordButtonGroup;
+	private GridBagConstraints gbc_domainInfoTitlePanel;
+	private GridBagConstraints gbc_componentInfoTitlePanel;
+	private GridBagConstraints gridBagConstraints_1;
+	private javax.swing.JPanel componentInfoTypesTitlePanel;
+	private javax.swing.JLabel componentInfoTypesLabel;
+	private javax.swing.JSeparator componentInfoTypesSeparator;
+	private javax.swing.JLabel componentInfoTypeBlue;
+	private javax.swing.JLabel componentInfoTypeBlueLabel;
+	private javax.swing.JLabel componentInfoTypeRed;
+	private javax.swing.JLabel componentInfoTypeRedLabel;
+	private javax.swing.JLabel componentInfoTypeGreen;
+	private javax.swing.JLabel componentInfoTypeGreenLabel;
+	private javax.swing.JLabel componentInfoTypeCyan;
+	private javax.swing.JLabel componentInfoTypeCyanLabel;
+	private javax.swing.JLabel componentInfoTypeYellow;
+	private javax.swing.JLabel componentInfoTypeYellowLabel;
+	private javax.swing.JLabel componentInfoTypeWhite;
+	private javax.swing.JLabel componentInfoTypeWhiteLabel;
+	private javax.swing.JPanel recordingTitlePanel;
+	private javax.swing.JLabel recordingTitleLabel;
+	private JSeparator recordingTitleSeparator;
+	private javax.swing.JLabel fineNameLabel;
+	private javax.swing.JTextField fileNameTextField;
+	private javax.swing.JButton browseButton;
+	private javax.swing.JProgressBar recordingProgressBar;
+	private javax.swing.JPanel recordButtonPanel;
+	private javax.swing.JButton recordButton;
+	private javax.swing.JButton stopButton;
+	private javax.swing.JCheckBox showInfoTypesCheckBox;
+	private javax.swing.JPanel showInfoTypesPanel;
+	private javax.swing.JLabel lblShowInfoTypes;
+	private GridBagConstraints gridBagConstraints_2;
+	private GridBagConstraints gridBagConstraints_3;
+	private GridBagConstraints gridBagConstraints_4;
+	private GridBagConstraints gridBagConstraints_5;
+	private GridBagConstraints gridBagConstraints_6;
+	private GridBagConstraints gridBagConstraints_7;
+	private GridBagConstraints gridBagConstraints_8;
+	private GridBagConstraints gridBagConstraints_9;
+	private GridBagConstraints gridBagConstraints_10;
+	private javax.swing.JSeparator recordSeparator;
+	private javax.swing.ButtonGroup recordButtonGroup;
 
-    /******************* Private classes ************************************/
+	/******************* Private classes ************************************/
 	/**
 	 * JPopMenu implementation.
 	 */
 	private class PopupMenu extends JPopupMenu {
 		private static final long serialVersionUID = 3554250591171474489L;
-		
-		/*Static variables for PopupMenu labels.*/
+
+		/* Static variables for PopupMenu labels. */
 		public static final String HIDE_MENU_TEXT = "Hide";
 		public static final String UNHIDE_MENU_TEXT = "Unhide";
 		public static final String HIDE_ALL_MENU_TEXT = "Hide All";
@@ -1597,7 +1651,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		private void doPop(MouseEvent e) {
 			PopupMenu menu = new PopupMenu();
 			TreePath tp = domainJTree.getPathForLocation(e.getX(), e.getY());
-			if (e.getClickCount() == 1) {
+			if (e.getClickCount() == 1 && tp != null) {
 				switch (e.getButton()) {
 				case MouseEvent.BUTTON3: {
 					Object o = tp.getLastPathComponent();
@@ -1622,59 +1676,63 @@ public class DomainModelEditor extends JFrame implements Observer {
 			}
 		}
 	}
-	
+
 	/**
-     * Recording thread class.
-     */
-    private class RecordingThread extends Thread {
-        /** Recording flag.
-         * @value true if recording is running, false otherwise.
-         */
-        private boolean running = true;
+	 * Recording thread class.
+	 */
+	private class RecordingThread extends Thread {
+		/**
+		 * Recording flag.
+		 * 
+		 * @value true if recording is running, false otherwise.
+		 */
+		private boolean running = true;
 
-        /**
-         * Stops the recording process.
-         */
-        @Override
-        public void interrupt() {
-            running = false;
-        }
+		/**
+		 * Stops the recording process.
+		 */
+		@Override
+		public void interrupt() {
+			running = false;
+		}
 
-        /**
-         * Runs the recording process.
-         */
-        @Override
-        public void run() {
-            while (running) {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ex) {
-                    //couldnt sleep
-                }
-                for (int i = 0; i <= 100; i++) {
-                    recordingProgressBar.setValue(i);
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                        //couldnt sleep
-                    }
-                }
-            }
-        }
-    }
-    
-    /**
-     * File filter for *.deal files.
-     */
-    private class DealFileFilter extends FileFilter {
-        @Override
-        public boolean accept(File f) {
-            return f.isDirectory() || f.getName().toLowerCase().endsWith(Recorder.DEAL_FILE_EXT);
-        }
+		/**
+		 * Runs the recording process.
+		 */
+		@Override
+		public void run() {
+			while (running) {
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException ex) {
+					// couldnt sleep
+				}
+				for (int i = 0; i <= 100; i++) {
+					recordingProgressBar.setValue(i);
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException ex) {
+						// couldnt sleep
+					}
+				}
+			}
+		}
+	}
 
-        @Override
-        public String getDescription() {
-            return "DEAL files *" + Recorder.DEAL_FILE_EXT;
-        }
-    }
+	/**
+	 * File filter for *.deal files.
+	 */
+	private class DealFileFilter extends FileFilter {
+		@Override
+		public boolean accept(File f) {
+			return f.isDirectory()
+					|| f.getName().toLowerCase()
+							.endsWith(Recorder.DEAL_FILE_EXT);
+		}
+
+		@Override
+		public String getDescription() {
+			return "DEAL files *" + Recorder.DEAL_FILE_EXT;
+		}
+	}
 }

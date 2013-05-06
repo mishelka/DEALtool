@@ -1,12 +1,11 @@
 package gui.analyzer.handlers.swing.record;
 
-import gui.analyzer.Recorder;
 import gui.analyzer.handlers.RecordSupport;
 import gui.model.application.events.UiEvent;
+import gui.tools.Recorder;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.JMenu;
@@ -58,7 +57,7 @@ public class AbstractButtonRecordSupport extends RecordSupport<AbstractButton> {
 	}
 
 	@Override
-	protected List<String> createCommands(AbstractButton component) {
+	protected String[] createCommands(AbstractButton component) {
 		//we're not implementing anything, because a button click is a single event
 		return null;
 	}
