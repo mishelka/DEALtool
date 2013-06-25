@@ -3,6 +3,7 @@ package gui.editor;
 import gui.analyzer.observable.ApplicationEvent;
 import gui.analyzer.observable.ApplicationEvent.ApplicationChangeState;
 import gui.analyzer.util.JLabelFinder;
+import gui.analyzer.util.Logger;
 import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
@@ -76,6 +77,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private static DomainModelEditor instance;
 
 	private static Application application = new Application();
+	private static ArrayList<Window> windows = new ArrayList<Window>();
 
 	private Component clickedComponent;
 	private Color clickedComponentColor;
@@ -194,9 +196,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 		DefaultMutableTreeNode dmtn = new DefaultMutableTreeNode(
 				"Component tree");
 
-		for (Scene scene : application.getScenes()) {
-			if (scene instanceof WindowScene || scene instanceof DialogScene) {
-				dmtn.add(setupPartOfTreeModelExtended((Window) scene
+		for (Scene s : application.getScenes()) {
+			if (s instanceof WindowScene || s instanceof DialogScene) {
+				dmtn.add(setupPartOfTreeModelExtended((Window) s
 						.getSceneContainer()));
 			}
 		}
@@ -312,6 +314,16 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 	public static List<DomainModel> getDomainModels() {
 		return application.getDomainModels();
+	}
+	
+	public List<Window> getApplicationWindows() {
+		return windows;
+	}
+	
+	public void addApplicationWindow(Window window) {
+		if(!windows.contains(window)) {
+			windows.add(window);
+		}
 	}
 
 	/******************* Events for mouse clicking *******************************/
@@ -1133,7 +1145,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		domainTreePanel.add(domainScrollPane);
 
-		modelSplitPane.setLeftComponent(domainTreePanel);
+		modelSplitPane.setRightComponent(domainTreePanel);
 
 		componentTreePanel.setLayout(new javax.swing.BoxLayout(
 				componentTreePanel, javax.swing.BoxLayout.Y_AXIS));
@@ -1151,7 +1163,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		componentTreePanel.add(componentScrollPane);
 
-		modelSplitPane.setRightComponent(componentTreePanel);
+		modelSplitPane.setLeftComponent(componentTreePanel);
 
 		rightJTabbedPane.addTab("", new VerticalTextIcon(" Model ", false),
 				modelSplitPane, "Model");

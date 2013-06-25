@@ -201,6 +201,10 @@ public class DomainModel {
 	public boolean removeMultipleNestings() {
 		return root.removeMultipleNestings();
 	}
+	
+	public boolean removeTermsOfInfoType(ComponentInfoType type) {
+		return root.removeTermsOfInfoType(type);
+	}
 
 	public void createDefaultValues(String projectName) {
 		Term root = new Term(this);

@@ -53,12 +53,14 @@ public class Application extends AppObservable {
 	}
 	
 	public void addScene(Scene scene) {
-		if(getSceneCount() == 0 || name == null) {
-			this.name = scene.getName();
+		if(!scenes.contains(scene)){
+			if(getSceneCount() == 0 || name == null) {
+				this.name = scene.getName();
+			}
+			
+			scenes.add(scene);
+			notifySceneAdded(scene);
 		}
-		
-		scenes.add(scene);
-		notifySceneAdded(scene);
 	}
 
 	public void removeScene(Scene scene) {

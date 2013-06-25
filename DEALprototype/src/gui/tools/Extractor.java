@@ -4,6 +4,7 @@ import gui.analyzer.handlers.Composite;
 import gui.analyzer.handlers.Composites;
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.analyzer.handlers.DomainIdentifiables;
+import gui.analyzer.util.Logger;
 import gui.analyzer.util.Util;
 import gui.model.application.scenes.Scene;
 import gui.model.domain.ComponentInfoType;
@@ -18,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
 public class Extractor {
@@ -65,12 +67,12 @@ public class Extractor {
 		// extract subtree from the root scene
 		extractSubtree(scene.getSceneContainer(), rootTerm);
 
-		// removes all labelfors which describe other components and moves all
-		// content from the label to the component.
-		removeSimpleLabelFor(rootTerm);
-
 		// additional derivation of relations from parents
 		findParentRelationsInModel();
+		
+		// removes all labelfors which describe other components and moves all
+		// content from the label to the component.
+		transferLabelFors(rootTerm);
 
 		// find separators
 		findSeparatorsInModel();
@@ -90,48 +92,50 @@ public class Extractor {
 	 *            The term which should be checked for labelFors.
 	 * @return if anything was removed, returns true, false otherwise
 	 */
-	public boolean removeSimpleLabelFor(Term thisTerm) {
+	public boolean transferLabelFors(Term thisTerm) {
 		List<Term> itemsToRemove = new ArrayList<Term>();
 
 		Iterator<Term> i = thisTerm.iterator();
 		while (i.hasNext()) {
 			// component term - this will be the new term with a description
 			// from the JLabel
-			Term ct = i.next();
+			Term componentTerm = i.next();
 
-			if (ct.getLabelForComponent() != null) {
+			if (componentTerm.getLabelForComponent() != null) {
 				// label term - this will be deleted and all information will be
 				// transfered to ct
-				Term lt = domainModel.getTermForComponent(ct
+				Term labelTerm = domainModel.getTermForComponent(componentTerm
 						.getLabelForComponent());
 
-				if (lt != null) {
+				if (labelTerm != null) {
+					Logger.log(">>> " + labelTerm);
 					// move all children of label to the component
-					if (lt.hasChildren())
-						ct.addAll(lt.getChildren());
+					if (labelTerm.hasChildren())
+						componentTerm.addAll(labelTerm.getChildren());
 
 					// transfer name and description from label to component
-					if (!ct.hasName())
-						ct.setName(lt.getName());
-					else if (!ct.hasDescription())
-						ct.setDescription(ct.getLabelForComponent().getText());
-					if (!ct.hasIcon())
-						ct.setIcon(lt.getIcon());
-
+					if (!componentTerm.hasName())
+						componentTerm.setName(labelTerm.getName());
+					else if (!componentTerm.hasDescription())
+						componentTerm.setDescription(componentTerm.getLabelForComponent().getText());
+					if (!componentTerm.hasIcon())
+						componentTerm.setIcon(labelTerm.getIcon());
+					
 					// add label term to the list of terms to be removed
-					itemsToRemove.add(lt);
+					itemsToRemove.add(labelTerm);
 				}
 			}
 		}
 
 		boolean wasRemoved = !itemsToRemove.isEmpty();
+		
 		domainModel.removeAll(itemsToRemove);
 
 		// do this for all the children of thisTerm
 		i = thisTerm.iterator();
 		while (i.hasNext()) {
 			Term next = i.next();
-			wasRemoved |= removeSimpleLabelFor(next);
+			wasRemoved |= transferLabelFors(next);
 		}
 
 		return wasRemoved;
@@ -469,6 +473,12 @@ public class Extractor {
 				thisTerm.removeChild(t);
 				newTerm.addChild(t);
 				t.setParentRelation(null);
+
+				JLabel labelFor = t.getLabelForComponent();
+				if (labelFor != null && !Util.isEmpty(labelFor.getText())) {
+					newTerm.setLabelForComponent(labelFor);
+					newTerm.setName(labelFor.getText());
+				}
 			}
 
 			thisTerm.addChild(newTerm);
