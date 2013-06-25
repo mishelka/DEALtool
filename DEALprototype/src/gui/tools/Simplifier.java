@@ -1,6 +1,6 @@
 package gui.tools;
 
-import gui.analyzer.util.Logger;
+import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 
@@ -10,7 +10,15 @@ public class Simplifier {
 	public DomainModel sIMPLIFY(DomainModel domainModel) {
 		this.domainModel = domainModel;
 		
-		return sIMPLIFY();
+		sIMPLIFY();
+		
+		removeFunctionalComponents();
+		
+		return domainModel;
+	}
+	
+	private boolean removeFunctionalComponents() {
+		return domainModel.removeTermsOfInfoType(ComponentInfoType.FUNCTIONAL);
 	}
 	
 /************************* Methods for Domain Model simplification ******************************/

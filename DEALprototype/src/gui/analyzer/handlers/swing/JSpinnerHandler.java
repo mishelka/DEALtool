@@ -1,12 +1,14 @@
 package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.analyzer.util.Logger;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.constraint.Constraint;
 import gui.model.domain.constraint.DataType;
 import gui.model.domain.constraint.DataTypeConstraint;
 import gui.model.domain.constraint.Enumeration;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -42,6 +44,8 @@ public class JSpinnerHandler extends DomainIdentifiable<JSpinner> {
 
 		SpinnerModel sModel = component.getModel();
 
+		removeDataConstraintFirst(constraints);
+		
 		if (sModel instanceof SpinnerNumberModel) {
 			constraints.add(new DataTypeConstraint(DataType.NUMERIC));
 		} else if (sModel instanceof SpinnerDateModel) {
@@ -59,9 +63,21 @@ public class JSpinnerHandler extends DomainIdentifiable<JSpinner> {
 			enumerationConstraint.setValues(constraintValues);
 
 			constraints.add(enumerationConstraint);
+		} else {
+			constraints.add(new DataTypeConstraint(DataType.STRING));
 		}
-
+		
 		return constraints;
+	}
+	
+	private void removeDataConstraintFirst(List<Constraint> constraints) {
+		Iterator<Constraint> i = constraints.iterator();
+		while(i.hasNext()) {
+			Constraint c = i.next();
+			if(c instanceof DataTypeConstraint) {
+					i.remove();
+			}
+		}
 	}
 	
 	@Override

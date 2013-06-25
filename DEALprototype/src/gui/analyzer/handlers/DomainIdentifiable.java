@@ -1,6 +1,7 @@
 package gui.analyzer.handlers;
 
 import gui.analyzer.util.JLabelFinder;
+import gui.analyzer.util.Logger;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;

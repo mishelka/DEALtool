@@ -18,12 +18,13 @@ public class RecorderRegistator {
 	}
 	
 	private <T> void registerComponentTree(T component) {
-		tryRegisterSuperclass(component);
+		boolean continueToChildren = tryRegisterSuperclass(component);
 		
-		tryRegisterChildren(component);
+		if(continueToChildren) tryRegisterChildren(component);
 	}
 	
-	private <T> void tryRegisterSuperclass(T component) {
+	private <T> boolean tryRegisterSuperclass(T component) {
+		boolean continueToChildren = true;
 		@SuppressWarnings("unchecked")
 		Class<? super T> componentClass = (Class<T>) component.getClass();
 		
@@ -32,7 +33,7 @@ public class RecorderRegistator {
 					.getInstance().getRecordSupport(componentClass);
 			if (recordSupport != null) {
 
-				recordSupport.register(component, recorder);
+				continueToChildren = recordSupport.register(component, recorder);
 				
 				componentClass = null;
 				break;
@@ -40,6 +41,7 @@ public class RecorderRegistator {
 				componentClass = componentClass.getSuperclass();
 			}
 		}
+		return continueToChildren;
 	}
 	
 	private <T> void tryRegisterChildren(T component) {

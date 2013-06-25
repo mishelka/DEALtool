@@ -1,16 +1,20 @@
 package gui.analyzer.aspects.yajco;
 
+import gui.analyzer.util.Logger;
+import gui.model.domain.ComponentInfoType;
+import gui.model.domain.DomainModel;
+import gui.model.domain.Term;
+import gui.model.domain.constraint.Constraint;
+import gui.model.domain.constraint.DataType;
+import gui.model.domain.constraint.DataTypeConstraint;
+import gui.model.domain.relation.RelationType;
+import gui.tools.DomainModelGenerator;
+
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PipedReader;
-import java.io.PipedWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,10 +22,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import yajco.generator.parsergen.JavaccCompilerGenerator;
 import yajco.model.Concept;
 import yajco.model.Language;
-import yajco.model.LocalVariablePart;
 import yajco.model.Notation;
 import yajco.model.NotationPart;
 import yajco.model.Property;
@@ -29,10 +31,8 @@ import yajco.model.PropertyReferencePart;
 import yajco.model.SkipDef;
 import yajco.model.TokenDef;
 import yajco.model.TokenPart;
-import yajco.model.pattern.NotationPartPattern;
 import yajco.model.pattern.impl.Enum;
 import yajco.model.pattern.impl.Token;
-import yajco.model.type.ListType;
 import yajco.model.type.PrimitiveType;
 import yajco.model.type.PrimitiveTypeConst;
 import yajco.model.type.ReferenceType;
@@ -41,13 +41,16 @@ import yajco.model.type.Type;
 import yajco.parser.ParserHelper;
 import yajco.printer.Printer;
 
-import gui.model.domain.ComponentInfoType;
-import gui.model.domain.DomainModel;
-import gui.model.domain.Term;
-import gui.model.domain.relation.RelationType;
-import gui.tools.DomainModelGenerator;
-
 public aspect YajcoAspect {
+	
+	private static Map<String,String> tokens = new HashMap<String,String>();
+	
+	{
+		tokens.put("stringValue", "\\\"([^\\\"]*)\\\"");
+		tokens.put("intValue", "([-]?[0-9]+)");
+		tokens.put("realValue", "([-]?[0-9]+([.][0-9]+)?)");
+//		tokens.put("dateValue", "^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$");
+	}
 
 	pointcut modelCreation(): call(public* DomainModelGenerator.createDomainModel(..));
 
@@ -87,13 +90,47 @@ public aspect YajcoAspect {
 								.add(new PropertyReferencePart(property, null));
 					}
 				}
-				if (term.getComponentInfoType() == ComponentInfoType.DESCRIPTIVE) {
-					Property property = new Property("innerValue",
-							new PrimitiveType(PrimitiveTypeConst.STRING));
+				List<Constraint> constraints = term.getConstraints();
+				DataType dataType = null;
+				for(Constraint c : constraints) {
+					if(c instanceof DataTypeConstraint) {
+						DataTypeConstraint dtc = (DataTypeConstraint) c;
+						dataType = dtc.getType();
+					}
+				}
+				
+				if(dataType != null) {
+//				if (term.getComponentInfoType() == ComponentInfoType.TEXTUAL) {
+					Property property;
+					Token token = null;
+					switch(dataType) {
+//						case STRING:
+//							Logger.log("STRING!!!!!!!!!!!!!!!!!!!!!");
+//							property = new Property("innerValue",
+//								new PrimitiveType(PrimitiveTypeConst.STRING));
+//							token = new Token("stringValue"); 
+//						break;
+						case NUMERIC:
+//							Logger.log("NUMERIC!!!!!!!!!!!!!!!!!!!!!");
+							property = new Property("innerValue",
+								new PrimitiveType(PrimitiveTypeConst.INTEGER));
+							token = new Token("intValue");
+						break;
+						case REAL: property = new Property("innerValue",
+								new PrimitiveType(PrimitiveTypeConst.REAL));
+							token = new Token("realValue");
+						break;
+//						case DATE: property = new Property("innerValue",
+//								new PrimitiveType(PrimitiveTypeConst.DATE));
+						default: // STRING or anything else
+							property = new Property("innerValue",
+								new PrimitiveType(PrimitiveTypeConst.STRING));
+							token = new Token("stringValue");
+					}
 					concept.addProperty(property);
 					PropertyReferencePart part = new PropertyReferencePart(
 							property, null);
-					part.addPattern(new Token("stringValue"));
+					part.addPattern(token);
 					notations.add(part);
 				}
 				concept.addNotation(new Notation(notations
@@ -105,8 +142,10 @@ public aspect YajcoAspect {
 		language.setName("deal");
 		language.setSkips(new ArrayList<SkipDef>());
 		language.setTokens(new ArrayList<TokenDef>());
-		language.getTokens().add(
-				new TokenDef("stringValue", "\\\"([^\\\"]*)\\\""));
+		List<TokenDef> tokenDefs = language.getTokens(); 
+		for (Entry<String, String> token : tokens.entrySet()) {
+			tokenDefs.add(new TokenDef(token.getKey(), token.getValue()));
+		}
 		language.getSkips().add(new SkipDef("[ \\n\\t\\r]"));
 
 		language.addConcept(map.get(model.getRoot()));
