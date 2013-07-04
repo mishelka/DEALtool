@@ -14,5 +14,5 @@ public interface RecordSupportRegister<T> {
     * @param recorder The recorder, which should be added for the given component.
     * @return true if the given component is a composite and DEAL can continue to get subcomponents of the given component during traversing, false otherwise.
     */
-   public boolean register(T component, Recorder recorder);
+   public boolean register(T component, Recorder _recorder);
 }

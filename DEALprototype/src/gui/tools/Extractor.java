@@ -4,7 +4,6 @@ import gui.analyzer.handlers.Composite;
 import gui.analyzer.handlers.Composites;
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.analyzer.handlers.DomainIdentifiables;
-import gui.analyzer.util.Logger;
 import gui.analyzer.util.Util;
 import gui.model.application.scenes.Scene;
 import gui.model.domain.ComponentInfoType;
@@ -108,7 +107,6 @@ public class Extractor {
 						.getLabelForComponent());
 
 				if (labelTerm != null) {
-					Logger.log(">>> " + labelTerm);
 					// move all children of label to the component
 					if (labelTerm.hasChildren())
 						componentTerm.addAll(labelTerm.getChildren());

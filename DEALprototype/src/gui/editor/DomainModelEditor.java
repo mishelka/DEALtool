@@ -3,7 +3,6 @@ package gui.editor;
 import gui.analyzer.observable.ApplicationEvent;
 import gui.analyzer.observable.ApplicationEvent.ApplicationChangeState;
 import gui.analyzer.util.JLabelFinder;
-import gui.analyzer.util.Logger;
 import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
@@ -86,6 +85,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private DefaultMutableTreeNode clickedPopupNode;
 
 	private static final String IMAGE_PATH = "resources/editor/";
+	public static final String OPEN_DIALOG_NAME = "Open existing DEAL file";
 
 	/** Getter for singleton */
 	public static DomainModelEditor getInstance() {
@@ -406,6 +406,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 	private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		JFileChooser chooser = new JFileChooser("Record");
+		chooser.setDialogTitle(OPEN_DIALOG_NAME);
 		DealFileFilter filter = new DealFileFilter();
 		chooser.setFileFilter(filter);
 		int returnVal = chooser.showOpenDialog(this);
@@ -528,8 +529,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 		componentLabel = new javax.swing.JLabel();
 		componentScrollPane = new javax.swing.JScrollPane();
 		componentJTree = new javax.swing.JTree();
-		editorScrollPane = new javax.swing.JScrollPane();
-		editorTextArea = new javax.swing.JTextArea();
+//		editorScrollPane = new javax.swing.JScrollPane();
+//		editorTextArea = new javax.swing.JTextArea();
 		menuBar = new javax.swing.JMenuBar();
 		fileMenu = new javax.swing.JMenu();
 		saveMenuItem = new javax.swing.JMenuItem();
@@ -1168,15 +1169,15 @@ public class DomainModelEditor extends JFrame implements Observer {
 		rightJTabbedPane.addTab("", new VerticalTextIcon(" Model ", false),
 				modelSplitPane, "Model");
 
-		editorTextArea.setColumns(20);
-		editorTextArea.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
-		editorTextArea.setRows(5);
-		editorTextArea
-				.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n\t<domainModel>\n\t\t<struct>\n\t\t\t<and mandatory=\"true\" name=\"My Notepad\">\n\t\t\t\t<domain name=\"Cut daco\" description=\"This domain is for cutting something\"/>\n\t\t\t\t<domain name=\"Finder of Wizards\" description=\"This finds your favourite wizard\"/>\n\t\t\t\t<domain name=\"Undo step\" description=\"Returns back one step\"/>\n\t\t\t</and>\n\t\t</struct>\n\t</domainModel>");
-		editorScrollPane.setViewportView(editorTextArea);
+//		editorTextArea.setColumns(20);
+//		editorTextArea.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
+//		editorTextArea.setRows(5);
+//		editorTextArea
+//				.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n\t<domainModel>\n\t\t<struct>\n\t\t\t<and mandatory=\"true\" name=\"My Notepad\">\n\t\t\t\t<domain name=\"Cut daco\" description=\"This domain is for cutting something\"/>\n\t\t\t\t<domain name=\"Finder of Wizards\" description=\"This finds your favourite wizard\"/>\n\t\t\t\t<domain name=\"Undo step\" description=\"Returns back one step\"/>\n\t\t\t</and>\n\t\t</struct>\n\t</domainModel>");
+//		editorScrollPane.setViewportView(editorTextArea);
 
-		rightJTabbedPane.addTab("", new VerticalTextIcon(" Editor ", false),
-				editorScrollPane, "Editor");
+//		rightJTabbedPane.addTab("", new VerticalTextIcon(" Editor ", false),
+//				editorScrollPane, "Editor");
 
 		infoSplitPane.setRightComponent(rightJTabbedPane);
 		rightJTabbedPane.getAccessibleContext()
@@ -1291,7 +1292,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		// update term info fields
 		if (term != null) {
 			nameField.setText(term.getName());
-			descriptionField.setText(term.getDescription());
+			descriptionField.setText(term.getDescription()); 
 			typeComboBox.setSelectedItem(term.getRelation());
 
 			Icon ii = term.getIcon();
@@ -1528,8 +1529,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private javax.swing.JLabel contentLabel;
 	private javax.swing.JTextField descriptionField;
 	private javax.swing.JLabel descriptionLabel;
-	private javax.swing.JScrollPane editorScrollPane;
-	private javax.swing.JTextArea editorTextArea;
+//	private javax.swing.JScrollPane editorScrollPane;
+//	private javax.swing.JTextArea editorTextArea;
 	private javax.swing.JMenuItem exitMenuItem;
 	private javax.swing.JLabel domainInfoLabel;
 	private javax.swing.JPanel domainInfoTitlePanel;

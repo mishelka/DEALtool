@@ -1,6 +1,5 @@
 package gui.analyzer.aspects.yajco;
 
-import gui.analyzer.util.Logger;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -17,8 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,8 +61,6 @@ public aspect YajcoAspect {
 
 		for (Term term : map.keySet()) {
 			Concept concept = map.get(term);
-			// System.out.println(">>>> " + term.getName() + " ::: "
-			// + term.getComponentInfoType());
 			List<NotationPart> notations = new ArrayList<NotationPart>();
 			if (term.getRelation() == RelationType.MUTUALLY_EXCLUSIVE) {
 				// createEnumConcept(term, concept, specialHelpConcepts, true);

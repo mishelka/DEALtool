@@ -8,6 +8,7 @@ import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 import gui.tools.Recorder;
 
+import java.awt.Component;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.List;
@@ -57,7 +58,7 @@ public abstract class RecordSupport<T> implements RecordSupportRegister<T> {
 	protected UiEvent createUiEvent(T component) {
 		UiEvent uiEvent = new UiEvent(component);
 
-		uiEvent.setCause(getTermForComponent(component));
+		uiEvent.setCause(getTermForComponent((Component) component));
 		uiEvent.setSourceScene(getSceneForComponent(component));
 
 		uiEvent.setCommands(createCommands(component));
@@ -65,7 +66,7 @@ public abstract class RecordSupport<T> implements RecordSupportRegister<T> {
 		return uiEvent;
 	}
 
-	private Term getTermForComponent(T component) {
+	protected Term getTermForComponent(Component component) {
 		Collection<DomainModel> domainModels = DomainModelEditor
 				.getDomainModels();
 		
@@ -88,5 +89,18 @@ public abstract class RecordSupport<T> implements RecordSupportRegister<T> {
 				.getSceneContainingComponent(scenes, component);
 
 		return scene;
+	}
+	
+
+	
+	@SuppressWarnings("hiding")
+	protected <T extends Component, E extends EventListener> boolean isRegistered(E listener, T component) {
+		for(EventListener el : component.getListeners(listener.getClass())) {
+			if(listener.equals(el)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

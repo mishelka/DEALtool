@@ -34,19 +34,8 @@ public class AbstractButtonRecordSupport extends RecordSupport<AbstractButton> {
 				};
 			}
 
-			ActionListener[] listeners = component.getActionListeners();
-			boolean registered = false;
-
-			// Don't register a new listener, if it's already registered
-			for (ActionListener l : listeners) {
-				if (l.equals(listener)) {
-					registered = true;
-					break;
-				}
-			}
-
 			// If there's no such listener on this component, then register it.
-			if (!registered) {
+			if (!isRegistered((ActionListener) listener, component)) {
 				recorder = _recorder;
 				component.addActionListener((ActionListener) listener);
 			}

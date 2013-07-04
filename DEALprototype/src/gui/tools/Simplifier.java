@@ -17,6 +17,7 @@ public class Simplifier {
 		return domainModel;
 	}
 	
+	//TODO: toto sa musi spravit na zaskrtnutie v DEAL.
 	private boolean removeFunctionalComponents() {
 		return domainModel.removeTermsOfInfoType(ComponentInfoType.FUNCTIONAL);
 	}
