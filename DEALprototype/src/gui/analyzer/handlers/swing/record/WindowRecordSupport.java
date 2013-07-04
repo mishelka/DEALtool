@@ -1,7 +1,6 @@
 package gui.analyzer.handlers.swing.record;
 
 import gui.analyzer.handlers.RecordSupport;
-import gui.analyzer.util.Logger;
 import gui.model.application.events.UiEvent;
 import gui.tools.Recorder;
 
@@ -9,24 +8,19 @@ import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.AWTEventListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class WindowRecordSupport extends RecordSupport<Window> {
-	
+
 	public static final String CLOSE = "CLOSE";
-	private List<Toolkit> toolkits = new ArrayList<Toolkit>();
 
 	@Override
-	//not working
+	// not working
 	public boolean register(Window component, Recorder _recorder) {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		if (!toolkits.contains(toolkit)) {
-			toolkits.add(toolkit);
-			toolkit.addAWTEventListener(new AWTEventListener() {
+		
+		if (listener == null) {
+			listener = new AWTEventListener() {
 				@Override
 				public void eventDispatched(AWTEvent windowEvent) {
 					if (windowEvent instanceof WindowEvent) {
@@ -38,32 +32,26 @@ public class WindowRecordSupport extends RecordSupport<Window> {
 						}
 					}
 				}
-			}, AWTEvent.WINDOW_EVENT_MASK);
-		}
+			};
+			
+			boolean registered = false;
+			for(AWTEventListener el : toolkit.getAWTEventListeners()) {
+				if(listener.equals(el)) 
+					registered = true;
+			}
 
-		WindowListener[] listeners = component.getWindowListeners();
-		boolean registered = false;
-
-		// Don't register a new listener, if it's already registered
-		for (WindowListener l : listeners) {
-			if (l.equals(listener)) {
-				registered = true;
-				break;
+			// If there's no such listener on this component, then register it.
+			if (!registered) {
+				recorder = _recorder;
+				toolkit.addAWTEventListener((AWTEventListener) listener, AWTEvent.WINDOW_EVENT_MASK);
 			}
 		}
 
-		// If there's no such listener on this component, then register it.
-		if (!registered) {
-			recorder = _recorder;
-			component.addWindowListener((WindowAdapter) listener);
-		}
-		
 		return true;
 	}
 
 	@Override
 	protected String[] createCommands(Window component) {
-		Logger.log(">>>>> CLOSING WINDOW");
-		return new String[] {CLOSE};
+		return new String[] { CLOSE };
 	}
 }

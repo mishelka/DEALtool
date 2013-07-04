@@ -4,6 +4,10 @@ import gui.analyzer.handlers.RecordSupport;
 import gui.model.application.events.UiEvent;
 import gui.tools.Recorder;
 
+import java.awt.Component;
+import java.awt.Container;
+
+import javax.swing.JSpinner;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.JTextComponent;
@@ -53,26 +57,30 @@ public class JTextComponentRecordSupport extends RecordSupport<JTextComponent> {
 				public void caretUpdate(CaretEvent e) {
 					JTextComponent source = (JTextComponent) e.getSource();
 					UiEvent event = createUiEvent(source);
+					
+					tryIfParentJSpinner(source, event);
+					tryIfParentJSpinner(source.getParent(), event);
+					
 					recorder.record(event);
+				}
+
+				private void tryIfParentJSpinner(Component source,
+						UiEvent event) {
+					Container parent = source.getParent();
+					if(parent != null && parent instanceof JSpinner) {
+						event.setCause(getTermForComponent(parent));
+					}
 				}
 			};
 		}
-		
-		CaretListener[] listeners = component.getCaretListeners();
-		boolean registered = false;
-		for (CaretListener l : listeners) {
-			if (l == listener) {
-				registered = true;
-				break;
-			}
-		}
-		if (!registered) {
+
+		if (!isRegistered((CaretListener) listener, component)) {
 			recorder = _recorder;
 			component.addCaretListener((CaretListener) listener);
 		}
 		return false;
 	}
-
+	
 	@Override
 	protected String[] createCommands(JTextComponent component) {
 		String[] commands;

@@ -72,7 +72,6 @@ privileged aspect ModelGeneratorAspect {
 	
 	private void onWindowActivated(Window w) {
 		if (!(w instanceof DomainModelEditor)) {
-			
 			DomainModelEditor.getInstance().addApplicationWindow(w);
 			
 			Scene<?> scene = createScene(w);
