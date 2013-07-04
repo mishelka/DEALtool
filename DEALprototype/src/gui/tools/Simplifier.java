@@ -1,6 +1,5 @@
 package gui.tools;
 
-import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 
@@ -19,9 +18,9 @@ public class Simplifier {
 	}
 	
 	//TODO: toto sa musi spravit na zaskrtnutie v DEAL.
-	private boolean removeFunctionalComponents() {
-		return domainModel.removeTermsOfInfoType(ComponentInfoType.FUNCTIONAL);
-	}
+//	private boolean removeFunctionalComponents() {
+//		return domainModel.removeTermsOfInfoType(ComponentInfoType.FUNCTIONAL);
+//	}
 	
 /************************* Methods for Domain Model simplification ******************************/
 	
