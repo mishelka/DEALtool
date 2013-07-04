@@ -1,7 +1,6 @@
 package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
-import gui.analyzer.util.Logger;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.constraint.Constraint;
 import gui.model.domain.constraint.DataType;

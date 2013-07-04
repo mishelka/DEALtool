@@ -39,7 +39,8 @@ public class JTreeHandler extends DomainIdentifiable<JTree> {
 		TreeModel tm = component.getModel();
 		Object o = tm.getRoot();
 		
-		Logger.log(o.getClass().getSimpleName());
+		if(o != null)
+			Logger.log(o.getClass().getSimpleName());
 		
 		return thisTerm;
 	}

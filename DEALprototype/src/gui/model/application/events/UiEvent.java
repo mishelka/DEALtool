@@ -4,7 +4,6 @@ import gui.model.application.scenes.Scene;
 import gui.model.domain.Term;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class UiEvent {
 	private Scene<?> sourceScene;

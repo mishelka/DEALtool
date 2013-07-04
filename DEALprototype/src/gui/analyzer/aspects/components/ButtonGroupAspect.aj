@@ -1,7 +1,5 @@
 package gui.analyzer.aspects.components;
 
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
 
 public aspect ButtonGroupAspect {
 //	pointcut addButtonPointcut(AbstractButton abstractButton): call(*

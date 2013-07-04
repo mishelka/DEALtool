@@ -224,10 +224,6 @@ public aspect YajcoAspect {
 		return "unknown" + term.hashCode();
 	}
 
-	private String getConceptValuesName(Term term) {
-		return getConceptName(term) + "Values";
-	}
-
 	private void getMap(Term term, Map<Term, Concept> map) {
 		if (map == null) {
 			throw new IllegalArgumentException("map argument cannot be null");
