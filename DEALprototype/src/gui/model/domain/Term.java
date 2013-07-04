@@ -1,6 +1,5 @@
 package gui.model.domain;
 
-import gui.analyzer.util.Logger;
 import gui.analyzer.util.Util;
 import gui.model.domain.constraint.Constraint;
 import gui.model.domain.relation.RelationType;
@@ -338,22 +337,28 @@ public class Term {
 	public boolean removeTermsOfInfoType(ComponentInfoType infoType) {
 		boolean removed = false;
 		Iterator<Term> i = iterator();
+		ArrayList<Term> toBeAdded = new ArrayList<Term>();
 
 		while (i.hasNext()) {
-			removed |= i.next().removeTermsOfInfoType(infoType);
+			Term son = i.next();
+			removed |= son.removeTermsOfInfoType(infoType);
 		}
-
+		
 		i = iterator();
 		while (i.hasNext()) {
 			Term son = i.next();
-			if (son.componentInfoType != null && son.componentInfoType.equals(infoType)) {
+			
+			if (infoType.equals(son.getComponentInfoType())) {
+				//remove son and transfer all its children into this
 				if(son.hasChildren()) {
-					this.addAll(son.getChildren());
+					toBeAdded.addAll(son.getChildren());
 				}
 				i.remove();
 				removed = true;
 			}
 		}
+		
+		this.addAll(toBeAdded);
 		
 		return removed;
 	}

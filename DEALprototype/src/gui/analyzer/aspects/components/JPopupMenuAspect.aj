@@ -1,7 +1,5 @@
 package gui.analyzer.aspects.components;
 
-import gui.analyzer.util.Logger;
-
 import javax.swing.JPopupMenu;
 
 public privileged aspect JPopupMenuAspect {
@@ -9,8 +7,8 @@ public privileged aspect JPopupMenuAspect {
 	pointcut popupPointcut(JPopupMenu jPopupMenu): call(*
 			 *.show(*)) && target(jPopupMenu);
 
-	after(JPopupMenu jPopupMenu): popupPointcut(jPopupMenu) {
-		Logger.logError(">>>>>>>>>>>>>>>>>>>>>> POPUP <<<<<<<<<<<<<<<<<<<<<<");
-	}
+//	after(JPopupMenu jPopupMenu): popupPointcut(jPopupMenu) {
+//		Logger.logError(">>>>>>>>>>>>>>>>>>>>>> POPUP <<<<<<<<<<<<<<<<<<<<<<");
+//	}
 }
 

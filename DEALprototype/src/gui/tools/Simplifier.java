@@ -12,7 +12,8 @@ public class Simplifier {
 		
 		sIMPLIFY();
 		
-		removeFunctionalComponents();
+//		Use this only when using YAJCo
+//		removeFunctionalComponents();
 		
 		return domainModel;
 	}

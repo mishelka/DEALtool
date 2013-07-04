@@ -14,7 +14,7 @@ privileged public aspect ButtonAspect {
 	pointcut buttonPointcut(ActionEvent actionEvent): within(AbstractButton+) && execution(* *.actionPerformed(*)) && args(actionEvent);
 
 	after(ActionEvent actionEvent): buttonPointcut(actionEvent) {
-		Object o = actionEvent.getSource();
+//		Object o = actionEvent.getSource();
 
 //		Logger.log(">>> button clicked " + ((AbstractButton) o).getText() + " [" + o.getClass().getSimpleName() + "]");
 
