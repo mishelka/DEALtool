@@ -7,23 +7,22 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Sluzi na priradenie spravneho ovladaca prehravania pre triedu kontajnera.
- * Trieda DomainIdentifiables je impelentovana podla vzoru singleton.
+ * Asigns the right DomainIdentifiable handler for the given container class.
+ * DomainIdentifiables class is implemented according to the singleton pattern.
  */
 public class DomainIdentifiables {
 
-	/** Nazov suboru property. */
+	/** The name of the property file. */
 	public static final String PROPERTIES_FILE = "domainIdentifiables.properties";
-	/** Cesta k adresraru obsahujucemu ovladace. */
+	/** Path to the directory, where the handlers are stored. */
 	public static final String PROPERTIES_FILE_PROPERTY = "gui.domainIdentifiables";
-	/** Hash mapa obsahujuca dvojice: trieda kontanjera a ovladac pre nu. */
+	/** Hash map with touples: container class and a handler for it. */
 	private Map<Class<?>, DomainIdentifiable<?>> domainIdentifiables = new HashMap<Class<?>, DomainIdentifiable<?>>();
-	/** Instancia triedy DomainIdentifiables. */
+	/** DomainIdentifiables class instance. */
 	private static DomainIdentifiables instance;
 
 	/**
-	 * Konstruktor. nacita property subor do pamate a vytvori podla neho hash
-	 * mapu.
+	 * Constructor. Loads the property file into memory and creates a the composites hash map.
 	 */
 	private DomainIdentifiables() {
 		Properties properties = new Properties();
@@ -47,7 +46,7 @@ public class DomainIdentifiables {
 	}
 
 	/**
-	 * @return Instancia triedy DomainIdentifiables.
+	 * @return DomainIdentifiables class instance.
 	 */
 	public static DomainIdentifiables getInstance() {
 		if (instance == null) {
@@ -57,13 +56,13 @@ public class DomainIdentifiables {
 	}
 
 	/**
-	 * Na zaklade zadanej triedy kontajnera vrati pre nu ovladac.
+	 * Based on the given component class, returns a DomainIdentifiable handler for it.
 	 * 
 	 * @param <T>
-	 *            Trieda komponentu.
+	 *            Component class.
 	 * @param componentClass
-	 *            Trieda komponentu.
-	 * @return Ovladac pre zadanu triedu komponentu.
+	 *            Component class.
+	 * @return Handler for the given component class.
 	 */
 	public <T> DomainIdentifiable<? super T> getDomainIdentifiable(Class<T> componentClass) {
 		Class<? super T> componentClassCurrent = componentClass;

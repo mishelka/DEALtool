@@ -54,4 +54,15 @@ public class WindowRecordSupport extends RecordSupport<Window> {
 	protected String[] createCommands(Window component) {
 		return new String[] { CLOSE };
 	}
+	
+	protected boolean isRegistered(Window component) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		for(AWTEventListener l : toolkit.getAWTEventListeners()) {
+			if(listener.equals(l)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

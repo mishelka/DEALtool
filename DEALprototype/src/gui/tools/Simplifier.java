@@ -71,6 +71,7 @@ public class Simplifier {
 		do {
 			wasRemoved = domainModel.removeEmptyLeafs();
 			wasRemoved |= domainModel.removeMultipleNestings();
+			wasRemoved |= domainModel.shiftSingleChildLeafs();
 		} while (!wasRemoved);
 	}
 }

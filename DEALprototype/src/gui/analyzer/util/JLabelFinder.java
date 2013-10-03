@@ -23,9 +23,11 @@ public class JLabelFinder {
 	 *         null.
 	 */
 	public static JLabel findLabelFor(Component component) {
-		// TODO: important this was not working, if scenes are added into the Application class
+		// TODO: important this was not working, if scenes are added into the
+		// Application class
 		// before creating the model, the GUI will be empty
-		// This is a workaround, each new window is added into the DomainModelEditor windows list. 
+		// This is a workaround, each new window is added into the
+		// DomainModelEditor windows list.
 		// List<Scene<?>> scenes = new ArrayList<Scene<?>>();
 		// for(DomainModel dm : DomainModelEditor.getDomainModels()) {
 		// scenes.add(dm.getScene());
@@ -39,13 +41,13 @@ public class JLabelFinder {
 
 		for (Window w : windows) {
 			if (w != null) {
-				List<Component> list = ComponentFinder.getInstance()
-						.toComponentList(w);
+				List<Component> list = ComponentFinder.getInstance().toComponentList(w);
+				
 				for (Component comp : list) {
 					if (comp instanceof JLabel) {
 						JLabel label = (JLabel) comp;
 						Component lf = label.getLabelFor();
-						
+
 						if (component.equals(lf)) {
 							return label;
 						}
@@ -54,5 +56,27 @@ public class JLabelFinder {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * ZistÌ, Ëi pre dan˝ komponent existuje komponent typu JLabel s hodnotou
+	 * labelFor odkazuj˙cou na tento komponent.
+	 * 
+	 * @param labelFor
+	 *            popis komponentu JLabel, ktor˝ sa m· n·jsù.
+	 * @param component
+	 *            komponent, na ktor˝ sa m· odkazovaù atrib˙t labelFor
+	 *            komponentu JLabel.
+	 * @return Hodnota true ak existuje komponent typu JLabel s hodnotou
+	 *         labelFor odkazuj˙cou sa na component, false inak.
+	 */
+	public static boolean existsComponentByLabelFor(String labelFor,
+			Component component) {
+		JLabel label = findLabelFor(component);
+		if(label != null && label.getText().equalsIgnoreCase(labelFor)) {
+			return true;
+		}
+		
+		return false;
 	}
 }

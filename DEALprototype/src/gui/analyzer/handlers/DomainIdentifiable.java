@@ -14,6 +14,15 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
+/**
+ * Serves for extracting domain information from components. Different information can be 
+ * extracted from different component types. According to the given type of component 
+ * T the implementation of this class extracts the domain information from the component.
+ * 
+ * @author Michaela Bacikova
+ *
+ * @param <T> The component class.
+ */
 public abstract class DomainIdentifiable<T> {
 	public abstract String getDomainIdentifier(T component);
 

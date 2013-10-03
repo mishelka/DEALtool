@@ -2,18 +2,18 @@ package gui.analyzer.handlers;
 
 
 /**
- * Predstavujúce všetky grafické komponenty typu kontajner.
+ * Represents all graphical components of type container.
  * 
  * @param <T>
- *            Trieda kontajnera.
+ *            The container class.
  */
 public interface Composite<T> {
 	/**
-	 * Získa všetky komponenty, ktoré obsahuje kontajner.
+	 * Gets components, which are direct children of the container.
 	 * 
 	 * @param container
-	 *            Inštancia kontajnera.
-	 * @return všetky komponenty, ktoré obsahuje kontajner.
+	 *            The container instance.
+	 * @return components, which are direct children of the container.
 	 */
 	public Object[] getComponents(T container);
 }

@@ -1,6 +1,5 @@
 package gui.analyzer.handlers.jscicalc;
 
-import gui.analyzer.handlers.CommandHandler;
 import gui.analyzer.handlers.Composite;
 import gui.analyzer.handlers.DomainIdentifiable;
 import gui.model.domain.ComponentInfoType;
@@ -17,7 +16,7 @@ import javax.swing.Icon;
 import jscicalc.DisplayLabel;
 
 public class CalculatorDisplayLabelHandler extends
-		DomainIdentifiable<DisplayLabel> implements CommandHandler<DisplayLabel>, Composite<DisplayLabel> {
+		DomainIdentifiable<DisplayLabel> implements Composite<DisplayLabel> {
 
 	@Override
 	public String getDomainIdentifier(DisplayLabel component) {

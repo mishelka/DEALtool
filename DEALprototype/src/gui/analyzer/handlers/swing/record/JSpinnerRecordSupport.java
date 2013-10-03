@@ -25,13 +25,16 @@ public class JSpinnerRecordSupport extends RecordSupport<JSpinner> {
 			}
 		}
 
-		//do not register jspinner or its children, rather register text field of jspinner
+		// do not register jspinner or its children, rather register the text field
+		// of jspinner
 		if (jSpinnerTextField != null) {
 			RecordSupport<JTextComponent> txtRS = RecordSupports.getInstance()
 					.getRecordSupport(JTextComponent.class);
+			
 			txtRS.register(jSpinnerTextField, _recorder);
 		}
 
+		//do not continue to register the children of jspinner
 		return false;
 	}
 
@@ -40,4 +43,7 @@ public class JSpinnerRecordSupport extends RecordSupport<JSpinner> {
 		return null;
 	}
 
+	protected boolean isRegistered(JSpinner component) {
+		return false;
+	}
 }

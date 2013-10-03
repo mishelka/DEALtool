@@ -17,7 +17,7 @@ import java.awt.event.WindowEvent;
 /**
  * Aspect for generating domain models for application scenes.
  */
-privileged aspect ModelGeneratorAspect {
+public privileged aspect ModelGeneratorAspect {
 	private DomainModelGenerator generator;
 	private DomainModelEditor editor;
 	private DuplicateSceneDetector detector;
@@ -89,6 +89,7 @@ privileged aspect ModelGeneratorAspect {
 			}
 			
 			detectAndDeletePreviousModel(scene, w);
+			
 			addNewScene(scene);
 		}
 	}
@@ -132,5 +133,9 @@ privileged aspect ModelGeneratorAspect {
 		if (Inspector.isRegistered()) {
 			Inspector.register();
 		}
+	}
+	
+	public Application getApplication() {
+		return application;
 	}
 }

@@ -74,7 +74,7 @@ public class JTextComponentRecordSupport extends RecordSupport<JTextComponent> {
 			};
 		}
 
-		if (!isRegistered((CaretListener) listener, component)) {
+		if (!isRegistered(component)) {
 			recorder = _recorder;
 			component.addCaretListener((CaretListener) listener);
 		}
@@ -100,5 +100,15 @@ public class JTextComponentRecordSupport extends RecordSupport<JTextComponent> {
 		commands[1] = pos;
 		
 		return commands;
+	}
+	
+	public boolean isRegistered(JTextComponent component) {
+		for(CaretListener l : component.getCaretListeners()) {
+			if(listener.equals(l)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

@@ -1,7 +1,11 @@
 package gui.analyzer.handlers.swing;
 
+import gui.analyzer.handlers.CommandHandler;
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.analyzer.util.JLabelFinder;
 import gui.analyzer.util.Util;
+import gui.model.application.program.Command;
+import gui.model.application.program.DelegateCommand;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.relation.RelationType;
 
@@ -16,7 +20,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToggleButton;
 import javax.swing.plaf.metal.MetalComboBoxButton;
 
-public class AbstractButtonHandler extends DomainIdentifiable<AbstractButton> {
+public class AbstractButtonHandler extends DomainIdentifiable<AbstractButton>
+		implements CommandHandler<AbstractButton> {
 
 	@Override
 	public String getDomainIdentifier(AbstractButton component) {
@@ -51,7 +56,13 @@ public class AbstractButtonHandler extends DomainIdentifiable<AbstractButton> {
 		if (component instanceof JCheckBox
 				|| component instanceof JCheckBoxMenuItem) {
 			return RelationType.MUTUALLY_NOT_EXCLUSIVE;
-		} else if (component instanceof JRadioButtonMenuItem //JRadioButton dedi od JToggleButton takze to mozeme dat do tej istej skupiny
+		} else if (component instanceof JRadioButtonMenuItem // JRadioButton
+																// dedi od
+																// JToggleButton
+																// takze to
+																// mozeme dat do
+																// tej istej
+																// skupiny
 				|| component instanceof JToggleButton) {
 			return RelationType.MUTUALLY_EXCLUSIVE;
 		}
@@ -67,10 +78,31 @@ public class AbstractButtonHandler extends DomainIdentifiable<AbstractButton> {
 				|| component instanceof JToggleButton)
 			return ComponentInfoType.LOGICALLY_GROUPING;
 
-		if(component instanceof MetalComboBoxButton) {
+		if (component instanceof MetalComboBoxButton) {
 			return ComponentInfoType.UNKNOWN;
 		}
-		
+
 		return ComponentInfoType.FUNCTIONAL;
+	}
+
+	@Override
+	public boolean supportsCommand(Command command, AbstractButton component) {
+		String commandName = ((DelegateCommand) command).getName().toString();
+
+		return component.isEnabled()
+				&& (commandName.equalsIgnoreCase(component.getName())
+						|| commandName.equalsIgnoreCase(component
+								.getActionCommand())
+						|| commandName.equalsIgnoreCase(component.getText())
+						|| commandName.equalsIgnoreCase(component
+								.getToolTipText()) ||
+						JLabelFinder.existsComponentByLabelFor(commandName, component));
+//						|| commandName.equalsIgnoreCase(path));
+	}
+
+	@Override
+	public void execute(Command command, AbstractButton component) {
+		component.doClick();
+	    System.out.println(">>" + ((DelegateCommand) command).getName() + " executed.");
 	}
 }

@@ -33,15 +33,17 @@ public class AbstractButtonRecordSupport extends RecordSupport<AbstractButton> {
 					}
 				};
 			}
-
+			
+			//Logger.log(">>> is registered: " + isRegistered(component));
+			
 			// If there's no such listener on this component, then register it.
-			if (!isRegistered((ActionListener) listener, component)) {
+			if (!isRegistered(component)) {
 				recorder = _recorder;
 				component.addActionListener((ActionListener) listener);
 			}
 		}
 
-		//JMenu is handled by a different RecordSupport handler, therefore return false if it is a JMenu.
+		//continue to register children of this component only if it is a JMenu
 		return (component instanceof JMenu);
 	}
 
@@ -57,5 +59,15 @@ public class AbstractButtonRecordSupport extends RecordSupport<AbstractButton> {
 	@Override
 	protected UiEvent createUiEvent(AbstractButton component) {
 		return super.createUiEvent(component);
+	}
+	
+	protected boolean isRegistered(AbstractButton component) {
+		for(ActionListener l : component.getActionListeners()) {
+			if(listener.equals(l)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

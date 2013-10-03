@@ -202,6 +202,10 @@ public class DomainModel {
 		return root.removeMultipleNestings();
 	}
 	
+	public boolean shiftSingleChildLeafs() {
+		return root.shiftSingleChildLeafs();
+	}
+	
 	public boolean removeTermsOfInfoType(ComponentInfoType type) {
 		return root.removeTermsOfInfoType(type);
 	}

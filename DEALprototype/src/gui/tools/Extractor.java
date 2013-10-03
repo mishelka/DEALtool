@@ -92,8 +92,7 @@ public class Extractor {
 	 * @return if anything was removed, returns true, false otherwise
 	 */
 	public boolean transferLabelFors(Term thisTerm) {
-		List<Term> itemsToRemove = new ArrayList<Term>();
-
+		boolean wasRemoved = false;
 		Iterator<Term> i = thisTerm.iterator();
 		while (i.hasNext()) {
 			// component term - this will be the new term with a description
@@ -119,23 +118,22 @@ public class Extractor {
 					if (!componentTerm.hasIcon())
 						componentTerm.setIcon(labelTerm.getIcon());
 					
-					// add label term to the list of terms to be removed
-					itemsToRemove.add(labelTerm);
+					// empty the label term and prepare it to be removed in the next deal stage == remove name, description and icon
+					labelTerm.removeDomainInformation();
+					wasRemoved = true;
 				}
 			}
 		}
-
-		boolean wasRemoved = !itemsToRemove.isEmpty();
 		
-		domainModel.removeAll(itemsToRemove);
-
-		// do this for all the children of thisTerm
+		//do this for all children of this term
 		i = thisTerm.iterator();
-		while (i.hasNext()) {
+		while(i.hasNext()) {
 			Term next = i.next();
 			wasRemoved |= transferLabelFors(next);
 		}
 
+		//IT WORKS!!!!!!!!!!!! :DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+		
 		return wasRemoved;
 	}
 

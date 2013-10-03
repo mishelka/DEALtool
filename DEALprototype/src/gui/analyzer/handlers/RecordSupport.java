@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Extension of the RecordSupportRegister handler for recording.
  * 
- * @author Michaela Baèíková <michaela.bacikova@tuke.sk>
+ * @author Michaela Bacikova <michaela.bacikova@tuke.sk>
  * @param <T>
  *            The component class type.
  */
@@ -91,16 +91,5 @@ public abstract class RecordSupport<T> implements RecordSupportRegister<T> {
 		return scene;
 	}
 	
-
-	
-	@SuppressWarnings("hiding")
-	protected <T extends Component, E extends EventListener> boolean isRegistered(E listener, T component) {
-		for(EventListener el : component.getListeners(listener.getClass())) {
-			if(listener.equals(el)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
+	protected abstract boolean isRegistered(T component);
 }
