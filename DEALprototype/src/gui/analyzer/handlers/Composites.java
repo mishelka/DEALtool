@@ -7,23 +7,22 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Sluzi na priradenie spravneho ovladaca prehravania pre triedu kontajnera.
- * Trieda Composites je impelentovana podla vzoru singleton.
+ * Asigns the right handler for the given container class.
+ * Composites class is implemented according to the singleton pattern.
  */
 public class Composites {
 
-	/** Nazov suboru property. */
+	/** The name of the property file. */
 	public static final String PROPERTIES_FILE = "composite.properties";
-	/** Cesta k adresraru obsahujucemu ovladace. */
+	/** Path to the directory, where the handlers are stored. */
 	public static final String PROPERTIES_FILE_PROPERTY = "gui.composites";
-	/** Hash mapa obsahujuca dvojice: trieda kontanjera a ovladac pre nu. */
+	/** Hash map with touples: container class and a handler for it. */
 	private Map<Class<?>, Composite<?>> composites = new HashMap<Class<?>, Composite<?>>();
-	/** Instancia triedy Composites. */
+	/** Composites class instance. */
 	private static Composites instance;
 
 	/**
-	 * Konstruktor. nacita property subor do pamate a vytvori podla neho hash
-	 * mapu.
+	 * Constructor. Loads the property file into memory and creates a the composites hash map.
 	 */
 	private Composites() {
 		Properties properties = new Properties();
@@ -47,7 +46,7 @@ public class Composites {
 	}
 
 	/**
-	 * @return Instancia triedy Composites.
+	 * @return Composites class instance.
 	 */
 	public static Composites getInstance() {
 		if (instance == null) {
@@ -57,13 +56,13 @@ public class Composites {
 	}
 
 	/**
-	 * Na zaklade zadanej triedy kontajnera vrati pre nu ovladac.
+	 * Based on the given container class, returns a hander for it.
 	 * 
 	 * @param <T>
-	 *            Trieda komponentu.
+	 *            Container class.
 	 * @param componentClass
-	 *            Trieda komponentu.
-	 * @return Ovladac pre zadanu triedu komponentu.
+	 *            Container class.
+	 * @return Handler for the given container class.
 	 */
 	public <T> Composite<? super T> getComposite(Class<T> componentClass) {
 		Class<? super T> componentClassCurrent = componentClass;

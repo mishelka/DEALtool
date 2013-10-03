@@ -4,7 +4,7 @@ import gui.tools.Recorder;
 
 /**
  * An abstract class defining an interface for a record support handler.
- * @author Michaela Baèíková <michaela.bacikova@tuke.sk>
+ * @author Michaela Bacikova <michaela.bacikova@tuke.sk>
  * @param <T> Component class type.
  */
 public interface RecordSupportRegister<T> {

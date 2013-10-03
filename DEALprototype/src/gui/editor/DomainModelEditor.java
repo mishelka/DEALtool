@@ -7,6 +7,9 @@ import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
 import gui.editor.tree.TreeNode;
+import gui.generator.dsl.YajcoGenerator;
+import gui.generator.itask.GeneratorException;
+import gui.generator.itask.ITaskGenerator;
 import gui.model.application.Application;
 import gui.model.application.scenes.DialogScene;
 import gui.model.application.scenes.Scene;
@@ -19,6 +22,7 @@ import gui.tools.Recorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.Frame;
@@ -69,6 +73,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import yajco.model.Language;
+
 @SuppressWarnings("rawtypes")
 public class DomainModelEditor extends JFrame implements Observer {
 	private static final long serialVersionUID = 1L;
@@ -83,6 +89,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private boolean clickedComponentOpaque;
 
 	private DefaultMutableTreeNode clickedPopupNode;
+
+	private YajcoGenerator yajcoGenerator;
 
 	private static final String IMAGE_PATH = "resources/editor/";
 	public static final String OPEN_DIALOG_NAME = "Open existing DEAL file";
@@ -107,6 +115,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 		domainJTree.setCellRenderer(new TreeCellRenderer());
 
 		expandAll(domainJTree, true);
+		
+		yajcoGenerator = new YajcoGenerator();
 	}
 
 	/******************* Recorder stuff *****************************************/
@@ -502,8 +512,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 		descriptionLabel = new javax.swing.JLabel();
 		descriptionField = new javax.swing.JTextField();
 		typeLabel = new javax.swing.JLabel();
+		
 		typeComboBox = new javax.swing.JComboBox<RelationType>(
 				RelationType.values());
+		typeComboBox.setEnabled(false);
+		
 		iconLabel = new javax.swing.JLabel();
 		iconField = new javax.swing.JLabel();
 		componentInfoTitlePanel = new javax.swing.JPanel();
@@ -536,6 +549,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 		saveMenuItem = new javax.swing.JMenuItem();
 		openMenuItem = new javax.swing.JMenuItem();
 		exitMenuItem = new javax.swing.JMenuItem();
+		generateDSLMenuItem = new javax.swing.JMenuItem();
+		generateITaskMenuItem = new javax.swing.JMenuItem();
 		recordButtonGroup = new javax.swing.ButtonGroup();
 
 		nameField.setLineWrap(true);
@@ -1184,28 +1199,52 @@ public class DomainModelEditor extends JFrame implements Observer {
 				.setAccessibleName("jTabbedPane");
 
 		fileMenu.setText("File");
-
-		saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
-				java.awt.event.KeyEvent.VK_S,
+		
+		
+		generateDSLMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_D,
 				java.awt.event.InputEvent.CTRL_MASK));
-		saveMenuItem.setText("Save");
-		saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+		generateDSLMenuItem.setText("Generate DSL");
+		generateDSLMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				saveMenuItemActionPerformed(evt);
+				generateDSLMenuItemActionPerformed(evt);
 			}
 		});
-		fileMenu.add(saveMenuItem);
-
-		openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
-				java.awt.event.KeyEvent.VK_O,
+		fileMenu.add(generateDSLMenuItem);
+		
+		
+		generateITaskMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_I,
 				java.awt.event.InputEvent.CTRL_MASK));
-		openMenuItem.setText("Open");
-		openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+		generateITaskMenuItem.setText("Generate iTask code");
+		generateITaskMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				openMenuItemActionPerformed(evt);
+				generateITaskMenuItemActionPerformed(evt);
 			}
 		});
-		fileMenu.add(openMenuItem);
+		fileMenu.add(generateITaskMenuItem);
+		
+//		saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
+//				java.awt.event.KeyEvent.VK_S,
+//				java.awt.event.InputEvent.CTRL_MASK));
+//		saveMenuItem.setText("Save");
+//		saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				saveMenuItemActionPerformed(evt);
+//			}
+//		});
+//		fileMenu.add(saveMenuItem);
+//
+//		openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
+//				java.awt.event.KeyEvent.VK_O,
+//				java.awt.event.InputEvent.CTRL_MASK));
+//		openMenuItem.setText("Open");
+//		openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//				openMenuItemActionPerformed(evt);
+//			}
+//		});
+//		fileMenu.add(openMenuItem);
 
 		exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
 				java.awt.event.KeyEvent.VK_F4,
@@ -1263,6 +1302,49 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		System.exit(0);
+	}
+	
+	private void generateITaskMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		if(application.getDomainModelCount() >= 1) {
+			DomainModel dm = application.getDomainModels().get(0);
+			Language language = yajcoGenerator.generateDSL(dm);
+			
+			ITaskGenerator generator = new ITaskGenerator(language);
+			try {
+				generator.generate();
+			} catch (GeneratorException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		//int selection = JOptionPane.showConfirmDialog(this, "iTask rozhranie bolo vygenerovane. Chcete otvorit adresar s iTask kodom?", "Vygenerovany adresar", JOptionPane.YES_NO_OPTION);
+		invokeOpenDir(ITaskGenerator.ITASK_DIR);
+	}
+	
+	private void generateDSLMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		for(DomainModel dm : application.getDomainModels()) {
+			Language dsl = yajcoGenerator.generateDSL(dm);
+			
+			String filePath = YajcoGenerator.DSL_DIR;
+			invokeOpenDir(filePath);
+			
+//			int selection = JOptionPane.showConfirmDialog(this, "DSL pre jazyk rozhrania bol vygenerovany. Chcete otvorit adresar s DSL?", "Vygenerovany adresar", JOptionPane.YES_NO_OPTION);
+//			if(selection == JOptionPane.OK_OPTION) {
+//				invokeOpenDir("." + File.separatorChar + "src" + File.separatorChar + dsl.getName());
+//			}
+		}
+	}
+	
+	public void invokeOpenDir(String path) {
+		if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+			try {
+				Desktop.getDesktop().open(new File(path));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	// sets the cursor in the component tree to the current component - in both
@@ -1554,6 +1636,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private javax.swing.JLabel nameLabel;
 	private javax.swing.JMenuItem openMenuItem;
 	private javax.swing.JMenuItem saveMenuItem;
+	private javax.swing.JMenuItem generateDSLMenuItem;
+	private javax.swing.JMenuItem generateITaskMenuItem;
 	private javax.swing.JTextField tooltipField;
 	private javax.swing.JLabel tooltipLabel;
 	private javax.swing.JComboBox<RelationType> typeComboBox;

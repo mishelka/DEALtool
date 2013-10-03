@@ -34,7 +34,7 @@ public aspect MainAspect {
 				}
 			}, AWTEvent.WINDOW_EVENT_MASK);
 			
-			Logger.logError(">>> Window listener was added to \"" + className + "\"");
+			Logger.log(">>> Window listener was added to \"" + className + "\"");
 		}
 	}
 }

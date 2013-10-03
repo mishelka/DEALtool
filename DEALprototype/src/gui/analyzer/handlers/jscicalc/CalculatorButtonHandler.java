@@ -2,7 +2,10 @@ package gui.analyzer.handlers.jscicalc;
 
 import gui.analyzer.handlers.CommandHandler;
 import gui.analyzer.handlers.DomainIdentifiable;
+import gui.analyzer.util.JLabelFinder;
 import gui.analyzer.util.Util;
+import gui.model.application.program.Command;
+import gui.model.application.program.DelegateCommand;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.relation.RelationType;
 
@@ -69,5 +72,26 @@ public class CalculatorButtonHandler extends
 	@Override
 	public boolean extractChildren() {
 		return false;
+	}
+
+	@Override
+	public boolean supportsCommand(Command command, CalculatorButton component) {
+		String commandName = ((DelegateCommand) command).getName().toString();
+
+		return component.isEnabled()
+				&& (commandName.equalsIgnoreCase(component.getName())
+						|| commandName.equalsIgnoreCase(component
+								.getActionCommand())
+						|| commandName.equalsIgnoreCase(component.getText())
+						|| commandName.equalsIgnoreCase(component
+								.getToolTipText()) ||
+						JLabelFinder.existsComponentByLabelFor(commandName, component));
+//						|| commandName.equalsIgnoreCase(path));
+	}
+
+	@Override
+	public void execute(Command command, CalculatorButton component) {
+		component.doClick();
+		System.out.println(">>" + ((DelegateCommand) command).getName() + " executed.");
 	}
 }

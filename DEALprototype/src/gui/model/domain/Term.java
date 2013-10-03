@@ -61,7 +61,7 @@ public class Term {
 	 * extract some constraints, like text length, possible values, type, etc.
 	 * This is not implemented yet.
 	 */
-	private List<Constraint> constraints;
+	private List<Constraint> constraints = new ArrayList<Constraint>();
 
 	/**
 	 * Each term is located in a domain model, this is a reference to the domain
@@ -290,6 +290,16 @@ public class Term {
 		}
 	}
 
+	/**
+	 * |_x			|_x
+	 *   |_o		  |_x
+	 *   |_x   ==>	
+	 *   |_o		
+	 *   
+	 * If find any leafs, that can be removed, just remove them.4
+	 * 
+	 * @return true if anything has been removed, false otherwise
+	 */
 	public boolean removeEmptyLeafs() {
 		boolean removed = false;
 		Iterator<Term> i = iterator();
@@ -311,10 +321,22 @@ public class Term {
 		return removed;
 	}
 
+	/**	o				o				o
+	 *	|_o				|_o				|_x
+	 *	  |_o	  ==> 	  |_x	  ==> 	|_x
+	 *		|_x		  	  |_x			
+	 *		|_x					
+	 *
+	 * If find a node which can be removed and has any children and no siblings, 
+	 * shift the children to its parent and remove the node. 
+	 *  
+	 * @return true if anything has been removed, false otherwise
+	 */
 	public boolean removeMultipleNestings() {
 		boolean removed = false;
 		Iterator<Term> i = iterator();
 
+		//recursion
 		while (i.hasNext()) {
 			removed |= i.next().removeMultipleNestings();
 		}
@@ -332,6 +354,45 @@ public class Term {
 		}
 
 		return removed;
+	}
+	
+	public boolean shiftSingleChildLeafs() {
+		boolean removed = false;
+		Iterator <Term> i = iterator();
+		
+		if(this.hasChildren()) {
+			if(this.getChildrenCount() == 1) {
+				Term singleChild = this.getChildAt(0);
+				if(singleChild.isLeaf() && this.canBeRemoved()) {
+					//shift and don't go into children --> return now
+					this.copyInfoFrom(singleChild);
+					this.removeChild(singleChild);
+					
+					return true;
+				}
+			}
+		}
+		
+		while(i.hasNext()) {
+			removed |= i.next().shiftSingleChildLeafs();
+		}
+		
+		return removed;
+	}
+	
+	private void copyInfoFrom(Term term) {
+		this.setComponent(term.getComponent());
+		this.setComponentClass(term.getComponentClass());
+		this.setComponentInfoType(term.getComponentInfoType());
+		this.setConstraints(term.getConstraints());
+		this.setDescription(term.getDescription());
+		this.setExtractChildren(term.extractChildren());
+		this.setIcon(term.getIcon());
+		this.setLabelForComponent(term.getLabelForComponent());
+		this.setName(term.getName());
+		this.setParent(term.getParent());
+		this.setParentRelation(term.getParentRelation());
+		this.setRelation(term.getRelation());
 	}
 	
 	public boolean removeTermsOfInfoType(ComponentInfoType infoType) {
@@ -453,5 +514,13 @@ public class Term {
 		if (componentClass != null)
 			return "\"\"";
 		return null;
+	}
+	
+	public void removeDomainInformation() {		
+		this.setName(null);
+		this.setRelation(RelationType.AND);
+		this.setDescription(null);
+		this.setLabelForComponent(null);
+		this.setIcon(null);
 	}
 }

@@ -32,7 +32,6 @@ public class RecorderRegistator {
 			RecordSupport<? super T> recordSupport = RecordSupports
 					.getInstance().getRecordSupport(componentClass);
 			if (recordSupport != null) {
-
 				continueToChildren = recordSupport.register(component, recorder);
 				
 				componentClass = null;
