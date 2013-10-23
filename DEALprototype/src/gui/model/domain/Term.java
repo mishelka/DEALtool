@@ -34,7 +34,10 @@ import javax.swing.JLabel;
  * <br/>
  * 
  * Each term contains a reference to the domain model in which it is located, 
- * to the target component and to its class. 
+ * to the target component and to its class.
+ * 
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
  */
 public class Term {
 	/**
