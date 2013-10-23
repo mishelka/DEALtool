@@ -3,6 +3,7 @@ package gui.model.domain;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * This enumeration class represents the basic categories of components based on
  * what domain-relevant information can be extracted from them.
@@ -61,6 +62,9 @@ public enum ComponentInfoType {
 	 */
 	UNKNOWN;
 	
+	/**
+	 * @return list of all available info types
+	 */
 	public static List<ComponentInfoType> getInfoTypes() {
 		ComponentInfoType[] infoTypes = new ComponentInfoType[] {
 				ComponentInfoType.DESCRIPTIVE,
