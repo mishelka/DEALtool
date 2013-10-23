@@ -2,6 +2,10 @@ package gui.model.application.scenes;
 
 import gui.model.application.webpage.WebPage;
 
+/**
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
+ */
 public class WebPageScene extends Scene<WebPage> {
 
 	public WebPageScene(WebPage sceneContainer) {
@@ -9,4 +13,12 @@ public class WebPageScene extends Scene<WebPage> {
 		// TODO Auto-generated constructor stub
 	}
 	
+	protected String getSceneName(WebPage scene) {
+		return sceneContainer.getTitle();
+	}
+	
+	@Override
+	public String toString() {
+		return "Web page " + super.toString();
+	}
 }

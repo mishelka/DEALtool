@@ -5,8 +5,11 @@ import java.util.List;
 
 
 /**
- * This enumeration class represents the basic categories of components based on
+ * Represents the basic categories of components based on
  * what domain-relevant information can be extracted from them.
+ * 
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
  */
 public enum ComponentInfoType {
 	/**

@@ -10,7 +10,6 @@ import gui.model.domain.DomainModel;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("rawtypes")
 public class Application extends AppObservable {
 	// TODO: finish this, priority highest
 	private String name;
@@ -33,7 +32,7 @@ public class Application extends AppObservable {
 	
 	public List<DomainModel> getDomainModels() {
 		List<DomainModel> domainModels = new ArrayList<DomainModel>();
-		for(Scene s : scenes) {
+		for(Scene<?> s : scenes) {
 			domainModels.add(s.getDomainModel());
 		}
 		
@@ -52,7 +51,7 @@ public class Application extends AppObservable {
 		return scenes.size();
 	}
 	
-	public void addScene(Scene scene) {
+	public void addScene(Scene<?> scene) {
 		if(!scenes.contains(scene)){
 			if(getSceneCount() == 0 || name == null) {
 				this.name = scene.getName();
@@ -63,7 +62,7 @@ public class Application extends AppObservable {
 		}
 	}
 
-	public void removeScene(Scene scene) {
+	public void removeScene(Scene<?> scene) {
 		scenes.remove(scene);
 		notifySceneRemoved(scene);
 	}
@@ -73,8 +72,8 @@ public class Application extends AppObservable {
 		notifySceneRemoved(scenes.get(index));
 	}
 
-	public boolean contains(Scene scene) {
-		for (Scene s : scenes) {
+	public boolean contains(Scene<?> scene) {
+		for (Scene<?> s : scenes) {
 			if (s.getSceneContainer().equals(scene.getSceneContainer())) {
 				return true;
 			}
@@ -86,14 +85,14 @@ public class Application extends AppObservable {
 		return (getSceneForSceneComponent(sceneComponent) != null);
 	}
 	
-	public Scene getSceneForSceneComponent(Object sceneComponent) {
-		for(Scene s : scenes) {
+	public Scene<?> getSceneForSceneComponent(Object sceneComponent) {
+		for(Scene<?> s : scenes) {
 			if(s.getSceneContainer().equals(sceneComponent)) return s;
 		}
 		return null;
 	}
 
-	public Scene getScene(int index) {
+	public Scene<?> getScene(int index) {
 		return scenes.get(index);
 	}
 	
@@ -124,19 +123,19 @@ public class Application extends AppObservable {
 
 	/************ OBSERVER STUFF ***********************/
 	@Override
-	public void notifySceneAdded(Scene scene) {
+	public void notifySceneAdded(Scene<?> scene) {
 		setChanged();
 		notifyObservers(new ApplicationEvent(scene, ApplicationChangeState.ADDED));
 	}
 
 	@Override
-	public void notifySceneRemoved(Scene scene) {
+	public void notifySceneRemoved(Scene<?> scene) {
 		setChanged();
 		notifyObservers(new ApplicationEvent(scene, ApplicationChangeState.REMOVED));
 	}
 
 	@Override
-	public void notifySceneEdited(Scene scene) {
+	public void notifySceneEdited(Scene<?> scene) {
 		setChanged();
 		notifyObservers(new ApplicationEvent(scene, ApplicationChangeState.EDITED));
 	}
