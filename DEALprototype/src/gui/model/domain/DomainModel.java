@@ -5,6 +5,27 @@ import gui.model.application.scenes.Scene;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DomainModel class represents a domain model of a GUI.
+ * A domain model can be extracted from a Window, Dialog or any other Scene.
+ * Each domain model has a <b>name</b> which is usually extracted from the scene name.
+ * This name represents the name of the domain, which is described by the domain model.
+ * <br/>
+ * 
+ * Domain model is a tree structure, which contains <b>terms</b> (Term class).
+ * The root of this structure is the <b>root term</b>.
+ * Each term contains domain information and a list of child terms.
+ * The root term usually contains the domain information extracted from the scene component.
+ * <br/>
+ * 
+ * Domain model also contains a reference to the scene, from which it was extracted.
+ * <br/>
+ * 
+ * Domain models are extracted using the DEAL method, which is implemented in DomainModelGenerator class.
+ * 
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
+ */
 public class DomainModel {
 	/**The root term of the Domain model.*/
 	private Term root;

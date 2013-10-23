@@ -11,6 +11,31 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
+/**
+ * A term represents a single unit the domain model.
+ * Each term can contain a list of children terms.
+ * A term can represent domain, sub-domain or a single term.
+ * The hierarchy of terms in the domain models represents the hierarchy 
+ * or domains and sub-domains in a domain.
+ * <br/>
+ * Each term is extracted from a UI component, which we call the "target component".
+ * <br/>
+ * Each term contains the basic domain information, which can be extracted from the target component:
+ * <ul>
+ * <li>name - primary domain information, which we are able to extract from a component</li>
+ * <li>description - secondary domain information, which we are able to extract from a component (such as tooltip) - description can provide additional information about the term</li>
+ * <li>relation - the relation between this term's children</li>
+ * <li>parentRelation - the relation, which transfers to this term's parent</li>
+ * <li>icon - sometimes, if there is no textual information available in the target component, an icon can contain domain information</li>
+ * <li>labelForComponent - if there is no textual information available in the target component, a JLabel can provide additional domain information</li>
+ * <li>constraints - the constraints for the term, such as: length, range, enumeration, etc.</li>
+ * </ul>
+ * 
+ * <br/>
+ * 
+ * Each term contains a reference to the domain model in which it is located, 
+ * to the target component and to its class. 
+ */
 public class Term {
 	/**
 	 * Each term has its name, which is a primary information extracted from a
