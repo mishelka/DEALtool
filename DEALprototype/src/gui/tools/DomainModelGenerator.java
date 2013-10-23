@@ -52,7 +52,7 @@ public class DomainModelGenerator {
 	private void createDefaultDomainModel(String name) {
 		domainModel = new DomainModel(name);
 		Term rootTerm = new Term(domainModel, name);
-		domainModel.setRoot(rootTerm);
+		domainModel.replaceRoot(rootTerm);
 	}
 	
 	/***************************************** Recorder stuff *************************************/

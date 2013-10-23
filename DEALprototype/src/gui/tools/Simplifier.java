@@ -54,7 +54,7 @@ public class Simplifier {
 	 */
 	private void shiftRootInModel() {
 		Term child = domainModel.getRoot().getFirstChild();
-		domainModel.setRoot(child);
+		domainModel.replaceRoot(child);
 		child.setParent(null);
 	}
 
