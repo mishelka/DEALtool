@@ -132,7 +132,7 @@ public class DomainModel {
 
 	/**
 	 * If there are terms, which have only one child and the child is a leaf, 
-	 * then this leaf is moved to its grandparent and its parent is removed.
+	 * then this leaf is moved to its grandparent and its parent is removed.<br/>
 	 * Parent-Grandparent-Leaf ==> Parent-Leaf
 	 * @return true if anything was shifted, false otherwise
 	 */
