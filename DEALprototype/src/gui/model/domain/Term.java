@@ -519,6 +519,13 @@ public class Term {
 		return removed;
 	}
 	
+	/**
+	 * If there are terms, which have only one child and the child is a leaf, 
+	 * then this leaf is moved to its grandparent and its parent is removed. Recursive function.
+	 * <br/>
+	 * Parent-Grandparent-Leaf ==> Parent-Leaf
+	 * @return true if anything was shifted, false otherwise
+	 */
 	public boolean shiftSingleChildLeafs() {
 		boolean removed = false;
 		Iterator <Term> i = iterator();
