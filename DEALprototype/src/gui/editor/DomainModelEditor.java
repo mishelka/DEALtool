@@ -56,6 +56,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
@@ -546,8 +547,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 //		editorTextArea = new javax.swing.JTextArea();
 		menuBar = new javax.swing.JMenuBar();
 		fileMenu = new javax.swing.JMenu();
-		saveMenuItem = new javax.swing.JMenuItem();
-		openMenuItem = new javax.swing.JMenuItem();
+		//not used in this version yet
+//		saveMenuItem = new javax.swing.JMenuItem();
+//		openMenuItem = new javax.swing.JMenuItem();
 		exitMenuItem = new javax.swing.JMenuItem();
 		generateDSLMenuItem = new javax.swing.JMenuItem();
 		generateITaskMenuItem = new javax.swing.JMenuItem();
@@ -1183,6 +1185,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		rightJTabbedPane.addTab("", new VerticalTextIcon(" Model ", false),
 				modelSplitPane, "Model");
+		rightJTabbedPane.addTab("", new VerticalTextIcon(" Visualisation ", false),
+				new JPanel(), "Visualisation");
 
 //		editorTextArea.setColumns(20);
 //		editorTextArea.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
@@ -1275,7 +1279,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 		pack();
 	}// </editor-fold>
 
-	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	//not used in this version yet
+//	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		// // xml writer test
 		// currently not working
 		// XmlDomainModelWriter w = new XmlDomainModelWriter(domainModels);
@@ -1285,9 +1290,10 @@ public class DomainModelEditor extends JFrame implements Observer {
 		// } else {
 		// Logger.logError("There was an error when writing the model to xml");
 		// }
-	}
+//	}
 
-	private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	//not used in this version yet
+//	private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		// // xml reader test
 		// currently not working
 		// domainModel.reset();
@@ -1298,7 +1304,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		// } catch (Exception e) {
 		// Logger.logError(e);
 		// }
-	}
+//	}
 
 	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		System.exit(0);
@@ -1307,24 +1313,26 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private void generateITaskMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		if(application.getDomainModelCount() >= 1) {
 			DomainModel dm = application.getDomainModels().get(0);
-			Language language = yajcoGenerator.generateDSL(dm);
+			Language language = generateDSL(dm);
 			
-			ITaskGenerator generator = new ITaskGenerator(language);
-			try {
-				generator.generate();
-			} catch (GeneratorException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(language != null) {
+				ITaskGenerator generator = new ITaskGenerator(language, dm);
+				try {
+					generator.generate();
+				} catch (GeneratorException e) {
+					e.printStackTrace();
+				}
+				
+				invokeOpenDir(ITaskGenerator.ITASK_DIR);
+			} else {
+				JOptionPane.showMessageDialog(this, "The iTask code could not be generated, because DEAL could not create a DSL");
 			}
 		}
-		
-		//int selection = JOptionPane.showConfirmDialog(this, "iTask rozhranie bolo vygenerovane. Chcete otvorit adresar s iTask kodom?", "Vygenerovany adresar", JOptionPane.YES_NO_OPTION);
-		invokeOpenDir(ITaskGenerator.ITASK_DIR);
 	}
 	
 	private void generateDSLMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		for(DomainModel dm : application.getDomainModels()) {
-			Language dsl = yajcoGenerator.generateDSL(dm);
+			generateDSL(dm);
 			
 			String filePath = YajcoGenerator.DSL_DIR;
 			invokeOpenDir(filePath);
@@ -1334,6 +1342,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 //				invokeOpenDir("." + File.separatorChar + "src" + File.separatorChar + dsl.getName());
 //			}
 		}
+	}
+	
+	private Language generateDSL(DomainModel domainModel) {
+		Language language = yajcoGenerator.generateDSL(domainModel);
+		return language;
 	}
 	
 	public void invokeOpenDir(String path) {
@@ -1634,8 +1647,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private javax.swing.JSplitPane modelSplitPane;
 	private javax.swing.JTextArea nameField;
 	private javax.swing.JLabel nameLabel;
-	private javax.swing.JMenuItem openMenuItem;
-	private javax.swing.JMenuItem saveMenuItem;
+//	not used in this version yet
+//	private javax.swing.JMenuItem openMenuItem;
+//	private javax.swing.JMenuItem saveMenuItem;
 	private javax.swing.JMenuItem generateDSLMenuItem;
 	private javax.swing.JMenuItem generateITaskMenuItem;
 	private javax.swing.JTextField tooltipField;

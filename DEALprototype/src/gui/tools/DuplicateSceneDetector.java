@@ -1,10 +1,13 @@
 package gui.tools;
 
+import gui.analyzer.util.Util;
 import gui.editor.DomainModelEditor;
 import gui.model.application.scenes.Scene;
 import gui.model.domain.DomainModel;
+import gui.model.domain.Term;
 
 import java.awt.Window;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DuplicateSceneDetector {
@@ -34,8 +37,8 @@ public class DuplicateSceneDetector {
 	 * @return Percentage of matching string elements in both models.
 	 */
 	private int compareModels(DomainModel dm1, DomainModel dm2) {
-		List<String> list1 = dm1.getAllTermsAsStrings();
-		List<String> list2 = dm2.getAllTermsAsStrings();
+		List<String> list1 = getAllTermsAsStrings(dm1);
+		List<String> list2 = getAllTermsAsStrings(dm2);
 		list1.add(dm1.getName());
 		list2.add(dm2.getName());
 
@@ -50,5 +53,32 @@ public class DuplicateSceneDetector {
 		int matches = list1.size();
 
 		return 100 * matches / size;
+	}
+	
+
+	/**
+	 * Get's the list of the names of all the terms, located in this model.
+	 * @return
+	 */
+	private List<String> getAllTermsAsStrings(DomainModel domainModel) {
+		List<String> allTermsAsStrings = new ArrayList<String>();
+		
+		Term root = domainModel.getRoot();
+		if(domainModel == null || root == null) return allTermsAsStrings;
+		
+		List<Term> allTerms = root.getAllTerms(new ArrayList<Term>());
+		
+		for(Term t : allTerms) {
+			String name = t.getName();
+			if(Util.isEmpty(name)) {
+				allTermsAsStrings.add(t.getName());
+			}
+			String desc = t.getDescription();
+			if(Util.isEmpty(desc)) {
+				allTermsAsStrings.add(t.getDescription());
+			}
+		}
+		
+		return allTermsAsStrings;
 	}
 }
