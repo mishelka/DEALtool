@@ -87,7 +87,8 @@ public class Term {
 	/**
 	 * For textual components (like text area, text field, etc.) we can also
 	 * extract some constraints, like text length, possible values, type, etc.
-	 * This is not implemented yet.
+	 * A constraint can be one of the types contained in the 
+	 * gui.model.domain.constraint package.
 	 */
 	private List<Constraint> constraints = new ArrayList<Constraint>();
 
