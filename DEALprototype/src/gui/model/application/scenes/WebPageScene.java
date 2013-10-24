@@ -3,6 +3,8 @@ package gui.model.application.scenes;
 import gui.model.application.webpage.WebPage;
 
 /**
+ * Not used yet.
+ * 
  * @author Michaela Bacikova, Slovakia,
  * michaela.bacikova@tuke.sk
  */

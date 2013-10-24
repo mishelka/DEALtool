@@ -1,3 +1,7 @@
+/**
+ * The support for the replay function.
+ * Not used yet.
+ */
 @Parser(
     className = "gui.tools.ProgramLanguageParser",
     mainNode = "gui.model.application.Program",
