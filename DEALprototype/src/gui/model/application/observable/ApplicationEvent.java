@@ -1,4 +1,4 @@
-package gui.analyzer.observable;
+package gui.model.application.observable;
 
 import gui.model.application.scenes.Scene;
 

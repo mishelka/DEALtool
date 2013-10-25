@@ -1,7 +1,5 @@
 package gui.editor;
 
-import gui.analyzer.observable.ApplicationEvent;
-import gui.analyzer.observable.ApplicationEvent.ApplicationChangeState;
 import gui.analyzer.util.JLabelFinder;
 import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
@@ -11,6 +9,8 @@ import gui.generator.dsl.YajcoGenerator;
 import gui.generator.itask.GeneratorException;
 import gui.generator.itask.ITaskGenerator;
 import gui.model.application.Application;
+import gui.model.application.observable.ApplicationEvent;
+import gui.model.application.observable.ApplicationEvent.ApplicationChangeState;
 import gui.model.application.scenes.DialogScene;
 import gui.model.application.scenes.Scene;
 import gui.model.application.scenes.WindowScene;
@@ -151,7 +151,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		ApplicationEvent appEvt = (ApplicationEvent) event;
 
 		if (appEvt.getChangeState() == ApplicationChangeState.ADDED) {
-			addDomainModel(appEvt.getTargetScene());
+			addDomainModel(appEvt.getSourceScene());
 
 			setupComponentTreeModel();
 		} else {
