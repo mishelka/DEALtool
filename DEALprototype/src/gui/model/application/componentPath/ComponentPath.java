@@ -6,6 +6,19 @@ import gui.model.application.scenes.Scene;
 import java.awt.Component;
 import java.util.List;
 
+/**
+ * Represents the path to the component in the component tree.
+ * 
+ * In the recording process, when the component has no domain identifier,
+ * this component path is used to identify the component in the component
+ * tree.
+ * 
+ * The path is in the form of integer number sequence, where each number represents
+ * the placement of the component in the tree.
+ * 
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
+ */
 public class ComponentPath {
 	private List<Integer> componentPath;
 	
