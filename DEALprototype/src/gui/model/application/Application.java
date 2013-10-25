@@ -1,8 +1,8 @@
 package gui.model.application;
 
-import gui.analyzer.observable.AppObservable;
-import gui.analyzer.observable.ApplicationEvent;
-import gui.analyzer.observable.ApplicationEvent.ApplicationChangeState;
+import gui.model.application.observable.AppObservable;
+import gui.model.application.observable.ApplicationEvent;
+import gui.model.application.observable.ApplicationEvent.ApplicationChangeState;
 import gui.model.application.scenes.Scene;
 import gui.model.domain.DomainModel;
 
