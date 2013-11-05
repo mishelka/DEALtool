@@ -1,5 +1,7 @@
 package gui.generator.itask;
 
+import gui.model.domain.DomainModel;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
@@ -32,9 +34,13 @@ public abstract class TemplateGenerator extends Generator {
         }
     }
 
-    public TemplateGenerator(Language language, String template) {
-        super(language);
-        this.template = template;
+//    public TemplateGenerator(Language language, String template) {
+//        this(language, null, template);
+//    }
+    
+    public TemplateGenerator(Language language, DomainModel domainModel, String template) {
+    	super(language, domainModel);
+    	this.template = template;
     }
 
     public String getTemplate() {
@@ -48,6 +54,7 @@ public abstract class TemplateGenerator extends Generator {
 
             //Add model and generator
             context.put("language", getLanguage());
+            context.put("domainModel", getDomainModel());
             context.put("generator", this);
 
             //Evaluate the template - generates output

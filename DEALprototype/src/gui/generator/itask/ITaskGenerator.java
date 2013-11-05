@@ -1,5 +1,7 @@
 package gui.generator.itask;
 
+import gui.model.domain.DomainModel;
+
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +11,12 @@ import yajco.model.Language;
 public class ITaskGenerator extends ITaskTemplateGenerator {
 	public static final String ITASK_DIR = "iTask/iTask/";
 	
-    public ITaskGenerator(Language language) {
-        super(language, "iTask"); //iTask template name
+//    public ITaskGenerator(Language language) {
+//        this(language, null); //iTask template name
+//    }
+    
+    public ITaskGenerator(Language language, DomainModel domainModel) {
+    	super(language, domainModel, "iTask");
     }
 
     @Override

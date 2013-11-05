@@ -1,5 +1,7 @@
 package gui.generator.itask;
 
+import gui.model.domain.DomainModel;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +15,7 @@ public abstract class Generator {
     protected static Properties generatorProperties = new Properties();
 
     private final Language language;
+    private final DomainModel domainModel;
 
     static {
         try {
@@ -22,12 +25,21 @@ public abstract class Generator {
         }
     }
 
-    public Generator(Language language) {
-        this.language = language;
+//    public Generator(Language language) {
+//        this(language, null);
+//    }
+    
+    public Generator(Language language, DomainModel domainModel) {
+    	this.language = language;
+    	this.domainModel = domainModel;
     }
 
     public Language getLanguage() {
         return language;
+    }
+    
+    public DomainModel getDomainModel() {
+    	return domainModel;
     }
 
     public String getDestinationDir() {
