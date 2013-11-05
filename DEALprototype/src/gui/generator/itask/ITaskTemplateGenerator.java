@@ -1,9 +1,16 @@
 package gui.generator.itask;
 
+import gui.model.domain.DomainModel;
+import gui.model.domain.Term;
+
+import java.awt.MenuItem;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JButton;
 
 import yajco.model.Concept;
 import yajco.model.Language;
@@ -15,18 +22,8 @@ import yajco.model.type.SetType;
 import yajco.model.type.Type;
 
 public abstract class ITaskTemplateGenerator extends TemplateGenerator {
-	private Language language;
-
-	public ITaskTemplateGenerator(Language language, String template) {
-		super(language, template);
-	}
-
-	public Language getDomainModel() {
-		return language;
-	}
-
-	public void setLanguage(Language language) {
-		this.language = language;
+	public ITaskTemplateGenerator(Language language, DomainModel domainModel, String template) {
+		super(language, domainModel, template);
 	}
 	
 	@Override
@@ -254,5 +251,25 @@ public abstract class ITaskTemplateGenerator extends TemplateGenerator {
     	}
     	
     	return refConcept;
+    }
+    
+    public List<Term> getMenuItemTerms() {
+    	return getTermsOfComponentType(MenuItem.class);
+    }
+    
+    public List<Term> getButtonTerms() {
+    	return getTermsOfComponentType(JButton.class);
+    }
+    
+    private List<Term> getTermsOfComponentType(Class type) {
+    	List<Term> termsOfType = new ArrayList<Term>();
+    	for(Term t : super.getDomainModel().getAllTerms()) {
+    		if(t.getComponent() != null)
+	    		if(type.isAssignableFrom(t.getComponent().getClass())) {
+	    			termsOfType.add(t);
+	    		}
+    	}
+    	
+    	return termsOfType;
     }
 }
