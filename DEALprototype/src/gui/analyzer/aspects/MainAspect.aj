@@ -25,13 +25,19 @@ public aspect MainAspect {
 
 	/**
 	 * Advice for the main method.
-	 * Also Installs a Window event listener.
+	 * Gets the name of the application and installs the a window event listener.
+	 * The events will be handler in {@see gui.analyzer.aspects.ModelGeneratorAspect}.
 	 */
 	before(): mainPointcut() {
 		String className = thisJoinPoint.getSignature().getDeclaringType().getName();
 		install(className);
 	}
 
+	/**
+	 * Installs the AWTEventListener on the application
+	 * and if successful, logs the name of the application into the console.
+	 * @param className the name of the application
+	 */
 	private void install(String className) {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		if (!toolkits.contains(toolkit)) {
