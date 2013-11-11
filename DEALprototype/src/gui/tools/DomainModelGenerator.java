@@ -29,7 +29,6 @@ public class DomainModelGenerator {
 	/**
 	 * Creates a domain model from the given scene.
 	 * @param scene The scene which the model should be created from.
-	 * @param name The name of the domain model / equals the name of the scene (title, application name).
 	 * @return The domain model created from the scene.
 	 */
 	public DomainModel createDomainModel(Scene<?> scene) throws ExtractionException {

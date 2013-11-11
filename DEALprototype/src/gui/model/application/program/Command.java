@@ -1,15 +1,15 @@
 package gui.model.application.program;
 
 /**
- * Predstavuje abstraktnı príkaz programu. Definuje povinnú abstraktnú metódu
- * execute, ktorá má za úlohu vykona príkaz na zadanom komponente.
+ * An abstract program command. Defines the voluntary abstract method execute, which
+ * executes this command on a given component.
  */
 public abstract class Command {
    /**
-    * Vykoná príkaz na zadanom komponente.
-    * @param <T> trieda zadaného komponentu.
-    * @param component komponent, na ktorom sa má vykona príkaz.
-    * @return Hodnota true ak bol príkaz vykonanı v poriadku, false inak.
+    * Executes the command on a given component.
+    * @param <T> class of the given component
+    * @param component the component, on which the command should be executed
+    * @return true if the command was executed properly, false otherwise
     */
    public abstract <T> boolean execute(T component);
 }

@@ -132,7 +132,8 @@ public abstract class DomainIdentifiable<T> {
 	
 	/**
 	 * Returns constraints related to the Term extracted from the provided component.
-	 * @warning When overriding this method, please return the constraint list provided by superclass and add new constraints into this list.
+	 * <b>When overriding this method, please return the constraint list provided 
+	 * by superclass and add new constraints into this list.</b>
 	 * @param component The component to be used for extraction.
 	 * @return The list of extracted constraints. If no constraints can be extracted for this type of component,
 	 * then returns a new ArrayList of constraints.

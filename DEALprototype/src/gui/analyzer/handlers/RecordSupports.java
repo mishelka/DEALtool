@@ -9,8 +9,8 @@ import java.util.Properties;
 /**
  * Serves for adding an apropriate record support handler for a component class.
  * The RecordSupports class is implemented according to the singleton pattern.
- * Trieda RecordSupports je impelentovanĂˇ podÄľa vzoru singleton.
- * @author Michaela Bačíková <michaela.bacikova@tuke.sk>
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
  */
 public class RecordSupports {
 

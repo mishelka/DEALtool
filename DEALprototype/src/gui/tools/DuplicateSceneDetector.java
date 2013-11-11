@@ -18,7 +18,7 @@ public class DuplicateSceneDetector {
 	 * @param windowDomainModel the domainModel of the window to be detected
 	 * @return the Scene matching the window if the percentage of match is 100%, null otherwise
 	 */
-	public Scene<?> detect(Window w, DomainModel windowDomainModel) {
+	public Scene<?> detect(Window window, DomainModel windowDomainModel) {
 		for (DomainModel dm : DomainModelEditor.getDomainModels()) {
 			if (dm.getScene().getSceneContainer() instanceof Window) {
 				int matchPerc = compareModels(dm, windowDomainModel);
@@ -57,8 +57,9 @@ public class DuplicateSceneDetector {
 	
 
 	/**
-	 * Get's the list of the names of all the terms, located in this model.
-	 * @return
+	 * Gets the list of the names of all the terms, located in the given domain model.
+	 * @param domainModel the domain model the names to be selected from
+	 * @return the names of all terms located in the given model
 	 */
 	private List<String> getAllTermsAsStrings(DomainModel domainModel) {
 		List<String> allTermsAsStrings = new ArrayList<String>();

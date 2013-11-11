@@ -12,20 +12,19 @@ import yajco.annotation.Before;
 import yajco.annotation.Separator;
 
 /**
- * Predstavuje implementáciu príkazu Command. Reprezentuje samotnı príkaz, ktorı
- * je moné vykona na programe.
+ * The Command class implementation. Represents the command, which can be executed on a component.
  */
 public class DelegateCommand extends Command {
 
-   /** Názov príkazu. */
+   /** The command name. */
    private final Name name;
-   /** Zoznam parametrov. */
+   /** The list of parameters. */
    private final Parameter[] parameters;
 
    /**
-    * Konštruktor
-    * @param name názov príkazu.
-    * @param parameters zoznam parametrov príkazu.
+    * Constructor creating the instance of the DelegateCommand class.
+    * @param name the command name
+    * @param parameters the list of parameters of the command
     */
    public DelegateCommand(Name name, @Before("[") @After("]") @Separator(",") Parameter[] parameters) {
       this.name = name;
@@ -34,14 +33,14 @@ public class DelegateCommand extends Command {
    }
 
    /**
-    * @return Názov príkazu.
+    * @return The command name
     */
    public Name getName() {
       return name;
    }
 
    /**
-    * @return Zoznam parametrov príkazu.
+    * @return The list of command's parameters
     */
    public Parameter[] getParameters() {
       return parameters;

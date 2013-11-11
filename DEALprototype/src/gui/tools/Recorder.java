@@ -94,12 +94,11 @@ public class Recorder {
 	}
 
 	/**
-	 * Zapíše jeden príkaz do textového súboru. Ak rekordér nenahráva (príznak
-	 * priebehu nahrávania recording je nastavenı na false), ak je zadanı príkaz
-	 * null alebo je to prázdny reazec, nevykoná sa niè.
-	 * 
+	 * Writes one command into a text file. If the recorder is not recording
+	 * (the recording flag is set to false) or if the command is null or empty string,
+	 * nothing will happen.
 	 * @param command
-	 *            príkaz, ktorı sa má zapísa.
+	 *            command, which should be recorded.
 	 */
 	public void record(String command) {
 		if (recording) {
@@ -151,7 +150,7 @@ public class Recorder {
 	}
 
 	/**
-	 * @return Názov súboru, do ktorého má rekordér zapisova.
+	 * @return The name of the file to record to.
 	 */
 	public String getFileName() {
 		return fileName;
