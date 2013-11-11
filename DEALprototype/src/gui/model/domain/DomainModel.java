@@ -132,8 +132,8 @@ public class DomainModel {
 	 * @param description the description to be searched for
 	 * @return the list of all terms with the given description
 	 */
-	public List<Term> findTermsByDescription(String descrption) {
-		return root.findTermsByDescription(descrption);
+	public List<Term> findTermsByDescription(String description) {
+		return root.findTermsByDescription(description);
 	}
 	
 	/**

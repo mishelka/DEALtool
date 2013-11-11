@@ -11,11 +11,12 @@ import java.util.List;
 import javax.swing.JComponent;
 
 /**
- * Offers different methods for searching in the component tree. - obtaining a
- * scene containing the given component, from the given list of scenes -
- * obtaining a component path for the given component - searching a component in
- * a tree according to various parameters - transformation of component tree to
- * a list of components
+ * Offers different methods for searching in the component tree.
+ * The class implements the singleton pattern.
+ * obtaining a scene containing the given component, from the given list of scenes
+ * obtaining a component path for the given component
+ * searching a component in a tree according to various parameters
+ * transformation of component tree to a list of components
  */
 public class ComponentFinder {
 
@@ -78,6 +79,12 @@ public class ComponentFinder {
 		return null;
 	}
 
+	/**
+	 * Gets the component for the given component path.
+	 * @param scene the scene to search the component for in
+	 * @param componentPath the path to the component
+	 * @return the component located in the given scene on the given component path
+	 */
 	public Component getComponentFromPath(Scene<?> scene,
 			ComponentPath componentPath) {
 		Component component = getSceneContainerAsComponent(scene);
@@ -98,6 +105,12 @@ public class ComponentFinder {
 		return component;
 	}
 
+	/**
+	 * Returns the path to the given component in the given scene.
+	 * @param scene the scene the component is located in
+	 * @param component the component, for which the component path should be created
+	 * @return the path to the given component in the given scene as a list of integers
+	 */
 	public List<Integer> getPathForComponent(Scene<?> scene,
 			Component component) {
 		Component sceneComponent = getSceneContainerAsComponent(scene);
@@ -127,7 +140,7 @@ public class ComponentFinder {
 
 		return null;
 	}
-
+	
 	private void getPathForComponent(Component[] components,
 			List<Integer> path, Component component) {
 		for (int i = 0; i < components.length; i++) {
@@ -154,6 +167,11 @@ public class ComponentFinder {
 		path.add(-1);
 	}
 	
+	/**
+	 * Creates a list of all components from the given scene
+	 * @param scene the scene, from which all components should be 
+	 * @return all components of the given scene in a list
+	 */
 	@SuppressWarnings("rawtypes")
 	public List<Component> toComponentList(Scene scene) {
 		Component sceneContainer = getSceneContainerAsComponent(scene);
@@ -180,7 +198,7 @@ public class ComponentFinder {
 		}
 		return componentList;
 	}
-
+	
 	private void componentsToList(Component[] components,
 			List<Component> componentList) {
 		for (Component component : components) {

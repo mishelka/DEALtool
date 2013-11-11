@@ -9,29 +9,28 @@ import java.util.List;
 import javax.swing.JLabel;
 
 /**
- * Najde komponentovu cestu v komponentovom strome pre komponent Najde Label
- * komponent podla atributu labelFor (ak existuje) Zisti, ci existuje Label
- * komponent podla atributu labelFor
+ * Sometimes, components do not contain any domain information in them. However, 
+ * a <code>JLabel</code> can describe other components. A <code>JLabel</code> has 
+ * a <code>labelFor</code> attribute, which refers to the component, which this
+ * JLabel is describing.
  */
 public class JLabelFinder {
 	/**
-	 * Ziska objekt typu JLabel s hodnotou labelFor odkazujucou sa na component.
-	 * 
-	 * @param component
-	 *            komponent, pre ktora sa ma najst komponent JLabel.
-	 * @return najdena objekt typu JLabel pre component, ak sa nenajde, tak
-	 *         null.
+	 * Finds a <code>JLabel</code> with the 
+	 * <code>labelFor</code> referring to the given component.
+	 * @param component the component, for which a JLabel should be found
+	 * @return a JLabel for the given component, if it exists, null otherwise.
 	 */
 	public static JLabel findLabelFor(Component component) {
 		// TODO: important this was not working, if scenes are added into the
 		// Application class
 		// before creating the model, the GUI will be empty
-		// This is a workaround, each new window is added into the
-		// DomainModelEditor windows list.
 		// List<Scene<?>> scenes = new ArrayList<Scene<?>>();
 		// for(DomainModel dm : DomainModelEditor.getDomainModels()) {
 		// scenes.add(dm.getScene());
 		// }
+		// This is a workaround, each new window is added into the
+		// DomainModelEditor windows list.
 
 		List<Window> windows = DomainModelEditor.getInstance()
 				.getApplicationWindows();
@@ -59,14 +58,12 @@ public class JLabelFinder {
 	}
 
 	/**
-	 * Finds out, if there is a JLabel component for the given component (the
-	 * labelFor value in the JLabel refers to this component).
-	 * 
-	 * @param labelFor
-	 *            the text of the JLabel component to be found
-	 * @param component
-	 *            the component, for which the JLabel component should be found
-	 * @return true, if a JLabel exists for this component, false otherwise
+	 * If there is a <code>JLabel</code> with the given 
+	 * <code>labelFor</code> referring to the given component, returns true.
+	 * The method is used in the replay function.
+	 * @param labelFor the text of the <code>JLabel</code> component to be compared
+	 * @param component the component, for which the JLabel component should be found with the given <code>labelFor</code> text.
+	 * @return true, if a <code>JLabel</code> exists for the given component and with the given <code>labelFor</code> text, false otherwise.
 	 */
 	public static boolean existsComponentByLabelFor(String labelFor,
 			Component component) {
