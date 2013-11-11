@@ -1,6 +1,5 @@
 package gui.analyzer.aspects;
 
-import gui.analyzer.Inspector;
 import gui.editor.DomainModelEditor;
 import gui.editor.FindDialog;
 import gui.model.application.Application;
@@ -25,6 +24,15 @@ public privileged aspect ModelGeneratorAspect {
 	private Recorder recorder;
 	private Application application;
 
+	/**
+	 * Creates new ModelGeneratorAspect instance.
+	 * Gets the DomainModelEditor instance.
+	 * Creates a Recorder instance and stores it to the editor.
+	 * Creates a new DomainModelGenerator instance.
+	 * Creates a new DuplicateSceneDetector instance.
+	 * Gets an Application instance from the editor.
+	 * Adds the editor as an observer to the Application.
+	 */
 	@SuppressWarnings("static-access")
 	public ModelGeneratorAspect() {
 		editor = DomainModelEditor.getInstance();
@@ -71,6 +79,14 @@ public privileged aspect ModelGeneratorAspect {
 		}
 	}
 	
+	/**
+	 * For each activated window <code>w</code> creates a new <code>Scene</code> instance,
+	 * registers the Inspector (if there already is one registered, then it will not be registered again),
+	 * reloads the editor and generates a new domain model for the window.
+	 * If there already is such domain model in the list of all existing domain models,
+	 * then it replaces the old one with the new.
+	 * @param w the window, for which a Scene should be created and a domain model should be generated.
+	 */
 	private void onWindowActivated(Window w) {
 		if (!(w instanceof DomainModelEditor) && !(w instanceof FindDialog)) {
 			DomainModelEditor.getInstance().addApplicationWindow(w);
@@ -95,6 +111,11 @@ public privileged aspect ModelGeneratorAspect {
 		}
 	}
 	
+	/**
+	 * Detects and removes previous Scene from the Application.
+	 * @param scene the Scene instance, for which the previous instance is to be detected and removed
+	 * @param w the window, which is the scene component
+	 */
 	private void detectAndDeletePreviousModel(Scene<?> scene, Window w) {
 		if(application.contains(scene)) {
 			application.removeScene(scene);
@@ -105,11 +126,20 @@ public privileged aspect ModelGeneratorAspect {
 			}
 		}
 	}
-	
+
+	/**
+	 * Adds a new Scene instance into the Application's scene list.
+	 * @param scene the Scene to be added.
+	 */
 	private void addNewScene(Scene<?> scene) {
 		application.addScene(scene);
 	}
 
+	/**
+	 * Creates a new Scene instance with the given Window component.
+	 * @param window the component, the Scene should be created for
+	 * @return the newly created Scene with the given Window as the scene component
+	 */
 	@SuppressWarnings("unchecked")
 	private Scene<?> createScene(Window window) {
 		@SuppressWarnings("rawtypes")
@@ -130,12 +160,11 @@ public privileged aspect ModelGeneratorAspect {
 		return scene;
 	}
 
+	/**
+	 * Registers the Inspector.
+	 */
 	private void registerInspector() {
 		//disabled for now
 		//Inspector.register();
-	}
-	
-	public Application getApplication() {
-		return application;
 	}
 }
