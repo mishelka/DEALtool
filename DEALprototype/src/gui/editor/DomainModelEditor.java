@@ -120,28 +120,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		yajcoGenerator = new YajcoGenerator();
 	}
 
-	/******************* Recorder stuff *****************************************/
-
-	/** Thread for recording */
-	private Thread recordingThread;
-	/** Recorder instance - Recorder enables recording to physical memory. */
-	private Recorder recorder;
-
-	/**
-	 * @param recorder
-	 *            a Recorder instance responsible for recording to physical
-	 *            memory.
-	 */
-	public void setRecorder(Recorder recorder) {
-		this.recorder = recorder;
-	}
-
-	public Recorder getRecorder() {
-		return recorder;
-	}
-
-	/******************* Methods for domain model setup *************************/
-
+	//<editor-fold defaultstate="collapsed" desc="Methods for domain model setup">
 	/**
 	 * The Observer method - if any scene is added, edited or removed, this
 	 * method is called.
@@ -197,9 +176,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		expandAll(domainJTree, true);
 	}
+	//</editor-fold>
 
-	/******************* Methods for component tree setup ************************/
-
+	//<editor-fold defaultstate="collapsed" desc="Methods for component tree setup">
 	/**
 	 * Sets up the ComponentTreeModel based on the window that just opened.
 	 */
@@ -308,9 +287,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 			}
 		}
 	}
+	//</editor-fold>
 
-	/****************** getters and setters *************************************/
-
+	//<editor-fold defaultstate="collapsed" desc="Getters and setters">
 	public javax.swing.JTree getDomainTree() {
 		return domainJTree;
 	}
@@ -336,39 +315,61 @@ public class DomainModelEditor extends JFrame implements Observer {
 			windows.add(window);
 		}
 	}
+	//</editor-fold>
 
-	/******************* Events for mouse clicking *******************************/
+	//<editor-fold defaultstate="collapsed" desc="Mouse clicking events (on tree click, hide funcitonality)">
 	private void onTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {
+		DefaultMutableTreeNode obj = (DefaultMutableTreeNode) evt.getPath()
+				.getLastPathComponent();
+		Object clickedObject = obj.getUserObject();
+		if(clickedObject != null) {
+			if (clickedObject instanceof Term) {
+				showClickedTerm((Term)clickedObject);
+			}
+	
+			if (clickedObject instanceof Component) {
+				showClickedComponent((Component) clickedObject);
+			}
+		}
+	}
+	
+	private void showClickedComponent(Component component) {
+		unhighlightLastClickedComponent();
+		
+		if (component != null) {
+			highlightComponentWithYellow(component);
+			showComponentInTrees(component);
+		}
+		
+		Term targetTerm = ((gui.editor.tree.TreeModel) domainJTree
+				.getModel()).findTermForComponent(clickedComponent);
+		updateInfoPanel(targetTerm, clickedComponent);
+	}
+	
+	private void showClickedTerm(Term term) {
+		Object component = term.getComponent();
+		if(component instanceof Component) {
+			showClickedComponent((Component)component);
+		}
+	}
+	
+	private void unhighlightLastClickedComponent() {
 		if (clickedComponent != null) {
 			clickedComponent.setBackground(clickedComponentColor);
 			if (clickedComponent instanceof JComponent)
 				((JComponent) clickedComponent)
 						.setOpaque(clickedComponentOpaque);
 		}
-
-		DefaultMutableTreeNode obj = (DefaultMutableTreeNode) evt.getPath()
-				.getLastPathComponent();
-		Object targetObject = obj.getUserObject();
-		if (targetObject != null && targetObject instanceof Term) {
-			targetObject = ((Term) targetObject).getComponent();
-		}
-
-		if (targetObject != null && targetObject instanceof Component) {
-			clickedComponent = (Component) targetObject;
-			clickedComponentColor = clickedComponent.getBackground();
-			clickedComponent.setBackground(Color.YELLOW);
-			if (clickedComponent instanceof JComponent) {
-				JComponent jc = (JComponent) clickedComponent;
-				clickedComponentOpaque = jc.isOpaque();
-				jc.setOpaque(true);
-			}
-			showComponentInTrees(clickedComponent);
-		}
-
-		if (clickedComponent != null) {
-			Term targetTerm = ((gui.editor.tree.TreeModel) domainJTree
-					.getModel()).findTermForComponent(clickedComponent);
-			updateInfoPanel(targetTerm, clickedComponent);
+	}
+	
+	private void highlightComponentWithYellow(Component component) {
+		this.clickedComponent = component;
+		clickedComponentColor = clickedComponent.getBackground();
+		clickedComponent.setBackground(Color.YELLOW);
+		if (clickedComponent instanceof JComponent) {
+			JComponent jc = (JComponent) clickedComponent;
+			clickedComponentOpaque = jc.isOpaque();
+			jc.setOpaque(true);
 		}
 	}
 
@@ -414,8 +415,28 @@ public class DomainModelEditor extends JFrame implements Observer {
 		expandAll(componentJTree, true);
 		expandAll(domainJTree, true);
 	}
+	//</editor-fold>
 
-	private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {
+	//<editor-fold defaultstate="collapsed" desc="Recorder stuff">
+	/** Thread for recording */
+	private Thread recordingThread;
+	/** Recorder instance - Recorder enables recording to physical memory. */
+	private Recorder recorder;
+
+	/**
+	 * @param recorder
+	 *            a Recorder instance responsible for recording to physical
+	 *            memory.
+	 */
+	public void setRecorder(Recorder recorder) {
+		this.recorder = recorder;
+	}
+
+	public Recorder getRecorder() {
+		return recorder;
+	}
+	
+	private void browseButtonActionPerformed(ActionEvent evt) {
 		JFileChooser chooser = new JFileChooser("Record");
 		chooser.setDialogTitle(OPEN_DIALOG_NAME);
 		DealFileFilter filter = new DealFileFilter();
@@ -427,7 +448,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		}
 	}
 
-	private void recordButtonActionPerformed(java.awt.event.ActionEvent evt) {
+	private void recordButtonActionPerformed(ActionEvent evt) {
 		if (!recorder.isRecording()) {
 			String name = fileNameTextField.getText();
 			try {
@@ -466,7 +487,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		fileNameTextField.setEnabled(!recording);
 	}
 
-	private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {
+	private void stopButtonActionPerformed(ActionEvent evt) {
 		if (recorder.isRecording()) {
 			recordingThread.interrupt();
 			try {
@@ -488,7 +509,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	}
 
 	private void showInfoTypesCheckBoxActionPerformed(
-			java.awt.event.ActionEvent evt) {
+			ActionEvent evt) {
 		for (DomainModel domainModel : application.getDomainModels()) {
 			domainModel.setShowComponentInfoTypes(showInfoTypesCheckBox
 					.isSelected());
@@ -496,8 +517,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		reloadTrees();
 	}
+	//</editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="Generated Code">
+	//<editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
 		java.awt.GridBagConstraints gridBagConstraints;
 
@@ -553,6 +575,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 		exitMenuItem = new javax.swing.JMenuItem();
 		generateDSLMenuItem = new javax.swing.JMenuItem();
 		generateITaskMenuItem = new javax.swing.JMenuItem();
+		findComponentByNameMenuItem = new javax.swing.JMenuItem();
+		
 		recordButtonGroup = new javax.swing.ButtonGroup();
 
 		nameField.setLineWrap(true);
@@ -1210,7 +1234,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 				java.awt.event.InputEvent.CTRL_MASK));
 		generateDSLMenuItem.setText("Generate DSL");
 		generateDSLMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			public void actionPerformed(ActionEvent evt) {
 				generateDSLMenuItemActionPerformed(evt);
 			}
 		});
@@ -1222,18 +1246,30 @@ public class DomainModelEditor extends JFrame implements Observer {
 				java.awt.event.InputEvent.CTRL_MASK));
 		generateITaskMenuItem.setText("Generate iTask code");
 		generateITaskMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			public void actionPerformed(ActionEvent evt) {
 				generateITaskMenuItemActionPerformed(evt);
 			}
 		});
 		fileMenu.add(generateITaskMenuItem);
+		
+		findComponentByNameMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_F,
+				java.awt.event.InputEvent.CTRL_MASK));
+		findComponentByNameMenuItem.setText("Find component by name");
+		findComponentByNameMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				findComponentByNameMenuItemActionPerformed(evt);
+			}
+		});
+		fileMenu.add(findComponentByNameMenuItem);
 		
 //		saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
 //				java.awt.event.KeyEvent.VK_S,
 //				java.awt.event.InputEvent.CTRL_MASK));
 //		saveMenuItem.setText("Save");
 //		saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//			public void actionPerformed(ActionEvent evt) {
 //				saveMenuItemActionPerformed(evt);
 //			}
 //		});
@@ -1244,7 +1280,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 //				java.awt.event.InputEvent.CTRL_MASK));
 //		openMenuItem.setText("Open");
 //		openMenuItem.addActionListener(new java.awt.event.ActionListener() {
-//			public void actionPerformed(java.awt.event.ActionEvent evt) {
+//			public void actionPerformed(ActionEvent evt) {
 //				openMenuItemActionPerformed(evt);
 //			}
 //		});
@@ -1255,7 +1291,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 				java.awt.event.InputEvent.ALT_MASK));
 		exitMenuItem.setText("Exit");
 		exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+			public void actionPerformed(ActionEvent evt) {
 				exitMenuItemActionPerformed(evt);
 			}
 		});
@@ -1277,10 +1313,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 				infoSplitPane, javax.swing.GroupLayout.Alignment.TRAILING));
 
 		pack();
-	}// </editor-fold>
+	}//</editor-fold>
 
+	//<editor-fold defaultstate="collapsed" desc="Save and open functionalities - NOT YET IMPLEMENTED">
 	//not used in this version yet
-//	private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+//	private void saveMenuItemActionPerformed(ActionEvent evt) {
 		// // xml writer test
 		// currently not working
 		// XmlDomainModelWriter w = new XmlDomainModelWriter(domainModels);
@@ -1293,7 +1330,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 //	}
 
 	//not used in this version yet
-//	private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+//	private void openMenuItemActionPerformed(ActionEvent evt) {
 		// // xml reader test
 		// currently not working
 		// domainModel.reset();
@@ -1305,12 +1342,60 @@ public class DomainModelEditor extends JFrame implements Observer {
 		// Logger.logError(e);
 		// }
 //	}
+	//</editor-fold>
 
-	private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	//<editor-fold defaultstate="collapsed" desc="Find functionality">
+	public void findComponentByNameMenuItemActionPerformed(ActionEvent evt) {
+		final FindDialog findDialog = new FindDialog(this, true);
+		findDialog.addFindActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				findDialogActionPerformed(findDialog.getStringToFind());
+			}
+		});
+		findDialog.setVisible(true);
+	}
+	
+	private void findDialogActionPerformed(String stringToFind) {
+		List<Term> termsWithName = findTermsWithName(stringToFind);
+		List<Term> termsWithDescription = findTermsWithDescription(stringToFind);
+		
+		Term clickedTerm = null;
+		if(termsWithName.size() > 0) {
+			clickedTerm = termsWithName.get(0);
+		} else if (termsWithDescription.size() > 0) {
+			clickedTerm = termsWithDescription.get(0);
+		}
+		
+		if(clickedTerm != null) {
+			showClickedTerm(clickedTerm);
+		}
+	}
+	
+	private List<Term> findTermsWithName(String name) {
+		List<Term> termsWithName = new ArrayList<Term>();
+		for(DomainModel dm : application.getDomainModels()) {
+			termsWithName.addAll(dm.findTermsByName(name));
+		}
+		return termsWithName;
+	}
+	
+	private List<Term> findTermsWithDescription(String description) {
+		List<Term> termsWithDescription = new ArrayList<Term>();
+		for(DomainModel dm : application.getDomainModels()) {
+			termsWithDescription.addAll(dm.findTermsByDescription(description));
+		}
+		return termsWithDescription;
+	}
+	//</editor-fold>
+	
+	private void exitMenuItemActionPerformed(ActionEvent evt) {
 		System.exit(0);
 	}
 	
-	private void generateITaskMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	//<editor-fold defaultstate="collapsed" desc="generator functionalities">
+	private void generateITaskMenuItemActionPerformed(ActionEvent evt) {
 		if(application.getDomainModelCount() >= 1) {
 			DomainModel dm = application.getDomainModels().get(0);
 			Language language = generateDSL(dm);
@@ -1330,7 +1415,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		}
 	}
 	
-	private void generateDSLMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	private void generateDSLMenuItemActionPerformed(ActionEvent evt) {
 		for(DomainModel dm : application.getDomainModels()) {
 			generateDSL(dm);
 			
@@ -1354,17 +1439,20 @@ public class DomainModelEditor extends JFrame implements Observer {
 			try {
 				Desktop.getDesktop().open(new File(path));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//could not open the gererated directory
 			}
 		}
 	}
+	//</editor-fold>
 
-	// sets the cursor in the component tree to the current component - in both
-	// jTrees
-	public void showComponentInTrees(Object source) {
-		showComponentInTree(source, componentJTree);
-		showComponentInTree(source, domainJTree);
+	//<editor-fold defaultstate="collapsed" desc="On click update functionalities. On mouse click the info panl updates and the clicked component is highlighted in both trees and in the GUI with a yellow collor">
+	/**
+	 * Sets the cursor to highlight the given component both in the component and domain tree
+	 * @param component the component to be highlighted (focused) in both trees
+	 */
+	public void showComponentInTrees(Object component) {
+		showComponentInTree(component, componentJTree);
+		showComponentInTree(component, domainJTree);
 	}
 
 	private void resetInfoPanel() {
@@ -1483,9 +1571,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 	// sets the cursor in the component tree to the current component - in the
 	// componentJTree
-	private void showComponentInTree(Object source, JTree tree) {
+	private void showComponentInTree(Object component, JTree tree) {
 		Object root = tree.getModel().getRoot();
-		Object[] treePath = createTreePathToComponent(source, root);
+		Object[] treePath = createTreePathToComponent(component, root);
 		if (treePath.length != 0) {
 			TreePath path = new TreePath(treePath);
 			if (path != null && path.getPathCount() != 0) {
@@ -1498,7 +1586,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		}
 	}
 
-	private Object[] createTreePathToComponent(Object source, Object root) {
+	private Object[] createTreePathToComponent(Object component, Object root) {
 		List<Object> list = new ArrayList<Object>();
 		if (root instanceof DefaultMutableTreeNode) {
 			DefaultMutableTreeNode top = (DefaultMutableTreeNode) root;
@@ -1513,9 +1601,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 						if (userObject instanceof Term) {
 							Term f = (Term) userObject;
 							if (f.getComponent() != null
-									&& f.getComponent().equals(source))
+									&& f.getComponent().equals(component))
 								return node.getPath();
-						} else if (node.getUserObject().equals(source)) {
+						} else if (node.getUserObject().equals(component)) {
 							return node.getPath();
 						}
 					}
@@ -1553,9 +1641,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 	public void setClickedComponentOpaque(boolean clickedComponentOpaque) {
 		this.clickedComponentOpaque = clickedComponentOpaque;
 	}
+	//</editor-fold>
 
-	/******************* Utilities for tree expanding/collapsing *****************/
-
+	//<editor-fold defaultstate="collapsed" desc="Utilities for tree expanding/collapsing">
 	/**
 	 * Expand/collapse utility method. If expand is true, expands all nodes in
 	 * the tree. Otherwise collapses all nodes in the tree.
@@ -1606,9 +1694,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 			tree.collapsePath(parent);
 		}
 	}
-
-	/******************* Component variables declaration ************************************/
-
+	//</editor-fold>
+	
+	//<editor-fold defaultstate="collapsed" desc="Component variables declaration">
 	private javax.swing.JTextField actionCommandField;
 	private javax.swing.JLabel actionCommandLabel;
 	private javax.swing.JTextField classField;
@@ -1652,6 +1740,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 //	private javax.swing.JMenuItem saveMenuItem;
 	private javax.swing.JMenuItem generateDSLMenuItem;
 	private javax.swing.JMenuItem generateITaskMenuItem;
+	private javax.swing.JMenuItem findComponentByNameMenuItem;
 	private javax.swing.JTextField tooltipField;
 	private javax.swing.JLabel tooltipLabel;
 	private javax.swing.JComboBox<RelationType> typeComboBox;
@@ -1701,8 +1790,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private GridBagConstraints gridBagConstraints_10;
 	private javax.swing.JSeparator recordSeparator;
 	private javax.swing.ButtonGroup recordButtonGroup;
+//</editor-fold>
 
-	/******************* Private classes ************************************/
+	//<editor-fold  defaultstate="collapsed" desc="Private classes: PopupMenu, PopClickListener, RecordingThread, DealFileFilter">
 	/**
 	 * JPopMenu implementation.
 	 */
@@ -1845,4 +1935,6 @@ public class DomainModelEditor extends JFrame implements Observer {
 			return "DEAL files *" + Recorder.DEAL_FILE_EXT;
 		}
 	}
+	
+//</editor-fold>
 }

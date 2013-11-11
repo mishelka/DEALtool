@@ -742,6 +742,30 @@ public class Term {
 		}
 		return null;
 	}
+	
+	public List<Term> findTermsByName(String name) {
+		List<Term> terms = new ArrayList<Term>();
+		if (this.name != null && this.name.equalsIgnoreCase(name))
+			terms.add(this);
+		List<Term> result = null;
+		for (Term t : children) {
+			result = t.findTermsByName(name);
+			terms.addAll(result);
+		}
+		return terms;
+	}
+	
+	public List<Term> findTermsByDescription(String description) {
+		List<Term> terms = new ArrayList<Term>();
+		if (this.description != null && this.description.equalsIgnoreCase(description))
+			terms.add(this);
+		List<Term> result = null;
+		for (Term t : children) {
+			result = t.findTermsByDescription(description);
+			terms.addAll(result);
+		}
+		return terms;
+	}
 
 	/**
 	 * Returns all children (including this term) of this term in a list. Recurisve function.

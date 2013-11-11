@@ -118,6 +118,14 @@ public class DomainModel {
 		return root.getTermForComponent(component);
 	}
 	
+	public List<Term> findTermsByName(String name) {
+		return root.findTermsByName(name);
+	}
+	
+	public List<Term> findTermsByDescription(String descrption) {
+		return root.findTermsByDescription(descrption);
+	}
+	
 	/**
 	 * Gets all terms located in the domain model in a list
 	 * @return all terms contained in the model in a list
