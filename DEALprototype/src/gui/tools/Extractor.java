@@ -21,6 +21,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
+/**
+ * Extracts a domain model from the given scene.
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
+ */
 public class Extractor {
 	private DomainModel domainModel;
 	@SuppressWarnings("rawtypes")
@@ -28,6 +33,12 @@ public class Extractor {
 	private Term rootTerm;
 	private String sceneName;
 
+	/**
+	 * Extracts a domain model from the given scene.
+	 * @param scene the scene the domain model should be extracted from
+	 * @return the extracted domain model
+	 * @throws ExtractionException if the scene is null or if the extracted domain model is null
+	 */
 	@SuppressWarnings("rawtypes")
 	public DomainModel eXTRACT(Scene scene) throws ExtractionException {
 		if (scene != null) {
@@ -91,7 +102,7 @@ public class Extractor {
 	 *            The term which should be checked for labelFors.
 	 * @return if anything was removed, returns true, false otherwise
 	 */
-	public boolean transferLabelFors(Term thisTerm) {
+	private boolean transferLabelFors(Term thisTerm) {
 		boolean wasRemoved = false;
 		Iterator<Term> i = thisTerm.iterator();
 		while (i.hasNext()) {
@@ -551,7 +562,15 @@ public class Extractor {
 		return terms;
 	}
 
-	public class ExtractionException extends Exception {
+	/**
+	 * Thrown when the extractor tries to extract
+	 * a domain model from a null scene or if the 
+	 * extracted domain model is null.
+	 * Used only in the tools package.
+	 * @author Michaela Bacikova, Slovakia,
+	 * michaela.bacikova@tuke.sk
+	 */
+	class ExtractionException extends Exception {
 		private static final long serialVersionUID = 1L;
 
 		public ExtractionException(String msg) {

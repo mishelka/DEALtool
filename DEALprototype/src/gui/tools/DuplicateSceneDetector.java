@@ -10,20 +10,34 @@ import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Detects duplicate scenes in the list of stored scenes or domain models.
+ * Usually, each window/dialog is created as a new instance, 
+ * therefore it is difficult to be sure if the windows are the same or not.
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk 
+ */
 public class DuplicateSceneDetector {
 	
 	/**
-	 * Detects similar window in the list of created domain models. If the window is the same or at least 90% similar to the one in editor, returns true.
+	 * Detects similar window in the list of stored scenes/domain models. 
+	 * If the window is the same or at least 90% similar to the one in editor, 
+	 * returns the corresponding scene, otherwise returns null.
 	 * @param window the window to be detected
 	 * @param windowDomainModel the domainModel of the window to be detected
-	 * @return the Scene matching the window if the percentage of match is 100%, null otherwise
+	 * @return the Scene matching the window if the percentage of match is 100%,
+	 * null otherwise
 	 */
 	public Scene<?> detect(Window window, DomainModel windowDomainModel) {
 		for (DomainModel dm : DomainModelEditor.getDomainModels()) {
 			if (dm.getScene().getSceneContainer() instanceof Window) {
+				//if the window and the scene container are same instances, return the scene
+				if(dm.getScene().getSceneContainer().equals(window)) {
+					return dm.getScene();
+				}
 				int matchPerc = compareModels(dm, windowDomainModel);
-				//If the dialog is the same to the one in editor, return true, otherwise return false
-				if (matchPerc == 100)
+				//if the dialog is the same to the one in editor, return true, otherwise return false
+				if (matchPerc >= 90)
 					return dm.getScene();
 			}
 		}
@@ -31,9 +45,9 @@ public class DuplicateSceneDetector {
 	}
 
 	/**
-	 * Compares two domain models for strings they contain.
-	 * @param dm1 First domain model to compare.
-	 * @param dm2 Second domain model to comapre.
+	 * Compares two domain models for all the strings they contain.
+	 * @param dm1 First domain model to be compared
+	 * @param dm2 Second domain model to be compared
 	 * @return Percentage of matching string elements in both models.
 	 */
 	private int compareModels(DomainModel dm1, DomainModel dm2) {
@@ -51,7 +65,7 @@ public class DuplicateSceneDetector {
 		list1.retainAll(list2);
 
 		int matches = list1.size();
-
+		
 		return 100 * matches / size;
 	}
 	
