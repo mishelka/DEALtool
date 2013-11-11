@@ -131,9 +131,8 @@ public privileged aspect ModelGeneratorAspect {
 	}
 
 	private void registerInspector() {
-		if (Inspector.isRegistered()) {
-			Inspector.register();
-		}
+		//disabled for now
+		//Inspector.register();
 	}
 	
 	public Application getApplication() {

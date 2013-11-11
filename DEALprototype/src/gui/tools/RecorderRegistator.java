@@ -10,7 +10,7 @@ import gui.model.application.scenes.Scene;
  * In order for the Recorder to work, each component in the UI has to be
  * registered with it. RecorderRegistrator registers the recorder to the given
  * scene and into all supported components.
- * <br></br>
+ * <br>
  * For the registration to process, a RecordSupport handler must exist for the
  * given component. The supported handlers are in the
  * <code>gui.handlers.swing.record</code> package. The registration process has

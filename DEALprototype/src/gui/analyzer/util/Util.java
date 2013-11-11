@@ -5,14 +5,29 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+/**
+ * A utility class for String operations.
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
+ */
 public class Util {
 
+	/**
+	 * Finds out, if the given string is empty.
+	 * @param s the string
+	 * @return true if the given string is null or it's length is 0, false otherwise
+	 */
 	public static boolean isEmpty(String s) {
 		if (s == null)
 			return true;
-		return (s.trim().length() == 0);
+		return (s.trim().isEmpty());
 	}
 
+	/**
+	 * Transforms HTML code to a simple text
+	 * @param s the string to be transformed from HTML to simple text.
+	 * @return the string without any HTML tags and escape characters
+	 */
 	public static String htmlToText(String s) {
 		if (s == null)
 			return s;

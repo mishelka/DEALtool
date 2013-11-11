@@ -1,5 +1,10 @@
 package gui.analyzer;
 
+/**
+ * An error during processing of the *.property files.
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
+ */
 public class ProcessingException extends RuntimeException {
     private static final long serialVersionUID = 1;
     

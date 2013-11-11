@@ -7,7 +7,15 @@ import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.util.ArrayList;
 
+/**
+ * The main aspect of DEAL.
+ * The AWTEventListener is registered to the toolkit for the new windows and dialogs
+ * to be registered.
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
+ */
 public aspect MainAspect {
+	/** The list of all toolkits - if we already have the toolkit in the list, we do not register it. */
 	private ArrayList<Toolkit> toolkits = new ArrayList<Toolkit>();
 
 	// For the main method to be able to use windowpointcut
@@ -16,7 +24,7 @@ public aspect MainAspect {
 	pointcut mainPointcut(): execution(* *.main(*));
 
 	/**
-	 * Pointcut for the main method.
+	 * Advice for the main method.
 	 * Also Installs a Window event listener.
 	 */
 	before(): mainPointcut() {

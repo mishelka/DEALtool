@@ -14,21 +14,27 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 /**
- * Na zaklade kliknuti mysi zobrazi kliknuty komponent v komponentovom strome v
- * ComponentTreeUi. Na zaklade toho, nad ktorym komponentom sa nachadza mys
- * vysvieti tento komponent zltou farbou.
+ * Based on the clicked component, displays the clicked component in the
+ * component tree and in the domain model. Also displays all available info
+ * in the information panel and highlights the clicked component in yellow.
+ * In order for the Inspector to work, it has to be registered on all components
+ * in the scene.
+ * Inspector is disabled in this version because of the problems with
+ * DomainModelEditor highlights. 
  */
 public class Inspector implements AWTEventListener {
 
+	/** True if the Inspector was registered, false otherwise. */
 	private static boolean registered;
 
+	/** Default constructor. */
 	private Inspector() {
 	}
 
 	/**
-	 * Vykona registraciu objektu triedy Inspector, pricom to znamena, ze od
-	 * tohto momentu uz bude zaznamenavat udalosti mysi nad spustanou
-	 * aplikaciou.
+	 * Registers the Inspector object and from this moment the mouse clicks on the
+	 * target application will be registered.
+	 * If the registration was successful, then the <code>isRegistered()</code> method will return <code>true</code>.
 	 */
 	public static void register() {
 		if (!registered) {
@@ -38,13 +44,18 @@ public class Inspector implements AWTEventListener {
 		}
 	}
 	
+	/**
+	 * Returns the value of the <code>registered</code> flag.
+	 * @return true if the Inspector was registered on the target application, false otherwise.
+	 */
 	public static boolean isRegistered() {
 		return registered;
 	}
 
 	/**
-	 * Ak je mys nad komponentom, tento komponent sa vysvieti zltou farbou Ak sa
-	 * klikne mysou na komponent, zobrazi sa v komponentovom strome
+	 * If the mouse is over a component, this component will be highlighted
+	 * by a yellow color. If clicked on the component, it will be displayed in
+	 * the component tree and its representation in the domain model.
 	 */
 	@Override
 	public void eventDispatched(AWTEvent event) {
@@ -55,18 +66,17 @@ public class Inspector implements AWTEventListener {
 		boolean clickedComponentOpaque = fde.isClickedComponentOpaque();
 
 		if (event instanceof MouseEvent) {
-			if (clickedComponent != null) {
-				Window window = SwingUtilities
-						.getWindowAncestor(clickedComponent);
-				if (!(window instanceof DomainModelEditor)) {
-					clickedComponent.setBackground(clickedComponentColor);
-					if (clickedComponent instanceof JComponent)
-						((JComponent) clickedComponent)
-								.setOpaque(clickedComponentOpaque);
+			if (event.getSource() instanceof Component && event.getID() == MouseEvent.MOUSE_CLICKED) {
+				if (clickedComponent != null) {
+					Window window = SwingUtilities
+							.getWindowAncestor(clickedComponent);
+					if (!(window instanceof DomainModelEditor)) {
+						clickedComponent.setBackground(clickedComponentColor);
+						if (clickedComponent instanceof JComponent)
+							((JComponent) clickedComponent)
+									.setOpaque(clickedComponentOpaque);
+					}
 				}
-			}
-
-			if (event.getSource() instanceof Component) {
 				fde.setClickedComponent(clickedComponent = SwingUtilities
 						.getDeepestComponentAt((Component) event.getSource(),
 								((MouseEvent) event).getX(),
