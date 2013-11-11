@@ -55,8 +55,8 @@ public abstract class DomainIdentifiable<T> {
 	public Term createTerm(T component, DomainModel domainModel) {
 		Term t = new Term(domainModel);
 
-		t.setName(this.getDomainIdentifier(component));
-
+		t.setName(removeUnwantedCharacters(this.getDomainIdentifier(component)));
+		
 		t.setDescription(this.getDomainDescriptor(component));
 		
 		t.setLabelForComponent(this.getDomainLabelDescriptor(component));
@@ -80,6 +80,12 @@ public abstract class DomainIdentifiable<T> {
 			t.setParentRelation(parentRelation);
 
 		return t;
+	}
+	
+	private String removeUnwantedCharacters(String string) {
+		if(string == null || string.isEmpty()) return string;
+		if(string.contains(":")) string = string.replaceAll(":", "");
+		return string;
 	}
 
 	/**
