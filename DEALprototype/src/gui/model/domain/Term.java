@@ -743,6 +743,11 @@ public class Term {
 		return null;
 	}
 	
+	/**
+	 * Finds all terms with the given name. Serves for the purpose of search.
+	 * @param name the name to be searched for
+	 * @return the list of all terms with the given name
+	 */
 	public List<Term> findTermsByName(String name) {
 		List<Term> terms = new ArrayList<Term>();
 		if (this.name != null && this.name.equalsIgnoreCase(name))
@@ -755,6 +760,11 @@ public class Term {
 		return terms;
 	}
 	
+	/**
+	 * Finds all terms with the given description. Serves for the purpose of search.
+	 * @param description the description to be searched for
+	 * @return the list of all terms with the given description
+	 */
 	public List<Term> findTermsByDescription(String description) {
 		List<Term> terms = new ArrayList<Term>();
 		if (this.description != null && this.description.equalsIgnoreCase(description))
@@ -780,6 +790,10 @@ public class Term {
 		return list;
 	}
 
+	/**
+	 * Returns the iterator for the children terms
+	 * @return the iterator for the children terms
+	 */
 	public Iterator<Term> iterator() {
 		return this.children.iterator();
 	}

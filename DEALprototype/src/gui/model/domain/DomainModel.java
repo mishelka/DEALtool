@@ -118,10 +118,20 @@ public class DomainModel {
 		return root.getTermForComponent(component);
 	}
 	
+	/**
+	 * Finds all terms with the given name. Serves for the purpose of search.
+	 * @param name the name to be searched for
+	 * @return the list of all terms with the given name
+	 */
 	public List<Term> findTermsByName(String name) {
 		return root.findTermsByName(name);
 	}
 	
+	/**
+	 * Finds all terms with the given description. Serves for the purpose of search.
+	 * @param description the description to be searched for
+	 * @return the list of all terms with the given description
+	 */
 	public List<Term> findTermsByDescription(String descrption) {
 		return root.findTermsByDescription(descrption);
 	}
