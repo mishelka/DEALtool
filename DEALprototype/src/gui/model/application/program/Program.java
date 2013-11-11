@@ -36,10 +36,10 @@ public class Program {
    }
 
    /**
-    * Vykoná program nad zadaným komponentom s použitím krokovača.
-    * @param <T> trieda komponentu.
-    * @param component komponent, nad ktorým sa má vykonať program.
-    * @param step krok, v ktorm je vykonávanie programu.
+    * Executes a program on a given component with stepping.
+    * @param <T> the component class
+    * @param component the component, on which the program should be executed
+    * @param step step, in which the program is executing
     */
    public <T> void execute(T component, int step) {
       while (index < getCommands().length) {

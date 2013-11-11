@@ -446,7 +446,7 @@ public class Term {
 
 	/**
 	 * Removes all terms in the specified list from this term.
-	 * @param childrenToAdd the list of child terms to be removed from this term
+	 * @param childrenToRemove the list of child terms to be removed from this term
 	 */
 	public void removeAll(List<Term> childrenToRemove) {
 		for (Term t : childrenToRemove) {
@@ -769,7 +769,7 @@ public class Term {
 
 	/**
 	 * Returns all children (including this term) of this term in a list. Recurisve function.
-	 * @param the list, to which the children should be added.
+	 * @param list the list, to which the children should be added.
 	 * @return all children (including this term) of this term in a list.
 	 */
 	public List<Term> getAllTerms(List<Term> list) {

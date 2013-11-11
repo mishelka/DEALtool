@@ -59,16 +59,14 @@ public class JLabelFinder {
 	}
 
 	/**
-	 * Zistí, èi pre danı komponent existuje komponent typu JLabel s hodnotou
-	 * labelFor odkazujúcou na tento komponent.
+	 * Finds out, if there is a JLabel component for the given component (the
+	 * labelFor value in the JLabel refers to this component).
 	 * 
 	 * @param labelFor
-	 *            popis komponentu JLabel, ktorı sa má nájs.
+	 *            the text of the JLabel component to be found
 	 * @param component
-	 *            komponent, na ktorı sa má odkazova atribút labelFor
-	 *            komponentu JLabel.
-	 * @return Hodnota true ak existuje komponent typu JLabel s hodnotou
-	 *         labelFor odkazujúcou sa na component, false inak.
+	 *            the component, for which the JLabel component should be found
+	 * @return true, if a JLabel exists for this component, false otherwise
 	 */
 	public static boolean existsComponentByLabelFor(String labelFor,
 			Component component) {

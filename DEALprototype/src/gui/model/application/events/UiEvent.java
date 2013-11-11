@@ -105,7 +105,7 @@ public class UiEvent {
 	 * For example, for a button, only its name is important because a button
 	 * can only be clicked. But for text components, there are multiple
 	 * possibilities: writing a text, moving a cursor, deleting text, etc.
-	 * @param the set of additional commands for this event
+	 * @param commands the set of additional commands for this event
 	 */
 	public void setCommands(String[] commands) {
 		this.commands = commands;
