@@ -3,9 +3,28 @@ package gui.tools;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 
+/**
+ * Simplifies the given domain model.
+ * The simplification process is the second DEAL phase and it includes 4 steps:
+ * <ul>
+ * <li>The default root removal.</li>
+ * <li>Deletion of void containers.</li>
+ * <li>Deletion of multiple nesting.</li>
+ * <li>Deletion non-relevant terms.</li>
+ * </ul>
+ * 
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
+ */
 public class Simplifier {
+	/** The reference to the domain model to be simplified */
 	private DomainModel domainModel;
 	
+	/**
+	 * Simplifies the given domain model and returns the simplified version.
+	 * @param domainModel the domain model to be simplified
+	 * @return the simplified version of the given domain model
+	 */
 	public DomainModel sIMPLIFY(DomainModel domainModel) {
 		this.domainModel = domainModel;
 		
@@ -14,7 +33,7 @@ public class Simplifier {
 //		Use this only when using YAJCo
 //		removeFunctionalComponents();
 		
-		return domainModel;
+		return this.domainModel;
 	}
 	
 	//TODO: toto sa musi spravit na zaskrtnutie v DEAL.
@@ -22,16 +41,17 @@ public class Simplifier {
 //		return domainModel.removeTermsOfInfoType(ComponentInfoType.FUNCTIONAL);
 //	}
 	
-/************************* Methods for Domain Model simplification ******************************/
-	
-	/* 
+	//<editor-fold defaultstate="collapsed" desc="Methods for domain model simplification">
+	/** 
 	 * Second phase of DEAL - simplification of the term graph.
 	 * The simplification is performed recursively and has x steps:
-	 * - The default root removal.
-	 * - Deletion of void containers.
-	 * - Deletion of multiple nesting.
-	 * - Deletion non-relevant terms.
-	 * @return true if the model simplified, false otherwise
+	 * <ul>
+	 * <li>The default root removal.</li>
+	 * <li>Deletion of void containers.</li>
+	 * <li>Deletion of multiple nesting.</li>
+	 * <li>Deletion non-relevant terms.</li>
+	 * </ul>
+	 * @return true if the model was simplified, false otherwise
 	 */
 	public DomainModel sIMPLIFY() {
 		shiftRootInModel();
@@ -60,9 +80,11 @@ public class Simplifier {
 
 	/**
 	 * Recursive step of the simplification phase. Steps:
-	 * - Deletion of void containers. 
-	 * - Deletion of multiple nesting.
-	 * - Deletion non-relevant terms.
+	 * <ul>
+	 * <li>Deletion of void containers.</li> 
+	 * <li>Deletion of multiple nesting.</li>
+	 * <li>Deletion non-relevant terms.</li>
+	 * </ul>
 	 * @param thisTerm The actual term, which should be checked for simplification possibilities.
 	 * @return true if any term was removed, false otherwise.
 	 */
@@ -74,4 +96,5 @@ public class Simplifier {
 			wasRemoved |= domainModel.shiftSingleChildLeafs();
 		} while (!wasRemoved);
 	}
+	//</editor-fold>
 }

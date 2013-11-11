@@ -12,36 +12,35 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Trieda Recorder má za úlohu fyzické nahrávanie príkazov do textového súboru
- * na lokálnom disku.
- * 
- * @author Michaela Kreutzova <michaela.kreutzova@gmail.com>
+ * Performs physical recording of commands performed on the UI into a text file
+ * located on the local disk, or into a list of UiEventSequence objects.
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
  */
 public class Recorder {
 
 	public static final String DEAL_FILE_EXT = ".deal";
 	public static final String DEFAULT_RECORD_PATH = "record/";
 
-	/** Inštancia triedy BufferedWriter zodpovedná za zápis do súboru. */
+	/** A BufferedReader instance - responsible for writing into the file. */
 	private BufferedWriter writer;
 	/**
-	 * Príznak priebehu nahrávania.
-	 * 
-	 * @value true ak nahrávanie prebieha, false inak.
+	 * Flag representing the state of the recording process.
+	 * @value true if the recording is running, false otherwise.
 	 */
 	private boolean recording = false;
-	/** Výstupný súbor. */
+	/** The output file. */
 	private File file;
-	/** Názov výstupného súboru. */
+	/** The name of the output file. */
 	private String fileName;
-	/** A UiEvent sequence to be recorded. Later, this sequence is going to be saved to a file. */
+	/** A UiEvent sequence to be recorded. 
+	 * Later, this sequence is going to be saved into a file. */
 	private UiEventSequence uiEventSequence = new UiEventSequence();
 
 	/**
-	 * Vytvorí nový súbor, ktorý má automaticky vygenerovaný názov.
-	 * Creates a new file with an automatically generated name. Also creates a new uiEventSequence.
-	 * @throws IOException
-	 *             v prípade chyby pri vytváraní súboru.
+	 * Creates a new file with an automatically generated name. 
+	 * Also creates a new uiEventSequence.
+	 * @throws IOException in case of an error during the file creation
 	 */
 	public void createNewFile() throws IOException {
 		createNewUiSequence();
@@ -49,12 +48,9 @@ public class Recorder {
 	}
 
 	/**
-	 * Vytvorí nový súbor s pomocou používate¾om zadaného názvu.
-	 * 
-	 * @param fileName
-	 *            používate¾om zadaný názov súboru.
-	 * @throws IOException
-	 *             v prípade chyby pri vytváraní súboru.
+	 * Creates a new file with the user given name
+	 * @param fileName the user given file name
+	 * @throws IOException in case of an error during the file creation
 	 */
 	public void createNewFile(String fileName) throws IOException {
 		createNewUiSequence();
@@ -73,12 +69,15 @@ public class Recorder {
 	}
 	
 	//TODO: maybe in the future add a name for the uiSequence - this will be used to save the sequence.
+	/**
+	 * Creates a new UiEventSequence instance.
+	 */
 	public void createNewUiSequence() {
 		this.uiEventSequence = new UiEventSequence();
 	}
 
 	/**
-	 * Zatvorí inštanciu triedy BufferedWriter.
+	 * Closes the BufferedWriter instance.
 	 */
 	public void closeWriter() {
 		try {
@@ -134,16 +133,16 @@ public class Recorder {
 	}
 
 	/**
-	 * @return Príznak priebehu nahrávania. True ak nahrávanie prebieha, false
-	 *         inak.
+	 * Returns the value of the recording flag representing the state of the recording process.
+	 * @return true if the recording is running, false otherwise.
 	 */
 	public boolean isRecording() {
 		return recording;
 	}
 
 	/**
-	 * @param recording
-	 *            príznak priebehu nahrávania.
+	 * Sets the value of the recording flag representing the state of the recording process.
+	 * @param recording the value of the recording flag
 	 */
 	public void setRecording(boolean recording) {
 		this.recording = recording;
@@ -163,6 +162,7 @@ public class Recorder {
 						.format(new Date()) + DEAL_FILE_EXT;
 	}
 	
+	/** Writes the recorded UI event sequence into the console. */
 	public void writeResultToConsole() {
 		Logger.logError(uiEventSequence.toString());
 	}

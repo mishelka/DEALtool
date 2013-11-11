@@ -1,5 +1,10 @@
 package gui.tools;
 
+/**
+ * Not yet implemented.
+ * @author Michaela Bacikova, Slovakia,
+ * michaela.bacikova@tuke.sk
+ */
 public class Replayer {
 	//z nacitaneho suboru vytvorit UIEventSequence
 	
