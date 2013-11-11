@@ -60,10 +60,6 @@ public class DomainModelGenerator {
 		return domainModel;
 	}
 	
-	private DomainModel getDomainModel() {
-		return domainModel;
-	}
-	
 	private void createDefaultDomainModel(String name) {
 		domainModel = new DomainModel(name);
 		Term rootTerm = new Term(domainModel, name);
