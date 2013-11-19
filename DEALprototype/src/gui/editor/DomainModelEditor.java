@@ -324,33 +324,39 @@ public class DomainModelEditor extends JFrame implements Observer {
 		Object clickedObject = obj.getUserObject();
 		if(clickedObject != null) {
 			if (clickedObject instanceof Term) {
-				showClickedTerm((Term)clickedObject);
-			}
-	
-			if (clickedObject instanceof Component) {
-				showClickedComponent((Component) clickedObject);
+				showInTrees((Term)clickedObject);
+			} else if (clickedObject instanceof Component) {
+				showInTrees((Component) clickedObject);
 			}
 		}
 	}
 	
-	private void showClickedComponent(Component component) {
+	public void showInTrees(Component component) {
 		unhighlightLastClickedComponent();
-		
+		showClickedComponent(component);
+		Term targetTerm = ((gui.editor.tree.TreeModel) 
+				domainJTree.getModel()).findTermForComponent(clickedComponent);
+		showClickedTerm(targetTerm);
+		updateInfoPanel(targetTerm, component);
+	}
+	
+	public void showInTrees(Term term) {
+		unhighlightLastClickedComponent();
+		Object component = term.getComponent();
+		showClickedComponent(component);
+		showClickedTerm(term);
+		updateInfoPanel(term, component);
+	}
+	
+	private void showClickedComponent(Object component) {	
 		if (component != null) {
 			highlightComponentWithYellow(component);
 			showComponentInTrees(component);
 		}
-		
-		Term targetTerm = ((gui.editor.tree.TreeModel) domainJTree
-				.getModel()).findTermForComponent(clickedComponent);
-		updateInfoPanel(targetTerm, clickedComponent);
 	}
 	
 	private void showClickedTerm(Term term) {
-		Object component = term.getComponent();
-		if(component instanceof Component) {
-			showClickedComponent((Component)component);
-		}
+		showTermInTrees(term);
 	}
 	
 	private void unhighlightLastClickedComponent() {
@@ -362,14 +368,17 @@ public class DomainModelEditor extends JFrame implements Observer {
 		}
 	}
 	
-	private void highlightComponentWithYellow(Component component) {
-		this.clickedComponent = component;
-		clickedComponentColor = clickedComponent.getBackground();
-		clickedComponent.setBackground(Color.YELLOW);
-		if (clickedComponent instanceof JComponent) {
-			JComponent jc = (JComponent) clickedComponent;
-			clickedComponentOpaque = jc.isOpaque();
-			jc.setOpaque(true);
+	private void highlightComponentWithYellow(Object component) {
+		if(component instanceof Component) {
+			Component clickedComponent = (Component) component;
+			this.clickedComponent = clickedComponent;
+			clickedComponentColor = clickedComponent.getBackground();
+			clickedComponent.setBackground(Color.YELLOW);
+			if (clickedComponent instanceof JComponent) {
+				JComponent jc = (JComponent) clickedComponent;
+				clickedComponentOpaque = jc.isOpaque();
+				jc.setOpaque(true);
+			}
 		}
 	}
 
@@ -1445,14 +1454,19 @@ public class DomainModelEditor extends JFrame implements Observer {
 	}
 	//</editor-fold>
 
+	public void showTermInTrees(Term term) {
+		showObjectInTree(term, componentJTree);
+		showObjectInTree(term, domainJTree);
+	}
+	
 	//<editor-fold defaultstate="collapsed" desc="On click update functionalities. On mouse click the info panl updates and the clicked component is highlighted in both trees and in the GUI with a yellow collor">
 	/**
 	 * Sets the cursor to highlight the given component both in the component and domain tree
 	 * @param component the component to be highlighted (focused) in both trees
 	 */
 	public void showComponentInTrees(Object component) {
-		showComponentInTree(component, componentJTree);
-		showComponentInTree(component, domainJTree);
+		showObjectInTree(component, componentJTree);
+		showObjectInTree(component, domainJTree);
 	}
 
 	private void resetInfoPanel() {
@@ -1571,11 +1585,12 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 	// sets the cursor in the component tree to the current component - in the
 	// componentJTree
-	private void showComponentInTree(Object component, JTree tree) {
+	private TreePath showObjectInTree(Object object, JTree tree) {
 		Object root = tree.getModel().getRoot();
-		Object[] treePath = createTreePathToComponent(component, root);
+		Object[] treePath = createTreePathToObject(object, root);
+		TreePath path = null;
 		if (treePath.length != 0) {
-			TreePath path = new TreePath(treePath);
+			path = new TreePath(treePath);
 			if (path != null && path.getPathCount() != 0) {
 
 				tree.expandPath(path.getParentPath());
@@ -1584,9 +1599,10 @@ public class DomainModelEditor extends JFrame implements Observer {
 				tree.setSelectionPath(path);
 			}
 		}
+		return path;
 	}
-
-	private Object[] createTreePathToComponent(Object component, Object root) {
+	
+	private Object[] createTreePathToObject(Object component, Object root) {
 		List<Object> list = new ArrayList<Object>();
 		if (root instanceof DefaultMutableTreeNode) {
 			DefaultMutableTreeNode top = (DefaultMutableTreeNode) root;
