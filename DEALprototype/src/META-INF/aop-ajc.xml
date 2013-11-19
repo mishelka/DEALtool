@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aspectj>
 	<aspects>
-		<aspect name="gui.analyzer.aspects.yajco.YajcoAspect"/>
 		<aspect name="gui.analyzer.aspects.components.WindowAspect"/>
 		<aspect name="gui.analyzer.aspects.components.MenuAspect"/>
 		<aspect name="gui.analyzer.aspects.components.JPopupMenuAspect"/>
