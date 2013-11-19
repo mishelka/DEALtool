@@ -1,7 +1,7 @@
 package gui.analyzer.handlers.swing;
 
 import gui.analyzer.handlers.DomainIdentifiable;
-import gui.analyzer.util.Logger;
+import gui.analyzer.handlers.sweetHome3D.FurnitureTreeHelper;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -11,8 +11,6 @@ import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
-
-import com.eteks.sweethome3d.swing.FurnitureCatalogTree;
 
 public class JTreeHandler extends DomainIdentifiable<JTree> {
 
@@ -40,19 +38,11 @@ public class JTreeHandler extends DomainIdentifiable<JTree> {
 	public Term createTerm(JTree component, DomainModel domainModel) {
 		Term treeTerm = super.createTerm(component, domainModel);
 		
-		Logger.log("found a tree " + component.getClass().getName());
-		
-		
-		/*************************/
-		if(component instanceof FurnitureCatalogTree) {
-			Logger.log("!!!!!!!!!!!!!!!!!");
-			//we have two class loaders here....
+		if(component.getClass().getName().equals(FurnitureTreeHelper.FURNITURE_CATALOG_TREE_CLASS_NAME)) {
+			FurnitureTreeHelper helper = new FurnitureTreeHelper();
+			treeTerm = helper.createTerm(component, domainModel);
+			return treeTerm;
 		}
-		
-		Logger.log(component.getClass().getClassLoader());
-		Logger.log(this.getClass().getClassLoader());
-		/*************************/
-		
 		
 		TreeModel tm = component.getModel();
 		Object root = tm.getRoot();
