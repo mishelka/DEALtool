@@ -2,6 +2,7 @@ package gui.analyzer.aspects;
 
 import gui.editor.DomainModelEditor;
 import gui.editor.FindDialog;
+import gui.editor.UrlDialog;
 import gui.model.application.Application;
 import gui.model.application.scenes.DialogScene;
 import gui.model.application.scenes.Scene;
@@ -88,9 +89,11 @@ public privileged aspect ModelGeneratorAspect {
 	 * @param w the window, for which a Scene should be created and a domain model should be generated.
 	 */
 	private void onWindowActivated(Window w) {
-		if (!(w instanceof DomainModelEditor) && !(w instanceof FindDialog)) {
+		if (exclude(w)) {
+			return;
+		} else {
 			DomainModelEditor.getInstance().addApplicationWindow(w);
-			
+
 			Scene<?> scene = createScene(w);
 
 			// register inspector
@@ -109,6 +112,12 @@ public privileged aspect ModelGeneratorAspect {
 			
 			addNewScene(scene);
 		}
+	}
+	
+	private boolean exclude(Window w) {
+		return ((w instanceof DomainModelEditor)
+				|| (w instanceof FindDialog)
+				|| (w instanceof UrlDialog));
 	}
 	
 	/**

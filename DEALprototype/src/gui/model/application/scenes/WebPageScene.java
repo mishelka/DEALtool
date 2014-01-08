@@ -12,7 +12,6 @@ public class WebPageScene extends Scene<WebPage> {
 
 	public WebPageScene(WebPage sceneContainer) {
 		super(sceneContainer);
-		// TODO Auto-generated constructor stub
 	}
 	
 	protected String getSceneName(WebPage scene) {

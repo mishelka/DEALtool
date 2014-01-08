@@ -3,7 +3,7 @@ package gui.tools;
 import gui.model.application.scenes.Scene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
-import gui.tools.Extractor.ExtractionException;
+import gui.tools.exception.ExtractionException;
 
 /**
  * Creates a domain model based on a corresponding Scene. 
@@ -17,7 +17,7 @@ public class DomainModelGenerator {
 	 * scene is stored in this field - only for the purposes of this class.
 	 */
 	private DomainModel domainModel;
-	private Extractor extractor;
+	private JavaExtractor extractor;
 	private Simplifier simplifier;
 	private RecorderRegistator registrator;
 	
@@ -27,7 +27,7 @@ public class DomainModelGenerator {
 	 * @param recorder a reference to the recorder
 	 */
 	public DomainModelGenerator(Recorder recorder) {
-		this.extractor = new Extractor();
+		this.extractor = new JavaExtractor();
 		this.simplifier = new Simplifier();
 		this.registrator = new RecorderRegistator(recorder);
 	}
