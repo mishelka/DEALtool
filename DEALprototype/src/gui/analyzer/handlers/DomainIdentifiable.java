@@ -82,6 +82,22 @@ public abstract class DomainIdentifiable<T> {
 		return t;
 	}
 	
+	protected Term createDefaultTerm(T component, DomainModel domainModel) {
+		Term t = new Term(domainModel);
+		
+		t.setName("");
+		t.setDescription("");
+		t.setLabelForComponent(null);
+		t.setRelation(RelationType.AND);
+
+		t.setComponentClass(component.getClass());
+		t.setComponent(component);
+
+		t.setExtractChildren(extractChildren());
+		
+		return t;
+	}
+	
 	private String removeUnwantedCharacters(String string) {
 		if(string == null || string.isEmpty()) return string;
 		if(string.contains(":")) string = string.replaceAll(":", "");

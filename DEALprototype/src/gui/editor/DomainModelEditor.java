@@ -30,6 +30,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -111,6 +112,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		initComponents();
 
 		this.setTitle("DEAL (Domain Extraction ALgorithm) tool prototype");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(UrlDialog.class.getResource("/gui/editor/resources/tree/model.png")));
 
 		ToolTipManager.sharedInstance().registerComponent(domainJTree);
 		domainJTree.setCellRenderer(new TreeCellRenderer());

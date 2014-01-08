@@ -1,7 +1,7 @@
 package gui.model.application.webpage;
 
 public class WebPageComponent {
-	//TODO: finish this priority normal
+	//TODO: add extensions for the html component/tag
 	private String name;
 	
 	public String getName() {
