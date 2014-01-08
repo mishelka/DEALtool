@@ -44,21 +44,7 @@
 	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/jnlp.jar"/>
 	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/profile.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/yajco-annotations-0.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/yajco-beaver-parser-generator-module-0.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/yajco-grammar-module-0.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/yajco-model-0.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/yajco-tools-module-0.5.1-SNAPSHOT.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7"/>
-	<classpathentry kind="lib" path="lib-yajco/beaver.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/jalopy.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/log4j.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/velocity-1.6.2-dep.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/yajco-parser-0.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/javacc.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/yajco-generator-tools-0.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/yajco-javacc-parser-generator-module-0.5.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib-yajco/yajco-generator-module-0.5.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="examples/PersonForm.jar">
 		<attributes>
 			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
@@ -90,5 +76,19 @@
 			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/yajco/beaver.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/jalopy.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/javacc.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/velocity-1.6.2-dep.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/yajco-annotations-0.5.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/yajco-beaver-parser-generator-module-0.5.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/yajco-generator-module-0.5.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/yajco-generator-tools-0.5.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/yajco-grammar-module-0.5.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/yajco-javacc-parser-generator-module-0.5.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/yajco-model-0.5.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/yajco-parser-0.5.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/yajco/yajco-tools-module-0.5.1-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
