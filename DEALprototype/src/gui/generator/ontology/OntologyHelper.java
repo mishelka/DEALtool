@@ -5,6 +5,7 @@ import gui.model.domain.Term;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -168,11 +169,16 @@ public class OntologyHelper {
 	public boolean saveOntology(String filePath) {
 		File file = new File(filePath);
 		try {
-			manager.saveOntology(ontology, new StreamDocumentTarget(new FileOutputStream(file)));
+			FileOutputStream fos = new FileOutputStream(file);
+			manager.saveOntology(ontology, new StreamDocumentTarget(fos));
+			fos.close();
 		} catch (OWLOntologyStorageException e) {
 			e.printStackTrace();
 			return false;
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -180,7 +186,7 @@ public class OntologyHelper {
 	}
 	
 	public String convertToClassName(String string) {
-		String adjustedString = string.replaceAll("[-+.^:,\\s\"\'\\]\\[]",""); 
+		String adjustedString = string.replaceAll("[-+.^:,\\s\"\\'\\]\\[\\/\\\\]",""); 
 		if (usedClasses.contains(adjustedString)) {
 			adjustedString += "_";
 		}
