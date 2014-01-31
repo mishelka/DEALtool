@@ -1,0 +1,1 @@
+Ak negeneruje gramatiku vo forme ebnf, odstranit kniznicu yajco-beaver-parser-generator-module-0.5.1-SNAPSHOT z buildpath v deal
