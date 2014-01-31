@@ -64,8 +64,8 @@ public class OntologyTester {
 	 * @param file - where to save ontology
 	 */
 	public static void generateOntology(List<DomainModel> models, File file) {
-		if (generated) return;
-		generated = true;
+		/*if (generated) return;
+		generated = true;*/
 		System.out.println("Domain models count = " + models.size());
 		String saveFilePath = file.getAbsolutePath();
 		ontoHelper = new OntologyHelper(saveFilePath, true);
@@ -175,7 +175,8 @@ public class OntologyTester {
 	}*/
 	
 	private static void hiearchyAllChilds(Term term, String className) {
-		if (term.getChildrenCount()==0) {
+		//exclude also deal file chooser
+		if (term.getChildrenCount()==0 || (term.getName()!=null && term.getName().equals("DealFileChooser"))) {
 			return;
 		}
 		else {

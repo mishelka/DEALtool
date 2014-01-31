@@ -1464,6 +1464,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		File saveFile = null;
 		JFileChooser fc =  new JFileChooser();
 		fc.setName("DealFileChooser");
+		fc.setDialogTitle("DealFileChooser");
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.addChoosableFileFilter(new FileFilter() {
 			
@@ -1474,7 +1475,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 			
 			@Override
 			public boolean accept(File f) {
-			if (FilenameUtils.getExtension(f.getPath()).equals("owl")) 
+			if (FilenameUtils.getExtension(f.getPath()).equals("owl") || f.isDirectory()) 
 					return true;
 			return false;
 			}
