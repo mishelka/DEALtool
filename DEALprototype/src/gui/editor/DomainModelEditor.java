@@ -8,6 +8,7 @@ import gui.editor.tree.TreeNode;
 import gui.generator.dsl.YajcoGenerator;
 import gui.generator.itask.GeneratorException;
 import gui.generator.itask.ITaskGenerator;
+import gui.generator.ontology.OntologyTester;
 import gui.model.application.Application;
 import gui.model.application.observable.ApplicationEvent;
 import gui.model.application.observable.ApplicationEvent.ApplicationChangeState;
@@ -74,6 +75,8 @@ import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+
+import org.apache.commons.io.FilenameUtils;
 
 import yajco.model.Language;
 
@@ -586,6 +589,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		exitMenuItem = new javax.swing.JMenuItem();
 		generateDSLMenuItem = new javax.swing.JMenuItem();
 		generateITaskMenuItem = new javax.swing.JMenuItem();
+		generateOntologyFromDomainModel = new javax.swing.JMenuItem();
 		findComponentByNameMenuItem = new javax.swing.JMenuItem();
 		
 		recordButtonGroup = new javax.swing.ButtonGroup();
@@ -1263,6 +1267,17 @@ public class DomainModelEditor extends JFrame implements Observer {
 		});
 		fileMenu.add(generateITaskMenuItem);
 		
+		generateOntologyFromDomainModel.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_O,
+				java.awt.event.InputEvent.CTRL_MASK));
+		generateOntologyFromDomainModel.setText("Generate ontology");
+		generateOntologyFromDomainModel.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				generateOntologyFromDomainModelItemActionPerformed(evt);
+			}
+		});
+		fileMenu.add(generateOntologyFromDomainModel);
+		
 		findComponentByNameMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
 				java.awt.event.KeyEvent.VK_F,
 				java.awt.event.InputEvent.CTRL_MASK));
@@ -1443,6 +1458,36 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private Language generateDSL(DomainModel domainModel) {
 		Language language = yajcoGenerator.generateDSL(domainModel);
 		return language;
+	}
+	
+	private void generateOntologyFromDomainModelItemActionPerformed(java.awt.event.ActionEvent evt) {
+		File saveFile = null;
+		JFileChooser fc =  new JFileChooser();
+		fc.setName("DealFileChooser");
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.addChoosableFileFilter(new FileFilter() {
+			
+			@Override
+			public String getDescription() {
+				return "Ontology file (*.owl)";
+			}
+			
+			@Override
+			public boolean accept(File f) {
+			if (FilenameUtils.getExtension(f.getPath()).equals("owl")) 
+					return true;
+			return false;
+			}
+		});
+		int dialogValue = fc.showSaveDialog(this.getContentPane());
+		if (dialogValue == JFileChooser.APPROVE_OPTION) {
+			saveFile = fc.getSelectedFile();
+		}
+		if (saveFile!=null) {
+			if (!saveFile.getName().endsWith(".owl")) saveFile = new File(saveFile.getAbsolutePath()+".owl");
+			OntologyTester.generateOntology(DomainModelEditor.getDomainModels(), saveFile);
+			invokeOpenDir(saveFile.getParent());
+		}
 	}
 	
 	public void invokeOpenDir(String path) {
@@ -1758,6 +1803,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 //	private javax.swing.JMenuItem saveMenuItem;
 	private javax.swing.JMenuItem generateDSLMenuItem;
 	private javax.swing.JMenuItem generateITaskMenuItem;
+	private javax.swing.JMenuItem generateOntologyFromDomainModel;
 	private javax.swing.JMenuItem findComponentByNameMenuItem;
 	private javax.swing.JTextField tooltipField;
 	private javax.swing.JLabel tooltipLabel;
