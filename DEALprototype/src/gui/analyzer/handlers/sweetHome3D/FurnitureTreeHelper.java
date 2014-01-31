@@ -18,31 +18,28 @@ public class FurnitureTreeHelper extends DomainIdentifiable<JTree> {
 
 	@Override
 	public String getDomainIdentifier(JTree component) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getDomainDescriptor(JTree component) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Icon getIcon(JTree component) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ComponentInfoType getComponentInfoType(JTree component) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Term createTerm(JTree component, DomainModel domainModel) {
 		Term treeTerm = super.createTerm(component, domainModel);
+		treeTerm.setName("Furniture");
 
 		Object furnitureCatalogObject = getFurnitureCatalog(component);
 		
