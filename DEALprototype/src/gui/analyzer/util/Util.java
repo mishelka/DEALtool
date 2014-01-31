@@ -1,7 +1,11 @@
 package gui.analyzer.util;
 
+import java.awt.Image;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -45,5 +49,11 @@ public class Util {
 		s = StringEscapeUtils.unescapeHtml4(s);
 
 		return s;
+	}
+	
+	public static Icon imageToIcon(Image image) {
+		if(image == null) return null;
+		ImageIcon icon = new ImageIcon(image);
+		return icon;
 	}
 }
