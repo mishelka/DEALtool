@@ -127,7 +127,12 @@ public class Term {
 	 * component.
 	 */
 	private ComponentInfoType componentInfoType;
-
+	
+	/**
+	 * Each term can be set to be hidden so it will not appear in generated ontology. 
+	 */
+	private boolean hidden = false;
+	
 	/**
 	 * @param domainModel the domain model, in which this term is located
 	 */
@@ -825,5 +830,19 @@ public class Term {
 		this.setDescription(null);
 		this.setLabelForComponent(null);
 		this.setIcon(null);
+	}
+	
+	/**
+	 * Set if term should be included in generated ontology.
+	 * @param hidden whether to hide 
+	 */
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+	/**
+	 * Will term appear in generated ontology?
+	 */
+	public boolean isHidden() {
+		return hidden;
 	}
 }

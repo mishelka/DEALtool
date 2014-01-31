@@ -89,6 +89,7 @@ public class TreeNode extends DefaultMutableTreeNode {
 	 */
 	public void unhideSubtree() {
 		this.setHidden(false);
+		getTerm().setHidden(false);
 
 		for (int i = 0; i < getChildCount(); i++) {
 			getChildAt(i).unhideSubtree();
@@ -100,6 +101,7 @@ public class TreeNode extends DefaultMutableTreeNode {
 	 */
 	public void hideSubtree() {
 		this.setHidden(true);
+		getTerm().setHidden(true);
 
 		for (int i = 0; i < getChildCount(); i++) {
 			getChildAt(i).hideSubtree();
