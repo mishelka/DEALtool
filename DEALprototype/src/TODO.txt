@@ -23,7 +23,8 @@ implementovat ukladanie nepotrebnych/vseobecnych funkcnych prvkov, treba jeden D
 - Assisted extraction and analysis of DOMAIN PROCESSES in the form of event sequences
 - Experiments with more open source Java target application examples
 
-- HTML analysis along with Java apps!!!
+- HTML analysis along with Java apps (Valika Semanova)
 	- pridat do dokumentacie na svn!!
+- Analyza Windows/Unix aplikacii (Peter Popiela)
 	
 
