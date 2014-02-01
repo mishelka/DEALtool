@@ -537,18 +537,27 @@ public class Term {
 		while (i.hasNext()) {
 			removed |= i.next().removeMultipleNestings();
 		}
-
-		// actual removing of a multiple nesting
-		if (getChildrenCount() == 1) {
-			Term son = this.getFirstChild();
-			if (son.canBeRemoved()) {
-				// this: o1---o2---o3
-				// is transformed to: o1---o3
-				this.addAll(son.getChildren());
-				this.removeChild(son);
+		
+		for(int indx = getChildrenCount() - 1; indx >= 0; indx--) {
+			Term ch = getChildAt(indx);
+			if(ch.canBeRemoved()) {
+				this.addAll(ch.getChildren());
+				this.removeChild(ch);
 				removed = true;
 			}
 		}
+
+		// actual removing of a multiple nesting
+//		if (getChildrenCount() == 1) {
+//			Term son = this.getFirstChild();
+//			if (son.canBeRemoved()) {
+//				// this: o1---o2---o3
+//				// is transformed to: o1---o3
+//				this.addAll(son.getChildren());
+//				this.removeChild(son);
+//				removed = true;
+//			}
+//		}
 
 		return removed;
 	}
