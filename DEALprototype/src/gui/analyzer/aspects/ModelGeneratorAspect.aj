@@ -15,6 +15,8 @@ import java.awt.Dialog;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JFileChooser;
+
 /**
  * Aspect for generating domain models for application scenes.
  */
@@ -114,10 +116,16 @@ public privileged aspect ModelGeneratorAspect {
 		}
 	}
 	
+	//TODO: docasne poriesene s OWL dialogom takto
 	private boolean exclude(Window w) {
+		boolean isJFCH = false;
+		if(w instanceof Dialog) {
+			Dialog d = (Dialog) w;
+			isJFCH = DomainModelEditor.OWL_DIALOG_NAME.equals(d.getTitle());
+		}
 		return ((w instanceof DomainModelEditor)
 				|| (w instanceof FindDialog)
-				|| (w instanceof UrlDialog));
+				|| (w instanceof UrlDialog) || isJFCH);
 	}
 	
 	/**

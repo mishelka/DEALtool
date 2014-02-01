@@ -99,6 +99,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 	private static final String IMAGE_PATH = "resources/editor/";
 	public static final String OPEN_DIALOG_NAME = "Open existing DEAL file";
+	public static final String OWL_DIALOG_NAME = "OWLFileChooser";
 
 	/** Getter for singleton */
 	public static DomainModelEditor getInstance() {
@@ -1459,12 +1460,16 @@ public class DomainModelEditor extends JFrame implements Observer {
 		Language language = yajcoGenerator.generateDSL(domainModel);
 		return language;
 	}
+
+	//TODO: treba ontologie ukladat do tohto adresara v buducnosti, netreba nam tym padom ziadny JFileChooser.
+	//TODO: tuto premennu presunut do OntologyHelper a OntologyHelper premenovat na OntologyGenerator
+	public static final String OWL_DIR = "src" + File.separatorChar + "owl";
 	
 	private void generateOntologyFromDomainModelItemActionPerformed(java.awt.event.ActionEvent evt) {
 		File saveFile = null;
 		JFileChooser fc =  new JFileChooser();
-		fc.setName("DealFileChooser");
-		fc.setDialogTitle("DealFileChooser");
+		fc.setName(OWL_DIALOG_NAME);
+		fc.setDialogTitle(OWL_DIALOG_NAME);
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.addChoosableFileFilter(new FileFilter() {
 			
@@ -1484,6 +1489,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		if (dialogValue == JFileChooser.APPROVE_OPTION) {
 			saveFile = fc.getSelectedFile();
 		}
+		
 		if (saveFile!=null) {
 			if (!saveFile.getName().endsWith(".owl")) saveFile = new File(saveFile.getAbsolutePath()+".owl");
 			OntologyTester.generateOntology(DomainModelEditor.getDomainModels(), saveFile);

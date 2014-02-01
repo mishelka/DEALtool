@@ -10,7 +10,8 @@ import gui.model.domain.Term;
 import javax.swing.Icon;
 import javax.swing.JFileChooser;
 
-public class JFileChooserHandler extends DomainIdentifiable<JFileChooser> implements Composite<JFileChooser> {
+public class JFileChooserHandler extends DomainIdentifiable<JFileChooser> 
+					implements Composite<JFileChooser> {
 	@Override
 	public Term createTerm(JFileChooser component, DomainModel domainModel) {
 		if ((DomainModelEditor.OPEN_DIALOG_NAME).equals(component.getDialogTitle())) {
@@ -42,8 +43,9 @@ public class JFileChooserHandler extends DomainIdentifiable<JFileChooser> implem
 
 	@Override
 	public Object[] getComponents(JFileChooser container) {
-		if ((DomainModelEditor.OPEN_DIALOG_NAME).equals(container.getDialogTitle())) {
-			return new Object[]{};
+		if ((DomainModelEditor.OPEN_DIALOG_NAME).equals(container.getDialogTitle())
+		|| (DomainModelEditor.OWL_DIALOG_NAME.equals(container.getDialogTitle()))) {
+			return null;
 		}
 		return container.getComponents();
 	}
