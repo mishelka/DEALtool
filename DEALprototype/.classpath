@@ -44,6 +44,8 @@
 	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/jnlp.jar"/>
 	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/profile.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.4/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/owl_api/owlapiv3/owlapi-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7"/>
 	<classpathentry kind="lib" path="examples/PersonForm.jar">
 		<attributes>
