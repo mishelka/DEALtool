@@ -89,6 +89,8 @@ public class Simplifier {
 	 * @return true if any term was removed, false otherwise.
 	 */
 	private void simplifyModel() {
+		domainModel.removeBadCharacters();
+		
 		boolean wasRemoved;
 		do {
 			wasRemoved = domainModel.removeEmptyLeafs();

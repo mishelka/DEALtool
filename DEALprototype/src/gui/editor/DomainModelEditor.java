@@ -357,6 +357,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private void showClickedComponent(Object component) {	
 		if (component != null) {
 			highlightComponentWithYellow(component);
+			//TODO: ak je component null, tak unhighlight tree, to iste v termJTree
 			showComponentInTrees(component);
 		}
 	}
@@ -1396,7 +1397,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		}
 		
 		if(clickedTerm != null) {
-			showClickedTerm(clickedTerm);
+			showInTrees(clickedTerm);
 		}
 	}
 	
@@ -1509,7 +1510,6 @@ public class DomainModelEditor extends JFrame implements Observer {
 	//</editor-fold>
 
 	public void showTermInTrees(Term term) {
-		showObjectInTree(term, componentJTree);
 		showObjectInTree(term, domainJTree);
 	}
 	
@@ -1520,7 +1520,6 @@ public class DomainModelEditor extends JFrame implements Observer {
 	 */
 	public void showComponentInTrees(Object component) {
 		showObjectInTree(component, componentJTree);
-		showObjectInTree(component, domainJTree);
 	}
 
 	private void resetInfoPanel() {
@@ -1639,6 +1638,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 	// sets the cursor in the component tree to the current component - in the
 	// componentJTree
+	//object can be a term or a component
+	//tree can be domainJTree or componentJTree
 	private TreePath showObjectInTree(Object object, JTree tree) {
 		Object root = tree.getModel().getRoot();
 		Object[] treePath = createTreePathToObject(object, root);
@@ -1646,7 +1647,6 @@ public class DomainModelEditor extends JFrame implements Observer {
 		if (treePath.length != 0) {
 			path = new TreePath(treePath);
 			if (path != null && path.getPathCount() != 0) {
-
 				tree.expandPath(path.getParentPath());
 				tree.makeVisible(path);
 				tree.scrollPathToVisible(path);
@@ -1656,9 +1656,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 		return path;
 	}
 	
-	private Object[] createTreePathToObject(Object component, Object root) {
+	/*object can be term or component*/
+	private Object[] createTreePathToObject(Object object, Object root) {
 		List<Object> list = new ArrayList<Object>();
 		if (root instanceof DefaultMutableTreeNode) {
+
 			DefaultMutableTreeNode top = (DefaultMutableTreeNode) root;
 			Enumeration<?> nodes = top.breadthFirstEnumeration();
 
@@ -1670,10 +1672,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 						Object userObject = node.getUserObject();
 						if (userObject instanceof Term) {
 							Term f = (Term) userObject;
-							if (f.getComponent() != null
-									&& f.getComponent().equals(component))
+							if(f.equals(object) || (f.getComponent() != null
+									&& f.getComponent().equals(object))) {
 								return node.getPath();
-						} else if (node.getUserObject().equals(component)) {
+							}
+						} else if (node.getUserObject().equals(object)) {
 							return node.getPath();
 						}
 					}
