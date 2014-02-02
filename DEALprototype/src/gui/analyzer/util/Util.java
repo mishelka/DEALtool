@@ -56,4 +56,11 @@ public class Util {
 		ImageIcon icon = new ImageIcon(image);
 		return icon;
 	}
+
+	public static String removeBadCharacters(String str) {
+		if(!isEmpty(str)) {
+			str = str.replaceAll("[^\\w\\s-]*", "");
+		}
+		return str;
+	}
 }

@@ -1,9 +1,12 @@
 package gui.model.domain;
 
+import gui.analyzer.util.Util;
 import gui.model.application.scenes.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * DomainModel class represents a domain model of a GUI.
@@ -150,6 +153,18 @@ public class DomainModel {
 	 */
 	public void removeAll(List<Term> terms) {
 		root.removeAllWithNesting(terms);
+	}
+	
+	/**
+	 * Removes all bad characters which could interfere with the DSL or ontology (such as '*', '.', '-' etc.)
+	 * The term name or description can only contain letters, numbers, underscore and whitespaces, 
+	 * all other characters will be removed from the term. 
+	 * Regex: [^\\w\\s-]*
+	 * @return true if anything was removed, false otherwise
+	 */
+	public void removeBadCharacters() {
+		name = Util.removeBadCharacters(name);
+		root.removeBadCharacters();
 	}
 	
 	/**

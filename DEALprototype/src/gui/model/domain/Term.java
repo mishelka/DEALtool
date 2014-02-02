@@ -476,6 +476,21 @@ public class Term {
 			t.removeAllWithNesting(childrenToRemove);
 		}
 	}
+	
+	/**
+	 * Removes all bad characters from term name and description. Bad charactes are: [^\\w\\s-]*.
+	 */
+	public void removeBadCharacters() {
+		Iterator<Term> i = iterator();
+
+		while (i.hasNext()) {
+			i.next().removeBadCharacters();
+		}
+
+		// actual removing of bad characters
+		setName(Util.removeBadCharacters(getName()));
+		setDescription(Util.removeBadCharacters(getDescription()));
+	}
 
 	/**
 	 * Removes all leafs with no relevant domain information 
@@ -709,10 +724,9 @@ public class Term {
 	public boolean canBeRemoved() {
 		boolean b = false;
 
-		b = (name == null || name.isEmpty())
+		b = Util.isEmpty(name) 
+				&& (Util.isEmpty(description) || description.equals(componentClass.getName()))
 				&& (relation == RelationType.AND
-						&& (componentClass.getName().equals(description)
-								|| description == null || description.isEmpty())
 						&& labelForComponent == null && icon == null);
 
 		return b;
