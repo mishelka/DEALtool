@@ -1,11 +1,11 @@
-package gui.analyzer.html;
+package gui.analyzer.windows;
 
 import gui.analyzer.util.Logger;
 import gui.model.application.scenes.Scene;
 import gui.model.application.scenes.WebPageScene;
 import gui.model.application.webpage.WebPage;
 import gui.model.domain.DomainModel;
-import gui.tools.HtmlExtractor;
+import gui.tools.WindowsExtractor;
 import gui.tools.exception.ExtractionException;
 
 import java.util.ArrayList;
@@ -19,12 +19,12 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-public class HtmlAnalyzer {
-	private String url;
+public class WindowsAnalyzer {
+	private String filePath;
 	private List<Scene<WebPage>> scenes = new ArrayList<Scene<WebPage>>(); 
 	
-	public HtmlAnalyzer(String url) {
-		this.url = url;
+	public WindowsAnalyzer(String filePath) {
+		this.filePath = filePath;
 	}
 	
 	public void analyze() {
@@ -46,8 +46,8 @@ public class HtmlAnalyzer {
 		
 		WebPageScene wps = new WebPageScene(webPage);
 		
-		HtmlExtractor htmlExtractor = new HtmlExtractor();
-		dm = htmlExtractor.eXTRACT(wps);	
+		WindowsExtractor windowsExtractor = new WindowsExtractor();
+		dm = windowsExtractor.eXTRACT(wps);	
 		
 		wps.setDomainModel(dm);
 		
@@ -71,8 +71,8 @@ public class HtmlAnalyzer {
 		return title;
 	}
 	
-	//TODO: Valika implementovat parser pre HTML, ktory vrati dom Document v baliku parser a tu ho pouzit
-	//parser pouzije url, ktora je ulozena tu v tejto triede
+	//TODO: Peter implementovat parser pre XML, ktory vrati dom Document v baliku parser a tu ho pouzit
+	//parser pouzije filePath cestu k suboru, ktora je ulozena tu v tejto triede
 	private Document parseWebPage() {
 		//use the parser package to implement parser classes
 		//connect to the url, and use parser to parse it to org.w3c.dom.Document
@@ -82,7 +82,7 @@ public class HtmlAnalyzer {
 		return null;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getFilePath() {
+		return filePath;
 	}
 }

@@ -1,6 +1,7 @@
 package gui.analyzer.html.handlers;
 
 import gui.analyzer.html.handlers.impl.HtmlButtonHandler;
+import gui.analyzer.html.handlers.impl.HtmlTextComponentHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,10 @@ public class HtmlHandlers {
 	
 	private static HtmlHandlers instance;
 	
+	//TODO: Valika ak bude novy handler, tu doplnit
 	public HtmlHandlers() {
 		htmlHandlers.add(HtmlButtonHandler.getInstance());
+		htmlHandlers.add(HtmlTextComponentHandler.getInstance());
 		//TODO: add new handlers into the htmlHandlers list, otherwise they won't work
 		//htmlHandlers.add(...);
 		//htmlHandlers.add(...);
