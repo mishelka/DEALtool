@@ -117,6 +117,11 @@ public privileged aspect ModelGeneratorAspect {
 	}
 	
 	//TODO: docasne poriesene s OWL dialogom takto
+	/**
+	 * Exclude the windows you do not want to analyze here.
+	 * @param w window to exclude
+	 * @return true if exclude, false otherwise
+	 */
 	private boolean exclude(Window w) {
 		boolean isJFCH = false;
 		if(w instanceof Dialog) {
