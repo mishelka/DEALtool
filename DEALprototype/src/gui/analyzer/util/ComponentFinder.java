@@ -112,30 +112,33 @@ public class ComponentFinder {
 	 * @return the path to the given component in the given scene as a list of integers
 	 */
 	public List<Integer> getPathForComponent(Scene<?> scene,
-			Component component) {
-		Component sceneComponent = getSceneContainerAsComponent(scene);
+			Object component) {
+		if(component instanceof Component) {
+			Component comp = (Component) component;
+			Component sceneComponent = getSceneContainerAsComponent(scene);
 
-		if (sceneComponent == null)
-			return null;
+			if (sceneComponent == null)
+				return null;
 
-		List<Component> allComponents = (List<Component>) toComponentList(sceneComponent);
-		if (!allComponents.contains(component))
-			return null;
+			List<Component> allComponents = (List<Component>) toComponentList(sceneComponent);
+			if (!allComponents.contains(comp))
+				return null;
 
-		List<Integer> path = new ArrayList<Integer>();
+			List<Integer> path = new ArrayList<Integer>();
 
-		// if the scene is a root component, then return path with only one path
-		// item - root (0).
-		path.add(0);
-		if (component.equals(sceneComponent)) {
-			return path;
-		}
+			// if the scene is a root component, then return path with only one path
+			// item - root (0).
+			path.add(0);
+			if (comp.equals(sceneComponent)) {
+				return path;
+			}
 
-		if (sceneComponent instanceof Container) {
-			Component[] components = ((Container) sceneComponent)
-					.getComponents();
-			getPathForComponent(components, path, component);
-			return path;
+			if (sceneComponent instanceof Container) {
+				Component[] components = ((Container) sceneComponent)
+						.getComponents();
+				getPathForComponent(components, path, comp);
+				return path;
+			}
 		}
 
 		return null;

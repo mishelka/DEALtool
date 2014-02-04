@@ -3,7 +3,6 @@ package gui.model.application.componentPath;
 import gui.analyzer.util.ComponentFinder;
 import gui.model.application.scenes.Scene;
 
-import java.awt.Component;
 import java.util.List;
 
 /**
@@ -22,7 +21,7 @@ import java.util.List;
 public class ComponentPath {
 	private List<Integer> componentPath;
 	
-	public ComponentPath(Scene<?> scene, Component component) {
+	public ComponentPath(Scene<?> scene, Object component) {
 		componentPath = ComponentFinder.getInstance().getPathForComponent(scene, component);
 	}
 
@@ -38,6 +37,8 @@ public class ComponentPath {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
+		sb.append("cpath://");
+				
 		for(Integer i : componentPath) {
 			sb.append(i);
 			if(componentPath.indexOf(i) < componentPath.size()) {

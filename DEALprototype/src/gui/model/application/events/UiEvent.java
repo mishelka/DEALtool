@@ -1,5 +1,7 @@
 package gui.model.application.events;
 
+import gui.analyzer.util.Util;
+import gui.model.application.componentPath.ComponentPath;
 import gui.model.application.scenes.Scene;
 import gui.model.domain.Term;
 
@@ -115,14 +117,21 @@ public class UiEvent {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("{" + cause + "}");
+		String name = "";
+		if(cause != null)
+			name = cause.toString();
+		
+		if(Util.isEmpty(name)) {
+			ComponentPath cPath = new ComponentPath(sourceScene, component);
+			name = cPath.toString();
+		}
+		
+		sb.append("{" + name + "}");
 
 		sb.append(" ");
 
 		if (commands != null && commands.length != 0) {
-			sb.append("[");
 			sb.append(Arrays.toString(commands));
-			sb.append("]");
 		}
 
 		return sb.toString();

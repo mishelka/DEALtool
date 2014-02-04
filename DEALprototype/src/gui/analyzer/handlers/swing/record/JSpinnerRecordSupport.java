@@ -13,22 +13,16 @@ import javax.swing.text.JTextComponent;
 
 public class JSpinnerRecordSupport extends RecordSupport<JSpinner> {
 
+	private RecordSupport<JTextComponent> txtRS;
+	
 	@Override
 	public boolean register(JSpinner component, Recorder _recorder) {
-		JTextField jSpinnerTextField = null;
-		for (Component c : component.getComponents()) {
-			if (c != null) {
-				if (c instanceof NumberEditor) {
-					jSpinnerTextField = ((NumberEditor) c).getTextField();
-					break;
-				}
-			}
-		}
+		JTextField jSpinnerTextField = getJSpinnerTextField(component);
 
 		// do not register jspinner or its children, rather register the text field
 		// of jspinner
 		if (jSpinnerTextField != null) {
-			RecordSupport<JTextComponent> txtRS = RecordSupports.getInstance()
+			txtRS = RecordSupports.getInstance()
 					.getRecordSupport(JTextComponent.class);
 			
 			txtRS.register(jSpinnerTextField, _recorder);
@@ -45,5 +39,18 @@ public class JSpinnerRecordSupport extends RecordSupport<JSpinner> {
 
 	protected boolean isRegistered(JSpinner component) {
 		return false;
+	}
+	
+	private JTextField getJSpinnerTextField(JSpinner component) {
+		JTextField jstf = null;
+		for (Component c : component.getComponents()) {
+			if (c != null) {
+				if (c instanceof NumberEditor) {
+					jstf = ((NumberEditor) c).getTextField();
+					return jstf;
+				}
+			}
+		}
+		return jstf;
 	}
 }
