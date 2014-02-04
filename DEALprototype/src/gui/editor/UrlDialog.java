@@ -76,14 +76,14 @@ public class UrlDialog extends JDialog {
 				getRootPane().setDefaultButton(okBttn);
 			}
 			{
-				exitBttn = new JButton("Exit");
-				exitBttn.addActionListener(new ActionListener() {
+				closeBttn = new JButton("Close");
+				closeBttn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						exitButtonActionPerformed();
 					}
 				});
-				exitBttn.setActionCommand("Exit");
-				buttonPane.add(exitBttn);
+				closeBttn.setActionCommand("Close");
+				buttonPane.add(closeBttn);
 			}
 		}
 	}
@@ -119,5 +119,5 @@ public class UrlDialog extends JDialog {
 	private JTextField urlTxtfld;
 	private JLabel urlLbl;
 	private JButton okBttn;
-	private JButton exitBttn;
+	private JButton closeBttn;
 }

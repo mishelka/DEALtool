@@ -12,6 +12,25 @@ import javax.swing.JMenu;
 
 public class AbstractButtonRecordSupport extends RecordSupport<AbstractButton> {
 
+	/** Nazov prikazu pre nastavenie hodnoty pocitadla. */
+	private static final String VALUE = "value";
+	/** Nazov prikazu pre nastavenie hodnoty pocitadla. */
+	private static final String TEXT = "text";
+	/** Nazov prikazu pre nastavenie hodnoty pocitadla. */
+	private static final String SET = "set";
+	/** Nazov prikazu pre nastavenie pozicie kurzora. */
+	private static final String POSITION = "position";
+	/** Nazov prikazu pre nastavenie pozicie kurzora. */
+	private static final String POS = "pos";
+	/** Nazov prikazu pre oznacenie textu pocitadla. */
+	private static final String SELECT = "select";
+	/** Nazov prikazu pre inkrementaciu pocitadla. */
+	private static final String INC = "inc";
+	/** Nazov prikazu pre dekrementaciu pocitadla. */
+	private static final String DEC = "dec";
+	/** Cas medzi intervalmi inkrementovania/dekrementovania. */
+	private static final int SLEEP_TIME = 500;
+	
 	public AbstractButtonRecordSupport() {
 	}
 
@@ -33,8 +52,6 @@ public class AbstractButtonRecordSupport extends RecordSupport<AbstractButton> {
 					}
 				};
 			}
-			
-			//Logger.log(">>> is registered: " + isRegistered(component));
 			
 			// If there's no such listener on this component, then register it.
 			if (!isRegistered(component)) {
