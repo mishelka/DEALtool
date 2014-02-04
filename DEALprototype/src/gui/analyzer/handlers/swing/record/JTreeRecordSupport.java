@@ -15,8 +15,6 @@ import javax.swing.tree.TreePath;
 
 public class JTreeRecordSupport extends RecordSupport<JTree> {
 
-	/** Node selection command name. */
-	private static final String NODE = "node";
 	/** Multiple nodes selection command name. */
 	private static final String NODES = "nodes";
 
