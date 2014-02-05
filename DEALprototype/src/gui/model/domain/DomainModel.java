@@ -5,8 +5,6 @@ import gui.model.application.scenes.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * DomainModel class represents a domain model of a GUI.
@@ -187,11 +185,23 @@ public class DomainModel {
 	/**
 	 * If there are terms, which have only one child and the child is a leaf, 
 	 * then this leaf is moved to its grandparent and its parent is removed.<br/>
-	 * Parent-Grandparent-Leaf ==> Parent-Leaf
+	 * Grandparent-Parent-Leaf ==> Grandparent-Leaf
 	 * @return true if anything was shifted, false otherwise
 	 */
 	public boolean shiftSingleChildLeafs() {
 		return root.shiftSingleChildLeafs();
+	}
+	
+	/**
+	 * If there are terms, which have only one child (with relation) and that relation child has some children, then 
+	 * the children will be moved to the first term and the relation will be moved to the first term. The relation term
+	 * will be removed.
+	 * 
+	 * Grandparent-Relationterm-Children ==> RelationGrandparent-Children
+	 * @return true if anything was shifted, false otherwise
+	 */
+	public boolean shiftParentRelations() {
+		return root.shiftParentRelations();
 	}
 	
 	/**
