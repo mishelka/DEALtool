@@ -611,6 +611,37 @@ public class Term {
 	}
 	
 	/**
+	 * If there are terms, which have only one child (with relation) and that relation child has some children, then 
+	 * the children will be moved to the first term and the relation will be moved to the first term. The relation term
+	 * will be removed.
+	 * 
+	 * Grandparent-RelationParent-Children ==> RelationGrandparent-Children
+	 * @return true if anything was shifted, false otherwise
+	 */
+	public boolean shiftParentRelations() {
+		boolean removed  = false;
+		
+		if(this.hasChildren()) {
+			if(this.getChildrenCount() == 1) {
+				Term relationChild = this.getChildAt(0);
+				if(relationChild.isRelationOnly() && relationChild.hasChildren()) {
+					this.setRelation(relationChild.getRelation());
+					this.addAll(relationChild.getChildren());
+					this.removeChild(relationChild);
+				}
+			}
+		}
+		
+		Iterator <Term> i = iterator();
+		
+		while(i.hasNext()) {
+			removed |= i.next().shiftParentRelations();
+		}
+		
+		return removed;
+	}
+	
+	/**
 	 * Copies all domain relevant information from the given term to this term.
 	 * @param term the term the information should be copied from.
 	 */
@@ -724,28 +755,34 @@ public class Term {
 	 * @return true if this term can be removed, false otherwise
 	 */
 	public boolean canBeRemoved() {
-		boolean b = false;
-
-		b = Util.isEmpty(name) 
-				&& (Util.isEmpty(description) || description.equals(componentClass.getName()))
-				&& (relation == RelationType.AND
-						&& labelForComponent == null && icon == null);
-
-		return b;
+		return hasNoInfoExceptRelation() && relation == RelationType.AND;
+	}
+	
+	/**
+	 * @return true if this term contains relation only, false otherwise.
+	 */
+	public boolean isRelationOnly() {
+		return hasNoInfoExceptRelation() && relation != RelationType.AND;
+	}
+	
+	private boolean hasNoInfoExceptRelation() {
+		return !hasName()
+				&& (!hasDescription() || (description.equals(componentClass.getName())))
+				&& (!hasLabelForComponent() && !hasIcon());
 	}
 
 	/**
 	 * @return true if this term has a name, false otherwise
 	 */
 	public boolean hasName() {
-		return name != null && !name.isEmpty();
+		return !Util.isEmpty(name);
 	}
 
 	/**
 	 * @return true if this term has a description, false otherwise
 	 */
 	public boolean hasDescription() {
-		return description != null && !description.isEmpty();
+		return !Util.isEmpty(description);
 	}
 
 	/**
@@ -753,6 +790,13 @@ public class Term {
 	 */
 	public boolean hasIcon() {
 		return icon != null;
+	}
+	
+	/**
+	 * @return true if this term has a labelFor component, false otherwise
+	 */
+	public boolean hasLabelForComponent() {
+		return labelForComponent != null;
 	}
 
 	/**

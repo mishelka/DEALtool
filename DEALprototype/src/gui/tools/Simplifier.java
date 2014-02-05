@@ -81,8 +81,9 @@ public class Simplifier {
 	/**
 	 * Recursive step of the simplification phase. Steps:
 	 * <ul>
+	 * <li>Removal of bad characters.</li>
 	 * <li>Deletion of void containers.</li> 
-	 * <li>Deletion of multiple nesting.</li>
+	 * <li>Deletion of multiple nestings.</li>
 	 * <li>Deletion non-relevant terms.</li>
 	 * </ul>
 	 * @param thisTerm The actual term, which should be checked for simplification possibilities.
@@ -96,6 +97,7 @@ public class Simplifier {
 			wasRemoved = domainModel.removeEmptyLeafs();
 			wasRemoved |= domainModel.removeMultipleNestings();
 			wasRemoved |= domainModel.shiftSingleChildLeafs();
+			wasRemoved |= domainModel.shiftParentRelations();
 		} while (!wasRemoved);
 	}
 	//</editor-fold>
