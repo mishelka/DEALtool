@@ -11,6 +11,8 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * A term represents a single unit the domain model.
  * Each term can contain a list of children terms.
@@ -835,6 +837,20 @@ public class Term {
 		if (componentClass != null)
 			return "\"\"";
 		return null;
+	}
+	
+	public String toPlainText(int indent) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(StringUtils.repeat("\t", indent));
+		sb.append(this.toString());
+		sb.append("\n");
+		
+		for(Term t : children) {
+			sb.append(t.toPlainText(indent+1));
+		}
+		
+		return sb.toString();
 	}
 	
 	/**

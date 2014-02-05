@@ -1,5 +1,7 @@
 package gui.generator.itask;
 
+import gui.generator.ConfigurationException;
+import gui.generator.GeneratorException;
 import gui.model.domain.DomainModel;
 
 import java.io.IOException;

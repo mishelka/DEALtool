@@ -227,4 +227,9 @@ public class DomainModel {
 	public void setShowComponentInfoTypes(boolean showComponentInfoTypes) {
 		this.showComponentInfoTypes = showComponentInfoTypes;
 	}
+	
+	@Override
+	public String toString() {
+		return root.toPlainText(0);
+	}
 }

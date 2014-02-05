@@ -1,5 +1,6 @@
 package gui.generator.itask;
 
+import gui.generator.GeneratorException;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 

@@ -1,4 +1,4 @@
-package gui.generator.itask;
+package gui.generator;
 
 public class GeneratorException extends Exception {
     private static final long serialVersionUID = 1L;
