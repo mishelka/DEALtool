@@ -5,10 +5,11 @@ import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
 import gui.editor.tree.TreeNode;
+import gui.generator.GeneratorException;
 import gui.generator.dsl.YajcoGenerator;
-import gui.generator.itask.GeneratorException;
 import gui.generator.itask.ITaskGenerator;
 import gui.generator.ontology.OntologyTester;
+import gui.generator.plaintext.PlainTextGenerator;
 import gui.model.application.Application;
 import gui.model.application.observable.ApplicationEvent;
 import gui.model.application.observable.ApplicationEvent.ApplicationChangeState;
@@ -592,6 +593,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		generateDSLMenuItem = new javax.swing.JMenuItem();
 		generateITaskMenuItem = new javax.swing.JMenuItem();
 		generateOntologyFromDomainModel = new javax.swing.JMenuItem();
+		generatePlainTextMenuItem = new javax.swing.JMenuItem();
 		findComponentByNameMenuItem = new javax.swing.JMenuItem();
 		
 		recordButtonGroup = new javax.swing.ButtonGroup();
@@ -1280,6 +1282,17 @@ public class DomainModelEditor extends JFrame implements Observer {
 		});
 		fileMenu.add(generateOntologyFromDomainModel);
 		
+		generatePlainTextMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_T,
+				java.awt.event.InputEvent.CTRL_MASK));
+		generatePlainTextMenuItem.setText("Generate plain text");
+		generatePlainTextMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				generatePlainTextMenuItemActionPerformed(evt);
+			}
+		});
+		fileMenu.add(generatePlainTextMenuItem);
+		
 		findComponentByNameMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
 				java.awt.event.KeyEvent.VK_F,
 				java.awt.event.InputEvent.CTRL_MASK));
@@ -1495,6 +1508,19 @@ public class DomainModelEditor extends JFrame implements Observer {
 			if (!saveFile.getName().endsWith(".owl")) saveFile = new File(saveFile.getAbsolutePath()+".owl");
 			OntologyTester.generateOntology(DomainModelEditor.getDomainModels(), saveFile);
 			invokeOpenDir(saveFile.getParent());
+		}
+	}
+	
+	private void generatePlainTextMenuItemActionPerformed(ActionEvent evt) {
+		if(application.getDomainModelCount() >= 1) {
+			PlainTextGenerator generator = new PlainTextGenerator(application);
+			try {
+				generator.generate();
+			} catch (GeneratorException e) {
+				e.printStackTrace();
+			}
+				
+			invokeOpenDir(PlainTextGenerator.PLAIN_TEXT_DIR);
 		}
 	}
 	
@@ -1822,6 +1848,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private javax.swing.JMenuItem hidePopupMenuItem;
 	private javax.swing.JMenuItem hideAllPopupMenuItem;
 	private javax.swing.JMenuItem unhideAllPopupMenuItem;
+	private javax.swing.JMenuItem generatePlainTextMenuItem;
 	private GridBagConstraints gbc_domainInfoTitlePanel;
 	private GridBagConstraints gbc_componentInfoTitlePanel;
 	private GridBagConstraints gridBagConstraints_1;

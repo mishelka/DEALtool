@@ -1,4 +1,4 @@
-package gui.generator.itask;
+package gui.generator;
 
 public class ConfigurationException extends RuntimeException {
     private static final long serialVersionUID = 1L;
