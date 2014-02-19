@@ -43,6 +43,10 @@ public class UiEvent {
 	public UiEvent(Object component) {
 		this.component = component;
 	}
+	
+	public UiEvent() {
+		// TODO docasny konstruktor
+	}
 
 	/**
 	 * @return the scene, on which the action, which fired the event, was performed.

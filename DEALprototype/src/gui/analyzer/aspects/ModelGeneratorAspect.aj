@@ -1,8 +1,10 @@
 package gui.analyzer.aspects;
 
+import gui.analyzer.util.Logger;
 import gui.editor.DomainModelEditor;
 import gui.editor.FindDialog;
 import gui.editor.UrlDialog;
+import gui.editor.visualization.events.Visualization;
 import gui.model.application.Application;
 import gui.model.application.scenes.DialogScene;
 import gui.model.application.scenes.Scene;
@@ -14,8 +16,6 @@ import gui.tools.Recorder;
 import java.awt.Dialog;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
-
-import javax.swing.JFileChooser;
 
 /**
  * Aspect for generating domain models for application scenes.
@@ -128,9 +128,10 @@ public privileged aspect ModelGeneratorAspect {
 			Dialog d = (Dialog) w;
 			isJFCH = DomainModelEditor.OWL_DIALOG_NAME.equals(d.getTitle());
 		}
+		
 		return ((w instanceof DomainModelEditor)
 				|| (w instanceof FindDialog)
-				|| (w instanceof UrlDialog) || isJFCH);
+				|| (w instanceof UrlDialog) || isJFCH || (w instanceof Visualization));//
 	}
 	
 	/**
