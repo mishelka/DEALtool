@@ -3,13 +3,16 @@ package gui.tools;
 import gui.analyzer.util.Logger;
 import gui.model.application.events.UiEvent;
 import gui.model.application.events.UiEventSequence;
+import gui.tools.listener.UiEventListener;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Performs physical recording of commands performed on the UI into a text file
@@ -36,6 +39,8 @@ public class Recorder {
 	/** A UiEvent sequence to be recorded. 
 	 * Later, this sequence is going to be saved into a file. */
 	private UiEventSequence uiEventSequence = new UiEventSequence();
+	/** A list of UIEvent listeners listening to new event recording. */
+	private List<UiEventListener> listeners = new ArrayList<UiEventListener>();
 
 	/**
 	 * Creates a new file with an automatically generated name. 
@@ -125,6 +130,7 @@ public class Recorder {
 	 */
 	public void record(UiEvent uiEvent) {
 		if (recording) {
+			notifyListeners(uiEvent);
 			if (uiEvent != null) {
 				uiEventSequence.add(uiEvent);
 				record(uiEvent.toString());
@@ -165,5 +171,19 @@ public class Recorder {
 	/** Writes the recorded UI event sequence into the console. */
 	public void writeResultToConsole() {
 		Logger.logError(uiEventSequence.toString());
+	}
+	
+	public void removeListener(UiEventListener listener) {
+		listeners.remove(listener);
+	}
+	
+	public void addListener(UiEventListener listener) {
+		listeners.add(listener);
+	}
+	
+	private void notifyListeners(UiEvent event) {
+		for ( int i = 0; i < listeners.size(); i++ ){
+			listeners.get(i).uiEventRecorded(event);
+		}
 	}
 }
