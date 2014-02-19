@@ -122,6 +122,10 @@ public class UiEvent {
 			name = cause.toString();
 		
 		if(Util.isEmpty(name)) {
+			//TODO: docasne takto vyriesene, treba opravit bug pri zobrazeni okna vizualizacie
+			if(sourceScene == null) return null;
+			//end
+			
 			ComponentPath cPath = new ComponentPath(sourceScene, component);
 			name = cPath.toString();
 		}
