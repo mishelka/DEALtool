@@ -5,6 +5,7 @@ import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
 import gui.editor.tree.TreeNode;
+import gui.editor.visualization.events.Visualization;
 import gui.generator.GeneratorException;
 import gui.generator.dsl.YajcoGenerator;
 import gui.generator.itask.ITaskGenerator;
@@ -476,6 +477,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 					fileNameTextField.setText(recorder.getFileName());
 				}
 
+				//My visualization - zaznamenava aj kliknutia v jframe pre vizualizaciu- TODO: opravit
+			    Visualization visualizer = new Visualization();
+				visualizer.startVisualization();	
+				recorder.addListener(visualizer);
+				
 				recorder.setRecording(true);
 
 				updateRecordPanel();
