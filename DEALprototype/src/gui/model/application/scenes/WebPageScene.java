@@ -1,6 +1,6 @@
 package gui.model.application.scenes;
 
-import gui.model.application.webpage.WebPage;
+import org.w3c.dom.Element;
 
 /**
  * Not used yet.
@@ -8,14 +8,13 @@ import gui.model.application.webpage.WebPage;
  * @author Michaela Bacikova, Slovakia,
  * michaela.bacikova@tuke.sk
  */
-public class WebPageScene extends Scene<WebPage> {
+public class WebPageScene extends DomScene {
 
-	public WebPageScene(WebPage sceneContainer) {
-		super(sceneContainer);
-	}
+	private final static String DOCUMENT_TITLE_XPATH 
+	= "html/head/title/text()";
 	
-	protected String getSceneName(WebPage scene) {
-		return sceneContainer.getTitle();
+	public WebPageScene(Element element) {
+		super(element, DOCUMENT_TITLE_XPATH);
 	}
 	
 	@Override

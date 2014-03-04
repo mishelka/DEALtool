@@ -33,6 +33,7 @@ public class DefaultHtmlHandler extends AbstractHtmlHandler {
 	}
 
 	/*************** Singleton pattern *************/
+	private static DefaultHtmlHandler instance;
 	public static DefaultHtmlHandler getInstance() {
 		if(instance == null) {
 			instance  = new DefaultHtmlHandler();
@@ -42,4 +43,5 @@ public class DefaultHtmlHandler extends AbstractHtmlHandler {
 	
 	/* default constructor */
 	private DefaultHtmlHandler() {}
+	/*********** End singleton pattern *************/
 }

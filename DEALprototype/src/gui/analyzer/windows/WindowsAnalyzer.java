@@ -1,85 +1,73 @@
 package gui.analyzer.windows;
 
 import gui.analyzer.util.Logger;
-import gui.model.application.scenes.Scene;
-import gui.model.application.scenes.WebPageScene;
-import gui.model.application.webpage.WebPage;
+import gui.analyzer.windows.handlers.AbstractWindowsHandler;
+import gui.analyzer.windows.handlers.WindowsHandlers;
+import gui.analyzer.windows.parser.WindowsGUIParser;
+import gui.editor.DomainModelEditor;
+import gui.model.application.Application;
+import gui.model.application.scenes.WindowsScene;
 import gui.model.domain.DomainModel;
+import gui.model.domain.Term;
+import gui.tools.DomainModelGenerator;
 import gui.tools.WindowsExtractor;
 import gui.tools.exception.ExtractionException;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
 
 public class WindowsAnalyzer {
 	private String filePath;
-	private List<Scene<WebPage>> scenes = new ArrayList<Scene<WebPage>>(); 
+	private Application application;
+	private DomainModelGenerator generator;
 	
 	public WindowsAnalyzer(String filePath) {
 		this.filePath = filePath;
+		
+		DomainModelEditor editor = DomainModelEditor.getInstance();
+		
+		application = editor.getApplication();
+		application.addObserver(editor);
 	}
 	
 	public void analyze() {
-		Document document = parseWebPage();
+		Document document = parseGUI();
 		
 		try {
-			WebPageScene wps = generateScene(document);
-			scenes.add(wps);
+			WindowsScene wps = generateScene(document.getDocumentElement());
+			
+			application.addScene(wps);
+			
 		} catch (ExtractionException e) {
 			Logger.logError("Extraction unsuccessful");
+			e.printStackTrace();
 		}		
 	}
 	
-	private WebPageScene generateScene(Document document) throws ExtractionException {		
-		String documentTitle = getDocumentTitle(document);
-		
+	private WindowsScene generateScene(Element document) throws ExtractionException {		
+		WindowsScene wps = new WindowsScene(document);
+		String documentTitle = wps.getName();
 		DomainModel dm = new DomainModel(documentTitle);
-		WebPage webPage = new WebPage(documentTitle);
+		wps.setDomainModel(dm);
 		
-		WebPageScene wps = new WebPageScene(webPage);
+		AbstractWindowsHandler handler = WindowsHandlers.getInstance().getWindowsHandler(document);
+		Term t = handler.createTerm(document, dm);
+		
+		dm.replaceRoot(t);
 		
 		WindowsExtractor windowsExtractor = new WindowsExtractor();
-		dm = windowsExtractor.eXTRACT(wps);	
-		
-		wps.setDomainModel(dm);
+		generator = new DomainModelGenerator(null, windowsExtractor);
+		dm = generator.createDomainModel(wps);
 		
 		return wps;
 	}
 	
-	private String getDocumentTitle(Document document) {
-		String title = null;
-		
-		try {
-			XPath xPath = XPathFactory.newInstance().newXPath();
-			NodeList nodes = (NodeList)xPath.evaluate("*/head/title/text()",
-			        document.getDocumentElement(), XPathConstants.NODESET);
-			if(nodes.getLength() > 0) {
-				title = nodes.item(0).getNodeValue();
-			}
-		} catch (XPathExpressionException e1) {
-			e1.printStackTrace();
-		}
-				
-		return title;
-	}
-	
 	//TODO: Peter implementovat parser pre XML, ktory vrati dom Document v baliku parser a tu ho pouzit
 	//parser pouzije filePath cestu k suboru, ktora je ulozena tu v tejto triede
-	private Document parseWebPage() {
-		//use the parser package to implement parser classes
-		//connect to the url, and use parser to parse it to org.w3c.dom.Document
-		//if the HTML has errors, first correct
-		//format the HTML, the tags should use only lower case letters for simplicity
-		//it is possible to exclude comments during parsing, etc. (look for Pitonak's code)
-		return null;
+	private Document parseGUI() {
+		WindowsGUIParser winGuiParser = new WindowsGUIParser();
+	    Document document = winGuiParser.parse(filePath);
+	    return document;
 	}
 
 	public String getFilePath() {

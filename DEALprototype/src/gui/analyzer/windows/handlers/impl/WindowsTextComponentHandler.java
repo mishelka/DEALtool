@@ -44,8 +44,10 @@ public class WindowsTextComponentHandler extends AbstractWindowsHandler {
 	public boolean extractChildren() {
 		return false;
 	}
-
+	
 	/*************** Singleton pattern *************/
+	private static WindowsTextComponentHandler instance;
+
 	public static WindowsTextComponentHandler getInstance() {
 		if(instance == null) {
 			instance  = new WindowsTextComponentHandler();
@@ -54,4 +56,5 @@ public class WindowsTextComponentHandler extends AbstractWindowsHandler {
 	}
 	
 	private WindowsTextComponentHandler() {}
+	/*********** End singleton pattern ************/
 }

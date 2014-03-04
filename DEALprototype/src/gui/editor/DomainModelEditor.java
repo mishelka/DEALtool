@@ -1,6 +1,7 @@
 package gui.editor;
 
 import gui.analyzer.util.JLabelFinder;
+import gui.editor.DealFileChooser.DealFileChooserType;
 import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
@@ -72,7 +73,6 @@ import javax.swing.JTree;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -82,10 +82,8 @@ import org.apache.commons.io.FilenameUtils;
 
 import yajco.model.Language;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({ "rawtypes", "serial" })
 public class DomainModelEditor extends JFrame implements Observer {
-	private static final long serialVersionUID = 1L;
-
 	private static DomainModelEditor instance;
 
 	private static Application application = new Application();
@@ -99,9 +97,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 	private YajcoGenerator yajcoGenerator;
 
-	private static final String IMAGE_PATH = "resources/editor/";
-	public static final String OPEN_DIALOG_NAME = "Open existing DEAL file";
-	public static final String OWL_DIALOG_NAME = "OWLFileChooser";
+	private static final String IMAGE_PATH = "resources/editor/";	
 
 	/** Getter for singleton */
 	public static DomainModelEditor getInstance() {
@@ -118,7 +114,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		initComponents();
 
 		this.setTitle("DEAL (Domain Extraction ALgorithm) tool prototype");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(UrlDialog.class.getResource("/gui/editor/resources/tree/model.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(InputFileDialog.class.getResource("/gui/editor/resources/tree/model.png")));
 
 		ToolTipManager.sharedInstance().registerComponent(domainJTree);
 		domainJTree.setCellRenderer(new TreeCellRenderer());
@@ -455,14 +451,14 @@ public class DomainModelEditor extends JFrame implements Observer {
 	}
 	
 	private void browseButtonActionPerformed(ActionEvent evt) {
-		JFileChooser chooser = new JFileChooser("Record");
-		chooser.setDialogTitle(OPEN_DIALOG_NAME);
-		DealFileFilter filter = new DealFileFilter();
-		chooser.setFileFilter(filter);
+		DealFileChooser chooser = new DealFileChooser("Record");
+		chooser.setSettingsFor(DealFileChooserType.DEAL);
 		int returnVal = chooser.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			fileNameTextField.setText(chooser.getSelectedFile()
-					.getAbsolutePath());
+			File f = chooser.getSelectedFile();
+			if(f != null) {
+				fileNameTextField.setText(f.getAbsolutePath());
+			}
 		}
 	}
 
@@ -531,7 +527,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		}
 	}
 
-	private void showInfoTypesCheckBoxActionPerformed(
+	public void showInfoTypesCheckBoxActionPerformed(
 			ActionEvent evt) {
 		for (DomainModel domainModel : application.getDomainModels()) {
 			domainModel.setShowComponentInfoTypes(showInfoTypesCheckBox
@@ -1487,31 +1483,16 @@ public class DomainModelEditor extends JFrame implements Observer {
 	
 	private void generateOntologyFromDomainModelItemActionPerformed(java.awt.event.ActionEvent evt) {
 		File saveFile = null;
-		JFileChooser fc =  new JFileChooser();
-		fc.setName(OWL_DIALOG_NAME);
-		fc.setDialogTitle(OWL_DIALOG_NAME);
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.addChoosableFileFilter(new FileFilter() {
-			
-			@Override
-			public String getDescription() {
-				return "Ontology file (*.owl)";
-			}
-			
-			@Override
-			public boolean accept(File f) {
-			if (FilenameUtils.getExtension(f.getPath()).equals("owl") || f.isDirectory()) 
-					return true;
-			return false;
-			}
-		});
+		DealFileChooser fc = new DealFileChooser();
+		fc.setSettingsFor(DealFileChooserType.OWL);
 		int dialogValue = fc.showSaveDialog(this.getContentPane());
 		if (dialogValue == JFileChooser.APPROVE_OPTION) {
 			saveFile = fc.getSelectedFile();
 		}
 		
 		if (saveFile!=null) {
-			if (!saveFile.getName().endsWith(".owl")) saveFile = new File(saveFile.getAbsolutePath()+".owl");
+			if (!FilenameUtils.getExtension(saveFile.getName()).equalsIgnoreCase(DealFileChooser.OWL_FILE_EXT))
+				saveFile = new File(saveFile.getAbsolutePath()+"." + DealFileChooser.OWL_FILE_EXT);
 			OntologyTester.generateOntology(DomainModelEditor.getDomainModels(), saveFile);
 			invokeOpenDir(saveFile.getParent());
 		}
@@ -2026,22 +2007,5 @@ public class DomainModelEditor extends JFrame implements Observer {
 		}
 	}
 
-	/**
-	 * File filter for *.deal files.
-	 */
-	private class DealFileFilter extends FileFilter {
-		@Override
-		public boolean accept(File f) {
-			return f.isDirectory()
-					|| f.getName().toLowerCase()
-							.endsWith(Recorder.DEAL_FILE_EXT);
-		}
-
-		@Override
-		public String getDescription() {
-			return "DEAL files *" + Recorder.DEAL_FILE_EXT;
-		}
-	}
-	
 //</editor-fold>
 }

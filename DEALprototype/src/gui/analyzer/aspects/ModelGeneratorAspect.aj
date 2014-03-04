@@ -1,16 +1,18 @@
 package gui.analyzer.aspects;
 
-import gui.analyzer.util.Logger;
+import gui.editor.DealFileChooser;
 import gui.editor.DomainModelEditor;
 import gui.editor.FindDialog;
-import gui.editor.UrlDialog;
+import gui.editor.InputFileDialog;
 import gui.editor.visualization.events.Visualization;
 import gui.model.application.Application;
 import gui.model.application.scenes.DialogScene;
 import gui.model.application.scenes.Scene;
 import gui.model.application.scenes.WindowScene;
+import gui.tools.AbstractDealExtractor;
 import gui.tools.DomainModelGenerator;
 import gui.tools.DuplicateSceneDetector;
+import gui.tools.JavaExtractor;
 import gui.tools.Recorder;
 
 import java.awt.Dialog;
@@ -46,8 +48,10 @@ public privileged aspect ModelGeneratorAspect {
 			recorder = new Recorder();
 			editor.setRecorder(recorder);
 		}
+		
+		AbstractDealExtractor extractor = new JavaExtractor();
 
-		generator = new DomainModelGenerator(recorder);
+		generator = new DomainModelGenerator(recorder, extractor);
 		detector = new DuplicateSceneDetector();
 		
 		application = editor.getApplication();
@@ -126,12 +130,16 @@ public privileged aspect ModelGeneratorAspect {
 		boolean isJFCH = false;
 		if(w instanceof Dialog) {
 			Dialog d = (Dialog) w;
-			isJFCH = DomainModelEditor.OWL_DIALOG_NAME.equals(d.getTitle());
+			isJFCH = DealFileChooser.OWL_DIALOG_NAME.equals(d.getTitle());
+			isJFCH = isJFCH || (DealFileChooser.OPEN_XML_DIALOG_NAME.equals(d.getTitle()));
+			isJFCH = isJFCH || (DealFileChooser.OPEN_DEAL_DIALOG_NAME.equals(d.getTitle()));
 		}
 		
 		return ((w instanceof DomainModelEditor)
 				|| (w instanceof FindDialog)
-				|| (w instanceof UrlDialog) || isJFCH || (w instanceof Visualization));//
+				|| (w instanceof Visualization)
+				|| (w instanceof InputFileDialog)
+				|| isJFCH);//
 	}
 	
 	/**
