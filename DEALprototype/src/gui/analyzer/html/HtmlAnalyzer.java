@@ -1,74 +1,64 @@
 package gui.analyzer.html;
 
+import gui.analyzer.html.handlers.AbstractHtmlHandler;
+import gui.analyzer.html.handlers.HtmlHandlers;
 import gui.analyzer.util.Logger;
-import gui.model.application.scenes.Scene;
+import gui.editor.DomainModelEditor;
+import gui.model.application.Application;
 import gui.model.application.scenes.WebPageScene;
-import gui.model.application.webpage.WebPage;
 import gui.model.domain.DomainModel;
+import gui.model.domain.Term;
+import gui.tools.DomainModelGenerator;
 import gui.tools.HtmlExtractor;
 import gui.tools.exception.ExtractionException;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
 
 public class HtmlAnalyzer {
 	private String url;
-	private List<Scene<WebPage>> scenes = new ArrayList<Scene<WebPage>>(); 
+	private Application application;
+	private DomainModelGenerator generator; 
 	
 	public HtmlAnalyzer(String url) {
 		this.url = url;
+		
+DomainModelEditor editor = DomainModelEditor.getInstance();
+		
+		application = editor.getApplication();
+		application.addObserver(editor);
 	}
 	
 	public void analyze() {
 		Document document = parseWebPage();
 		
 		try {
-			WebPageScene wps = generateScene(document);
-			scenes.add(wps);
+			WebPageScene wps = generateScene(document.getDocumentElement());
+			
+			application.addScene(wps);
+			
 		} catch (ExtractionException e) {
 			Logger.logError("Extraction unsuccessful");
+			e.printStackTrace();
 		}		
 	}
 	
-	private WebPageScene generateScene(Document document) throws ExtractionException {		
-		String documentTitle = getDocumentTitle(document);
-		
+	private WebPageScene generateScene(Element document) throws ExtractionException {		
+		WebPageScene wps = new WebPageScene(document);
+		String documentTitle = wps.getName();
 		DomainModel dm = new DomainModel(documentTitle);
-		WebPage webPage = new WebPage(documentTitle);
-		
-		WebPageScene wps = new WebPageScene(webPage);
-		
-		HtmlExtractor htmlExtractor = new HtmlExtractor();
-		dm = htmlExtractor.eXTRACT(wps);	
-		
 		wps.setDomainModel(dm);
 		
-		return wps;
-	}
-	
-	private String getDocumentTitle(Document document) {
-		String title = null;
+		AbstractHtmlHandler handler = HtmlHandlers.getInstance().getHtmlHandler(document);
+		Term t = handler.createTerm(document, dm);
 		
-		try {
-			XPath xPath = XPathFactory.newInstance().newXPath();
-			NodeList nodes = (NodeList)xPath.evaluate("*/head/title/text()",
-			        document.getDocumentElement(), XPathConstants.NODESET);
-			if(nodes.getLength() > 0) {
-				title = nodes.item(0).getNodeValue();
-			}
-		} catch (XPathExpressionException e1) {
-			e1.printStackTrace();
-		}
-				
-		return title;
+		dm.replaceRoot(t);
+		
+		HtmlExtractor htmlExtractor = new HtmlExtractor();
+		generator = new DomainModelGenerator(null, htmlExtractor);	
+		dm = generator.createDomainModel(wps);
+		
+		return wps;
 	}
 	
 	//TODO: Valika implementovat parser pre HTML, ktory vrati dom Document v baliku parser a tu ho pouzit

@@ -33,6 +33,8 @@ public class DefaultWindowsHandler extends AbstractWindowsHandler {
 	}
 
 	/*************** Singleton pattern *************/
+	private static DefaultWindowsHandler instance;
+	
 	public static DefaultWindowsHandler getInstance() {
 		if(instance == null) {
 			instance  = new DefaultWindowsHandler();
@@ -42,4 +44,5 @@ public class DefaultWindowsHandler extends AbstractWindowsHandler {
 	
 	/* default constructor */
 	private DefaultWindowsHandler() {}
+	/*********** End singleton pattern ************/
 }

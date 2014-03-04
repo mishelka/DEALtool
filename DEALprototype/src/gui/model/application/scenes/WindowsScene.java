@@ -1,21 +1,18 @@
 package gui.model.application.scenes;
 
-import gui.model.application.windows.Window;
+import org.w3c.dom.Element;
 
-public class WindowsScene extends Scene<Window> {
+public class WindowsScene extends DomScene {
 
-	public WindowsScene(Window sceneContainer) {
-		super(sceneContainer);
-	}
-
-	@Override
-	protected String getSceneName(Window sceneContainer) {
-		return sceneContainer.getTitle();
-	}
+	private final static String DOCUMENT_TITLE_XPATH = 
+			"//attribute[@name=\"title\"]/text()";
 	
+	public WindowsScene(Element element) {
+		super(element, DOCUMENT_TITLE_XPATH);
+	}
 	
 	@Override
 	public String toString() {
-		return "Windows window " + super.toString();
+		return "Web page " + super.toString();
 	}
 }

@@ -1,6 +1,7 @@
 package gui.tools;
 
 import gui.analyzer.util.Logger;
+import gui.editor.DealFileChooser;
 import gui.model.application.events.UiEvent;
 import gui.model.application.events.UiEventSequence;
 import gui.tools.listener.UiEventListener;
@@ -21,8 +22,6 @@ import java.util.List;
  * michaela.bacikova@tuke.sk
  */
 public class Recorder {
-
-	public static final String DEAL_FILE_EXT = ".deal";
 	public static final String DEFAULT_RECORD_PATH = "record/";
 
 	/** A BufferedReader instance - responsible for writing into the file. */
@@ -165,7 +164,7 @@ public class Recorder {
 		return DEFAULT_RECORD_PATH
 				+ "record_"
 				+ new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss")
-						.format(new Date()) + DEAL_FILE_EXT;
+						.format(new Date()) + "." + DealFileChooser.DEAL_FILE_EXT;
 	}
 	
 	/** Writes the recorded UI event sequence into the console. */

@@ -1,6 +1,6 @@
 package gui.analyzer.windows.handlers;
 
-import gui.analyzer.windows.handlers.impl.WindowsButtonHandler;
+import gui.analyzer.windows.handlers.impl.WindowsMenuItemHandler;
 import gui.analyzer.windows.handlers.impl.WindowsTextComponentHandler;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class WindowsHandlers {
 	
 	//TODO: Peter ak bude novy handler, tu doplnit
 	public WindowsHandlers() {
-		windowsHandlers.add(WindowsButtonHandler.getInstance());
+		windowsHandlers.add(WindowsMenuItemHandler.getInstance());
 		windowsHandlers.add(WindowsTextComponentHandler.getInstance());
 		//TODO: add new handlers into the htmlHandlers list, otherwise they won't work
 		//windowsHandlers.add(...);
@@ -27,8 +27,9 @@ public class WindowsHandlers {
 	
 	public AbstractWindowsHandler getWindowsHandler(Element element) {
 		for (AbstractWindowsHandler windowsHandler : windowsHandlers) {
-			if (windowsHandler.matches(element))
+			if (windowsHandler.matches(element)) {
 				return windowsHandler;
+			}
 		}
 		
 		return defaultHandler;

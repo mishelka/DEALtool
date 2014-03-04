@@ -17,7 +17,7 @@ public class DomainModelGenerator {
 	 * scene is stored in this field - only for the purposes of this class.
 	 */
 	private DomainModel domainModel;
-	private JavaExtractor extractor;
+	private AbstractDealExtractor extractor;
 	private Simplifier simplifier;
 	private RecorderRegistator registrator;
 	
@@ -26,8 +26,8 @@ public class DomainModelGenerator {
 	 * Creates a new Extractor and Simplifier and a new RecorderRegistrator.
 	 * @param recorder a reference to the recorder
 	 */
-	public DomainModelGenerator(Recorder recorder) {
-		this.extractor = new JavaExtractor();
+	public DomainModelGenerator(Recorder recorder, AbstractDealExtractor extractor) {
+		this.extractor = extractor;
 		this.simplifier = new Simplifier();
 		this.registrator = new RecorderRegistator(recorder);
 	}

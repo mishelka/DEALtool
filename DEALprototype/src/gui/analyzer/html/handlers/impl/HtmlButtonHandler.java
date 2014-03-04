@@ -102,6 +102,8 @@ public class HtmlButtonHandler extends AbstractHtmlHandler {
 	}
 	
 	/*************** Singleton pattern *************/
+	private static HtmlButtonHandler instance;
+	
 	public static HtmlButtonHandler getInstance() {
 		if(instance == null) {
 			instance  = new HtmlButtonHandler();
@@ -110,4 +112,5 @@ public class HtmlButtonHandler extends AbstractHtmlHandler {
 	}
 	
 	private HtmlButtonHandler() {}
+	/*********** End singleton pattern *************/
 }

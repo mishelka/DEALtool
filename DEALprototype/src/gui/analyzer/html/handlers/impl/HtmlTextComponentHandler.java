@@ -40,6 +40,7 @@ public class HtmlTextComponentHandler extends AbstractHtmlHandler {
 	}
 
 	/*************** Singleton pattern *************/
+	private static HtmlTextComponentHandler instance;
 	public static HtmlTextComponentHandler getInstance() {
 		if(instance == null) {
 			instance  = new HtmlTextComponentHandler();
@@ -48,4 +49,5 @@ public class HtmlTextComponentHandler extends AbstractHtmlHandler {
 	}
 	
 	private HtmlTextComponentHandler() {}
+	/*********** End singleton pattern *************/
 }

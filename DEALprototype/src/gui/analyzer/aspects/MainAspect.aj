@@ -29,7 +29,8 @@ public aspect MainAspect {
 	 * The events will be handler in {@see gui.analyzer.aspects.ModelGeneratorAspect}.
 	 */
 	before(): mainPointcut() {
-		String className = thisJoinPoint.getSignature().getDeclaringType().getName();
+		String className = thisJoinPoint.getSignature().getDeclaringType()
+				.getName();
 		install(className);
 	}
 

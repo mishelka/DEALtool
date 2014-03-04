@@ -7,8 +7,6 @@ import gui.model.domain.Term;
 import org.w3c.dom.Element;
 
 public abstract class AbstractHtmlHandler extends DomainIdentifiable<Element> {
-	protected static AbstractHtmlHandler instance;
-	
 	public abstract boolean matches(Element element);
 	
 	public Term createTerm(Element element, DomainModel domainModel) {

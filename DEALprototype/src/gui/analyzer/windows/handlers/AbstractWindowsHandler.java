@@ -7,8 +7,6 @@ import gui.model.domain.Term;
 import org.w3c.dom.Element;
 
 public abstract class AbstractWindowsHandler extends DomainIdentifiable<Element> {
-	protected static AbstractWindowsHandler instance;
-	
 	public abstract boolean matches(Element element);
 	
 	public Term createTerm(Element element, DomainModel domainModel) {
