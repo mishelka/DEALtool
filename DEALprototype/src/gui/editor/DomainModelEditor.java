@@ -21,6 +21,8 @@ import gui.model.application.scenes.WindowScene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 import gui.model.domain.relation.RelationType;
+import gui.settings.Setting;
+import gui.settings.Settings;
 import gui.tools.Recorder;
 
 import java.awt.Color;
@@ -85,6 +87,7 @@ import yajco.model.Language;
 @SuppressWarnings({ "rawtypes", "serial" })
 public class DomainModelEditor extends JFrame implements Observer {
 	private static DomainModelEditor instance;
+	private Settings settings;
 
 	private static Application application = new Application();
 	private static ArrayList<Window> windows = new ArrayList<Window>();
@@ -122,6 +125,15 @@ public class DomainModelEditor extends JFrame implements Observer {
 		expandAll(domainJTree, true);
 		
 		yajcoGenerator = new YajcoGenerator();
+	}
+	
+	public void saveCurrentSetting() {
+		Setting s = new Setting(extractFunctionalComponents.isSelected());
+		settings.save(s);
+	}
+	
+	public Setting getSetting() {
+		return settings.load();
 	}
 
 	//<editor-fold defaultstate="collapsed" desc="Methods for domain model setup">
@@ -1311,7 +1323,13 @@ public class DomainModelEditor extends JFrame implements Observer {
 		fileMenu.add(findComponentByNameMenuItem);
 		
 		extractFunctionalComponents.setText("Extract functional components");
-		extractFunctionalComponents.setSelected(true);
+		extractFunctionalComponents.setSelected(getSetting().isExtractFunctionalComponents());
+		extractFunctionalComponents.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				saveCurrentSetting();
+			}
+		});
 		settingsMenu.add(extractFunctionalComponents);
 //		saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
 //				java.awt.event.KeyEvent.VK_S,
@@ -1393,7 +1411,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		// }
 //	}
 	//</editor-fold>
-
+	
 	//<editor-fold defaultstate="collapsed" desc="Find functionality">
 	public void findComponentByNameMenuItemActionPerformed(ActionEvent evt) {
 		final FindDialog findDialog = new FindDialog(this, true);
