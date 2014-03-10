@@ -113,6 +113,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 	/** default constructor */
 	private DomainModelEditor() {
+		settings = new Settings();
 		UIManager.put("TabbedPane.textIconGap", new Integer(-8));
 		initComponents();
 
