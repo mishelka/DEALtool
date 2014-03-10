@@ -1,0 +1,1596 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><element capabilities="nativewindow" enabled="True" hasfocus="False" index="2" role="form" visible="True">
+				
+				<attribute name="appicon" type="System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+					AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBD
+dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABNTeXN0
+ZW0uRHJhd2luZy5JY29uAgAAAAhJY29uRGF0YQhJY29uU2l6ZQcEAhNTeXN0ZW0uRHJhd2luZy5T
+aXplAgAAAAIAAAAJAwAAAAX8////E1N5c3RlbS5EcmF3aW5nLlNpemUCAAAABXdpZHRoBmhlaWdo
+dAAACAgCAAAAIAAAACAAAAAPAwAAAP4CAAACAAABAAEAICAQ/wAAAADoAgAAFgAAACgAAAAgAAAA
+QAAAAAEABAAAAAAAgAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACA
+gAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAHcAAAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAAEREQAAAAAAAAAAHAAAAAAREREQA
+AAAAAAAAcAAAAAAERAREAAAAAAAAAEQAAAAAREB0RAcAAAAAABEREABwAERAREQAAAAAAAAREREQ
+AABEQERAAAAAAAAAEREREQAABEAAAAcAAAAAAAAEQREQAAREAEQHAAAAAAAiBEABEQAAREREAAAA
+AAAAIiRAABEQcAREQAAAAAAAAAIgRAABEAAAAAIiREAAAAACIkQAAREHBwACIkREREQAACJEAAAR
+EABEQiJEREREQAAiJEBEQRREREImREREQAAAQiREREEVRERCIkREQAAAAEQiRERwEQAAAiJEQAAA
+AAAAIiQAABEQAAIgAAAAAAAAAAIiAAABEAACIAAAAAAAAAAAIgAAAREAIiAAAAAAAAAAAEIgAAAR
+ACIgAAAAAAAAAAAEIgBwERAiIAAAAAAAAAAABEIgAAESInAAAAAAAAAAAARCIiABEiIAAAAAAAAA
+AABEREIiIiIQAAAAAAAAAAAABERAIiIhERAABwAAAAAAAABEBwAAABERERAAAAAAAAAARHAAAAAA
+EREQAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///////4H///8B///+Af/x/gH
+/4fwA/8A8AP/AHAD/wAwB/8AGAP/AAgD/wAEAD8BBgADgAPgAICAAADAAAAAwAAAA8AAAB/AAOB/
+8DBh//gwQf/8GAP//AgD//4AA//8AAf//AAD//wAAH/+AAA//w/AP/8P8D//v////////ws=
+				</attribute>
+				
+				<attribute name="title" type="System.String">
+					Graph
+				</attribute>
+				
+				<attribute name="class" type="System.String">
+					TForm1
+				</attribute>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+				<children>
+					<element capabilities="nativewindow" enabled="True" hasfocus="False" index="0" role="container" visible="True">
+						
+						
+						<attribute name="class" type="System.String">
+							TPanel
+						</attribute>
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+						<children>
+							<element capabilities="nativewindow" enabled="True" hasfocus="False" index="0" role="container" visible="True">
+								
+								
+								<attribute name="class" type="System.String">
+									TPanel
+								</attribute>
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+								<children/>
+							</element>
+							<element capabilities="nativewindow" enabled="True" hasfocus="False" index="1" role="container" visible="True">
+								
+								
+								<attribute name="class" type="System.String">
+									TPanel
+								</attribute>
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+								<children>
+									<element capabilities="nativewindow" enabled="True" hasfocus="False" index="0" role="container" visible="True">
+										
+										
+										<attribute name="class" type="System.String">
+											TPanel
+										</attribute>
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+										<children>
+											<element capabilities="nativewindow" enabled="True" hasfocus="False" index="0" role="container" visible="True">
+												
+												
+												<attribute name="class" type="System.String">
+													TPanel
+												</attribute>
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+												<children/>
+											</element>
+										</children>
+									</element>
+									<element capabilities="nativewindow" enabled="True" hasfocus="False" index="1" role="tree" visible="True">
+										
+										<attribute name="class" type="System.String">
+											TTreeView
+										</attribute>
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+										<children>
+											<element capabilities="" enabled="True" hasfocus="False" index="0" role="treeitem" visible="True">
+												
+												
+												
+												<attribute name="text" type="System.String">
+													Axes
+												</attribute>
+												<children/>
+											</element>
+										</children>
+									</element>
+								</children>
+							</element>
+							<element capabilities="nativewindow" enabled="True" hasfocus="False" index="2" role="unknown" visible="True">
+								
+								<attribute name="class" type="System.String">
+									TFocusPanel
+								</attribute>
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+								<children/>
+							</element>
+						</children>
+					</element>
+					<element capabilities="nativewindow" enabled="True" hasfocus="False" index="1" role="statusbar" visible="True">
+						
+						<attribute name="class" type="System.String">
+							TStatusBar
+						</attribute>
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+						<children>
+							<element capabilities="" enabled="True" hasfocus="False" index="0" role="listitem" visible="True">
+								<attribute name="index" type="System.Int32">
+									0
+								</attribute>
+								
+								<attribute name="text" type="System.String">
+								</attribute>
+								<children/>
+							</element>
+							<element capabilities="" enabled="True" hasfocus="False" index="1" role="listitem" visible="True">
+								<attribute name="index" type="System.Int32">
+									1
+								</attribute>
+								
+								<attribute name="text" type="System.String">
+										
+								</attribute>
+								<children/>
+							</element>
+							<element capabilities="" enabled="True" hasfocus="False" index="2" role="listitem" visible="True">
+								<attribute name="index" type="System.Int32">
+									2
+								</attribute>
+								
+								<children/>
+							</element>
+						</children>
+					</element>
+					<element capabilities="nativewindow" enabled="True" hasfocus="False" index="2" role="unknown" visible="True">
+						
+						<attribute name="class" type="System.String">
+							TActionMainMenuBar
+						</attribute>
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+						<children>
+							<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menubar" visible="False">
+								
+								
+								
+								<children>
+									<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menuitem" visible="True">
+										
+										<attribute name="text" type="System.String">
+											File
+										</attribute>
+										
+										
+										
+										
+										
+										<children>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													New
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="1" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Open...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="2" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Save
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="3" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Save as...
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="4" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Save copy as...
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="5" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="6" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Save as image...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="7" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Import
+												</attribute>
+												
+												
+												
+												
+												
+												<children>
+													<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menuitem" visible="False">
+														
+														<attribute name="text" type="System.String">
+															Graph file...
+														</attribute>
+														
+														
+														
+														
+														<children/>
+													</element>
+													<element capabilities="accessible" enabled="True" hasfocus="True" index="1" role="menuitem" visible="False">
+														
+														<attribute name="text" type="System.String">
+															Point series...
+														</attribute>
+														
+														
+														
+														
+														<children/>
+													</element>
+												</children>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="8" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="9" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Print...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="10" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="11" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Exit
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+										</children>
+									</element>
+									<element capabilities="accessible" enabled="True" hasfocus="True" index="1" role="menuitem" visible="True">
+										
+										<attribute name="text" type="System.String">
+											Edit
+										</attribute>
+										
+										
+										
+										
+										
+										<children>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="0" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Undo
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="1" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Redo
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="2" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="3" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Cut
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="4" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Copy
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="5" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Paste
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="6" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="7" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Copy image
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="8" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="9" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Axes...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="10" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Options...
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+										</children>
+									</element>
+									<element capabilities="accessible" enabled="True" hasfocus="True" index="2" role="menuitem" visible="True">
+										
+										<attribute name="text" type="System.String">
+											Function
+										</attribute>
+										
+										
+										
+										
+										
+										<children>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Insert function...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="1" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Insert tangent/normal...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="2" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Insert shading...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="3" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Insert f'(x)...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="4" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="5" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Insert point series...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="6" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Insert trendline...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="7" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="8" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Insert relation...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="9" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Insert label...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="10" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="11" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Edit...
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="12" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Delete
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="13" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Custom functions/constants...
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+										</children>
+									</element>
+									<element capabilities="accessible" enabled="True" hasfocus="True" index="3" role="menuitem" visible="True">
+										
+										<attribute name="text" type="System.String">
+											Zoom
+										</attribute>
+										
+										
+										
+										
+										
+										<children>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													In
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="1" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Out
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="2" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Window
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="3" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Square
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="4" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Standard
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="5" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="6" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Move system
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="7" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="8" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Fit
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="9" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Fit all
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+										</children>
+									</element>
+									<element capabilities="accessible" enabled="True" hasfocus="True" index="4" role="menuitem" visible="True">
+										
+										<attribute name="text" type="System.String">
+											Calc
+										</attribute>
+										
+										
+										
+										
+										
+										<children>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Length of path
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="1" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Area
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="2" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Evaluate
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="3" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Table
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="False" hasfocus="True" index="4" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Animate...
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+										</children>
+									</element>
+									<element capabilities="accessible" enabled="True" hasfocus="True" index="5" role="menuitem" visible="False">
+										
+										<attribute name="text" type="System.String">
+											Plugins
+										</attribute>
+										
+										
+										
+										
+										<children>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Tahoma
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+										</children>
+									</element>
+									<element capabilities="accessible" enabled="True" hasfocus="True" index="6" role="menuitem" visible="True">
+										
+										<attribute name="text" type="System.String">
+											Help
+										</attribute>
+										
+										
+										
+										
+										
+										<children>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Contents and index
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="1" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													List of functions
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="2" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Frequently Asked Questions
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="3" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Scripting engine documentation
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="4" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Tip of the day
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="5" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													-
+												</attribute>
+												
+												
+												
+												
+												<children/>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="6" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													Internet
+												</attribute>
+												
+												
+												
+												
+												
+												<children>
+													<element capabilities="accessible" enabled="True" hasfocus="True" index="0" role="menuitem" visible="False">
+														
+														<attribute name="text" type="System.String">
+															Graph web site
+														</attribute>
+														
+														
+														
+														
+														<children/>
+													</element>
+													<element capabilities="accessible" enabled="True" hasfocus="True" index="1" role="menuitem" visible="False">
+														
+														<attribute name="text" type="System.String">
+															Support
+														</attribute>
+														
+														
+														
+														
+														<children/>
+													</element>
+													<element capabilities="accessible" enabled="True" hasfocus="True" index="2" role="menuitem" visible="False">
+														
+														<attribute name="text" type="System.String">
+															Donate
+														</attribute>
+														
+														
+														
+														
+														<children/>
+													</element>
+													<element capabilities="accessible" enabled="True" hasfocus="True" index="3" role="menuitem" visible="False">
+														
+														<attribute name="text" type="System.String">
+															Check for update
+														</attribute>
+														
+														
+														
+														
+														<children/>
+													</element>
+												</children>
+											</element>
+											<element capabilities="accessible" enabled="True" hasfocus="True" index="7" role="menuitem" visible="False">
+												
+												<attribute name="text" type="System.String">
+													About Graph
+												</attribute>
+												
+												
+												
+												
+												
+												<children/>
+											</element>
+										</children>
+									</element>
+								</children>
+							</element>
+						</children>
+					</element>
+					<element capabilities="nativewindow" enabled="True" hasfocus="False" index="3" role="unknown" visible="True">
+						
+						<attribute name="class" type="System.String">
+							TActionToolBar
+						</attribute>
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						<dynamicaction description="Invokes the default action of the accessible object." displayName="AccessibleDoDefaultAction"/>
+						<children/>
+					</element>
+					<element capabilities="accessible" enabled="True" hasfocus="False" index="4" role="menubar" visible="True">
+						
+						
+						
+						
+						
+						<children>
+							<element capabilities="accessible" enabled="True" hasfocus="False" index="0" role="menuitem" visible="True">
+								
+								<attribute name="text" type="System.String">
+									System
+								</attribute>
+								
+								
+								
+								
+								<children/>
+							</element>
+						</children>
+					</element>
+					<element capabilities="accessible" enabled="True" hasfocus="False" index="5" role="titlebar" visible="True">
+						<attribute name="text" type="System.String">
+							Graph
+						</attribute>
+						
+						
+						
+						
+						<children>
+							<element capabilities="accessible" enabled="True" hasfocus="False" index="0" role="button" visible="True">
+								
+								<attribute name="text" type="System.String">
+									Minimize
+								</attribute>
+								
+								
+								
+								
+								
+								<children/>
+							</element>
+							<element capabilities="accessible" enabled="True" hasfocus="False" index="1" role="button" visible="True">
+								
+								<attribute name="text" type="System.String">
+									Maximize
+								</attribute>
+								
+								
+								
+								
+								
+								<children/>
+							</element>
+							<element capabilities="accessible" enabled="True" hasfocus="False" index="2" role="button" visible="True">
+								
+								<attribute name="text" type="System.String">
+									Close
+								</attribute>
+								
+								
+								
+								
+								
+								<children/>
+							</element>
+						</children>
+					</element>
+				</children>
+				<screenshot>
+					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
+1wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAo
+yy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5Wd
+AoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrM
+pBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwA
+aM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+q
+taMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAq
+baUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVV
+CgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9z
+OpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMA
+AGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUp
+RQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCA
+quy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpal
+AAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjH
+a5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoA
+gIrMpBVVCgCAquy01wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy0
+1wwAaM9zOpalAAAoyy+qtaMAAGjHa5WdAoAqbaUpRQoAgIrMpBVVCgCAquy01wwAaM9zOpalAAAo
+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
+				</screenshot>
+			</element>

@@ -588,6 +588,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 //		editorTextArea = new javax.swing.JTextArea();
 		menuBar = new javax.swing.JMenuBar();
 		fileMenu = new javax.swing.JMenu();
+		settingsMenu = new javax.swing.JMenu();
 		//not used in this version yet
 //		saveMenuItem = new javax.swing.JMenuItem();
 //		openMenuItem = new javax.swing.JMenuItem();
@@ -597,6 +598,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		generateOntologyFromDomainModel = new javax.swing.JMenuItem();
 		generatePlainTextMenuItem = new javax.swing.JMenuItem();
 		findComponentByNameMenuItem = new javax.swing.JMenuItem();
+		extractFunctionalComponents = new javax.swing.JCheckBoxMenuItem();
 		
 		recordButtonGroup = new javax.swing.ButtonGroup();
 
@@ -1248,6 +1250,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 				.setAccessibleName("jTabbedPane");
 
 		fileMenu.setText("File");
+		settingsMenu.setText("Settings");
 		
 		
 		generateDSLMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
@@ -1307,6 +1310,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 		});
 		fileMenu.add(findComponentByNameMenuItem);
 		
+		extractFunctionalComponents.setText("Extract functional components");
+		extractFunctionalComponents.setSelected(true);
+		settingsMenu.add(extractFunctionalComponents);
 //		saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
 //				java.awt.event.KeyEvent.VK_S,
 //				java.awt.event.InputEvent.CTRL_MASK));
@@ -1341,6 +1347,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		fileMenu.add(exitMenuItem);
 
 		menuBar.add(fileMenu);
+		menuBar.add(settingsMenu);
 
 		setJMenuBar(menuBar);
 
@@ -1782,6 +1789,10 @@ public class DomainModelEditor extends JFrame implements Observer {
 	}
 	//</editor-fold>
 	
+	public boolean extractFunctionalComponents() {
+		return extractFunctionalComponents.isSelected();
+	}
+	
 	//<editor-fold defaultstate="collapsed" desc="Component variables declaration">
 	private javax.swing.JTextField actionCommandField;
 	private javax.swing.JLabel actionCommandLabel;
@@ -1809,6 +1820,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private javax.swing.JScrollPane domainScrollPane;
 	private javax.swing.JTree domainJTree;
 	private javax.swing.JMenu fileMenu;
+	private javax.swing.JMenu settingsMenu;
 	private javax.swing.JLabel iconField;
 	private javax.swing.JLabel iconLabel;
 	private javax.swing.JPanel leftPanel;
@@ -1836,6 +1848,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private javax.swing.JMenuItem hideAllPopupMenuItem;
 	private javax.swing.JMenuItem unhideAllPopupMenuItem;
 	private javax.swing.JMenuItem generatePlainTextMenuItem;
+	private javax.swing.JCheckBoxMenuItem extractFunctionalComponents;
 	private GridBagConstraints gbc_domainInfoTitlePanel;
 	private GridBagConstraints gbc_componentInfoTitlePanel;
 	private GridBagConstraints gridBagConstraints_1;
