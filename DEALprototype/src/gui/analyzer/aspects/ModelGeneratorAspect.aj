@@ -108,6 +108,8 @@ public privileged aspect ModelGeneratorAspect {
 			if (application.getSceneCount() == 0)
 				editor.setupComponentTreeModel();
 			
+			generator.extractFunctionalComponents(editor.extractFunctionalComponents());
+			
 			try {
 				generator.createDomainModel(scene);
 			} catch (Exception e) {

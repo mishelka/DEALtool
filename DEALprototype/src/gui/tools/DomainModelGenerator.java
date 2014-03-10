@@ -65,4 +65,8 @@ public class DomainModelGenerator {
 		Term rootTerm = new Term(domainModel, name);
 		domainModel.replaceRoot(rootTerm);
 	}
+	
+	public void extractFunctionalComponents(boolean extract) {
+		simplifier.extractFunctionalComponents(extract);
+	}
 }

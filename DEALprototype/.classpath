@@ -10,74 +10,12 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/DEALprototype/lib/commons-lang3-3.1/commons-lang3-3.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="examples/Calculator2.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="examples/JavaNotePad.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="examples/jarsbrowser.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/batik-svgpathparser-1.7.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/freehep-vectorgraphics-svg-2.1.1.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/iText-2.1.7.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/j3dcore.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/j3dutils.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/jmf.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/Loader3DS1_2u.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/sunflow-0.07.3h.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/vecmath.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/macosx/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/macosx/jogl.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/macosx/java3d-1.6/gluegen.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/macosx/java3d-1.6/j3dcore.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/macosx/java3d-1.6/j3dutils.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/macosx/java3d-1.6/jogl-all.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/lib/macosx/java3d-1.6/vecmath.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/abbot.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/AppleJavaExtensions.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/gnu-regexp-1.1.0.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/jdepend-2.9.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/jdom-1.0.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/jnlp.jar"/>
-	<classpathentry kind="lib" path="examples/SweetHome3D/libtest/profile.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.4/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/owl_api/owlapiv3/owlapi-bin.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7"/>
-	<classpathentry kind="lib" path="examples/PersonForm.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="examples/TimeSlotTracker-1.2.8.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.aspectpath" value="org.eclipse.ajdt.aspectpath"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="examples/SweetHome3D/SweetHome3D-4.1.jar"/>
 	<classpathentry kind="lib" path="examples/finanx-12c-0.1.2/finanx.jar"/>
-	<classpathentry kind="lib" path="examples/guitar/GuitarScaleAssistant.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="examples/SweetHome3D/SweetHome3D-4.1.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.aspectpath" value="org.eclipse.ajdt.aspectpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="examples/jedit/jedit.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="examples/BaseFormApplication.jar">
-		<attributes>
-			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="examples/Calculator2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7"/>
 	<classpathentry kind="lib" path="lib/yajco/beaver.jar"/>
 	<classpathentry kind="lib" path="lib/yajco/jalopy.jar"/>
 	<classpathentry kind="lib" path="lib/yajco/javacc.jar"/>
@@ -92,5 +30,10 @@
 	<classpathentry kind="lib" path="lib/yajco/yajco-parser-0.5.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/yajco/yajco-tools-module-0.5.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/jgraphx.jar"/>
+	<classpathentry kind="lib" path="examples/PersonForm.jar">
+		<attributes>
+			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
