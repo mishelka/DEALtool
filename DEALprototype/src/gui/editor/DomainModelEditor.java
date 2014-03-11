@@ -528,13 +528,14 @@ public class DomainModelEditor extends JFrame implements Observer {
 				// could not stop
 			}
 			recordingProgressBar.setValue(0);
-			updateRecordPanel();
-
+			
 			System.out.println("\nSTOPPING RECORDING\n");
 			fileNameTextField.setText("");
 
 			recorder.setRecording(false);
 			recorder.closeWriter();
+			
+			updateRecordPanel();
 
 			recorder.writeResultToConsole();
 		}
