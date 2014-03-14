@@ -1,5 +1,7 @@
 package gui.model.application.events;
 
+import gui.model.domain.Term;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,8 @@ public class UiEventSequence {
 	// napr. vyber vsetky sekvencie ktore sa tykaju toho a toho okna/pojmu
 	/** The list of UI events representing the sequence */
 	private List<UiEvent> events = new ArrayList<UiEvent>();
+	
+	private List<UiEventStack> stacks = new ArrayList<UiEventStack>();
 
 	/**
 	 * @return the list of UI events representing the sequence
@@ -21,7 +25,14 @@ public class UiEventSequence {
 	public List<UiEvent> getEvents() {
 		return events;
 	}
-
+	
+	public UiEvent getPenultimate() {
+		if(getEventCount() > 1) {
+			System.out.println(">>>>>"+ events.get(getEventCount() - 2));
+			return events.get(getEventCount() - 2);
+		} else return null;
+	}
+	
 	/**
 	 * @param events the list of UI events reprsenting the sequence
 	 */
@@ -29,6 +40,10 @@ public class UiEventSequence {
 		this.events = events;
 	}
 
+	public int getEventCount() {
+		return events.size();
+	}
+	
 	/**
 	 * Adds a new event to the sequence, but only if the given event is not
 	 * null.
@@ -36,6 +51,36 @@ public class UiEventSequence {
 	 */
 	public void add(UiEvent event) {
 		events.add(event);
+		
+		//add event to stack
+		Term term = event.getCause();
+		UiEventStack lastStack = getLastStack();
+		if(term != null && lastStack != null 
+				&& term.equals(lastStack.getTerm())) {
+				lastStack.add(event);
+		} else {
+			UiEventStack stack = new UiEventStack(term);
+			stacks.add(stack);
+			stack.add(event);
+		}
+	}
+	
+	public UiEventStack getLastStack() {
+		if(stacks.isEmpty()) return null;
+		return stacks.get(stacks.size()-1);
+	}
+	
+	public UiEventStack getStack(int i) {
+		return stacks.get(i);
+	}
+	
+	public int getLastStackSize() {
+		if(getLastStack() == null) return -1;
+		return getLastStack().size();
+	}
+	
+	public int getStackCount() {
+		return stacks.size();
 	}
 	
 	@Override
