@@ -182,7 +182,7 @@ public class Recorder {
 	
 	private void notifyListeners(UiEvent event) {
 		for ( int i = 0; i < listeners.size(); i++ ){
-			listeners.get(i).uiEventRecorded(event);
+			listeners.get(i).uiEventRecorded(event, uiEventSequence);
 		}
 	}
 }
