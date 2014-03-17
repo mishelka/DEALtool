@@ -1,5 +1,7 @@
 package gui.generator.dsl;
 
+import gui.analyzer.util.Logger;
+import gui.editor.DomainModelEditor;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -56,6 +58,11 @@ public class YajcoGenerator {
 	}
 
 	public Language generateDSL(DomainModel model) {
+		if(model.getRoot().isHidden()) {
+			Logger.log("Model " + model + " hidden, doing nothing");
+			return null; //hidden, do nothing with this model
+		}
+		
 		Map<Term, Concept> map = new HashMap<Term, Concept>();
 		List<Concept> specialHelpConcepts = new ArrayList<Concept>();
 
@@ -68,6 +75,9 @@ public class YajcoGenerator {
 				// createEnumConcept(term, concept, specialHelpConcepts, true);
 			} else if (term.getRelation() == RelationType.MUTUALLY_NOT_EXCLUSIVE) {
 				// createEnumConcept(term, concept, specialHelpConcepts, false);
+			} else if (term.isHidden()) {
+				Logger.log("Term " + term.getName() + " hidden, doing nothing");
+				// do nothing if the term is hidden
 			} else {
 				notations.add(new TokenPart(getConceptName(term)));
 				for (Term childTerm : getUsableChildren(term)) {
@@ -138,12 +148,8 @@ public class YajcoGenerator {
 		}
 
 		language = new Language(null);
-		//language.setName("deal");
-		String languageName = model.getName();
-		if(languageName == null) {
-			languageName = "deal";
-		}
-		languageName = languageName.replaceAll("\\s", "");
+		String languageName = getLanguageName(model);
+		
 		language.setName("dsl." + languageName);
 		
 		language.setSkips(new ArrayList<SkipDef>());
@@ -178,6 +184,19 @@ public class YajcoGenerator {
 		return language;
 	}//end advice
 	
+	private String getLanguageName(DomainModel model) {
+		String languageName = model.getName();
+		
+		if(languageName == null) {
+			languageName = "DealLanguage" + DomainModelEditor.getDomainModels().indexOf(model);
+		}
+		
+		languageName = languageName.replaceAll("\\s+", "");
+		Logger.logError(languageName);
+		
+		return languageName;
+	}
+
 	private void createEnumConcept(Term term, Concept concept,
 			List<NotationPart> notationParts, Map<Term, Concept> map,
 			List<Concept> specialHelpConcepts, boolean mutuallyExclusiveChilds) {
