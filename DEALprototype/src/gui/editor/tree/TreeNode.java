@@ -47,6 +47,7 @@ public class TreeNode extends DefaultMutableTreeNode {
 
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
+		getTerm().setHidden(hidden);
 	}
 
 	public boolean isHidden() {

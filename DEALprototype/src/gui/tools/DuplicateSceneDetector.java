@@ -31,15 +31,17 @@ public class DuplicateSceneDetector {
 	public Scene<?> detect(Window window, DomainModel windowDomainModel) {
 		if(windowDomainModel == null) return null;
 		for (DomainModel dm : DomainModelEditor.getDomainModels()) {
-			if (dm.getScene().getSceneContainer() instanceof Window) {
-				//if the window and the scene container are same instances, return the scene
-				if(dm.getScene().getSceneContainer().equals(window)) {
-					return dm.getScene();
+			if(dm != null && dm.getScene() != null && dm.getScene().getSceneContainer() != null) {
+				if (dm.getScene().getSceneContainer() instanceof Window) {
+					//if the window and the scene container are same instances, return the scene
+					if(dm.getScene().getSceneContainer().equals(window)) {
+						return dm.getScene();
+					}
+					int matchPerc = compareModels(dm, windowDomainModel);
+					//if the dialog is the same to the one in editor, return true, otherwise return false
+					if (matchPerc >= 90)
+						return dm.getScene();
 				}
-				int matchPerc = compareModels(dm, windowDomainModel);
-				//if the dialog is the same to the one in editor, return true, otherwise return false
-				if (matchPerc >= 90)
-					return dm.getScene();
 			}
 		}
 		return null;
