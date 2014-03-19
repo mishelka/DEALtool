@@ -1,6 +1,7 @@
 package gui.analyzer.handlers;
 
 import gui.analyzer.util.JLabelFinder;
+import gui.analyzer.util.Util;
 import gui.model.domain.ComponentInfoType;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -12,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 /**
  * Serves for extracting domain information from components. Different information can be 
@@ -55,11 +59,13 @@ public abstract class DomainIdentifiable<T> {
 	public Term createTerm(T component, DomainModel domainModel) {
 		Term t = new Term(domainModel);
 
-		t.setName(removeUnwantedCharacters(this.getDomainIdentifier(component)));
+		String name = removeUnwantedCharacters(getDomainIdentifier(component));
+		if(Util.isEmpty(name))
+			name = removeUnwantedCharacters(getBorderTitle(component));
 		
-		t.setDescription(this.getDomainDescriptor(component));
+		t.setDescription(getDomainDescriptor(component));
 		
-		t.setLabelForComponent(this.getDomainLabelDescriptor(component));
+		t.setLabelForComponent(getDomainLabelDescriptor(component));
 
 		RelationType ft = getRelation(component);
 		t.setRelation(ft == null ? RelationType.AND : ft);
@@ -67,11 +73,11 @@ public abstract class DomainIdentifiable<T> {
 		t.setComponentClass(component.getClass());
 		t.setComponent(component);
 
-		t.setIcon(this.getIcon(component));
+		t.setIcon(getIcon(component));
 		
-		t.setConstraints(this.getConstraints(component));
+		t.setConstraints(getConstraints(component));
 		
-		t.setComponentInfoType(this.getComponentInfoType(component));
+		t.setComponentInfoType(getComponentInfoType(component));
 
 		t.setExtractChildren(extractChildren());
 		
@@ -156,5 +162,17 @@ public abstract class DomainIdentifiable<T> {
 	 */
 	public List<Constraint> getConstraints(T component) {
 		return new ArrayList<Constraint>();
+	}
+	
+	private String getBorderTitle(T component) {
+		if(component instanceof JComponent) {
+			JComponent c = (JComponent) component;
+			Border border = c.getBorder();
+			if(border != null && border instanceof TitledBorder) {
+				TitledBorder tb = (TitledBorder) border;
+				return tb.getTitle();
+			}
+		}
+		return null;
 	}
 }
