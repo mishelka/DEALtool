@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -65,9 +66,10 @@ public class YajcoGenerator {
 		}
 		
 		Map<Term, Concept> map = new HashMap<Term, Concept>();
+		HashSet<String> termNames = new HashSet<String>();
 		List<Concept> specialHelpConcepts = new ArrayList<Concept>();
 
-		getMap(model.getRoot(), map);
+		getMap(model.getRoot(), map, termNames);
 
 		for (Term term : map.keySet()) {
 			Concept concept = map.get(term);
@@ -78,18 +80,18 @@ public class YajcoGenerator {
 			} else if (term.getRelation() == RelationType.MUTUALLY_NOT_EXCLUSIVE) {
 				// createEnumConcept(term, concept, specialHelpConcepts, false);
 			} else {
-				notations.add(new TokenPart(getConceptName(term)));
+				notations.add(new TokenPart(getConceptName(term, termNames)));
 				for (Term childTerm : getUsableChildren(term)) {
 					if(!childTerm.isHidden()) {
 						if (childTerm.getRelation() == RelationType.MUTUALLY_EXCLUSIVE) {
 							createEnumConcept(childTerm, concept, notations, map,
-									specialHelpConcepts, true);
+									specialHelpConcepts, true, termNames);
 						} else if (childTerm.getRelation() == RelationType.MUTUALLY_NOT_EXCLUSIVE) {
 							createEnumConcept(childTerm, concept, notations, map,
-									specialHelpConcepts, false);
+									specialHelpConcepts, false, termNames);
 						} else {
 							Property property = new Property(
-									getPropertyName(childTerm), new ReferenceType(
+									getPropertyName(childTerm, termNames), new ReferenceType(
 											map.get(childTerm), null));
 							concept.addProperty(property);
 							notations
@@ -200,12 +202,12 @@ public class YajcoGenerator {
 
 	private void createEnumConcept(Term term, Concept concept,
 			List<NotationPart> notationParts, Map<Term, Concept> map,
-			List<Concept> specialHelpConcepts, boolean mutuallyExclusiveChilds) {
-		Concept childConcept = map.containsKey(term) ? map.get(term) : new Concept(getConceptName(term));
+			List<Concept> specialHelpConcepts, boolean mutuallyExclusiveChilds, HashSet<String> termNames) {
+		Concept childConcept = map.containsKey(term) ? map.get(term) : new Concept(getConceptName(term, termNames));
 		childConcept.addPattern(new Enum());
 		//if (mutuallyExclusiveChilds) {
 			for (Term childTerm : term.getChildren()) {
-				NotationPart part = new TokenPart(getConceptName(childTerm));
+				NotationPart part = new TokenPart(getConceptName(childTerm, termNames));
 				childConcept.addNotation(new Notation(
 						new NotationPart[] { part }));
 			}
@@ -227,7 +229,7 @@ public class YajcoGenerator {
 		} else {
 			propertyType = new SetType(new ReferenceType(childConcept, null));
 		}
-		Property property = new Property(getPropertyName(term), propertyType);
+		Property property = new Property(getPropertyName(term, termNames), propertyType);
 		concept.addProperty(property);
 
 		PropertyReferencePart notationPart = new PropertyReferencePart(
@@ -238,36 +240,44 @@ public class YajcoGenerator {
 		//specialHelpConcepts.add(childConcept);
 	}
 
-	private String getPropertyName(Term term) {
-		String original = getConceptName(term);
+	private String getPropertyName(Term term, HashSet<String> termNames) {
+		String original = getConceptName(term, termNames);
 		return Character.toLowerCase(original.charAt(0))
 				+ original.substring(1);
 	}
 
-	private String getConceptName(Term term) {
+	private String getConceptName(Term term, HashSet<String> termNames) {
 		String name = term.getName();
-		if (name != null && !name.isEmpty()) {
+		if (!Util.isEmpty(name)) {
+			name = name.trim();
 			name = name.replaceAll("-", "");
-			if (name != null && !name.isEmpty()) {
+			if (!name.isEmpty()) {
 				Pattern regex = Pattern.compile("[A-Za-z ][\\w ]*");
 				Matcher matcher = regex.matcher(name);
 				if (matcher.find()) {
-					return matcher.group().replaceAll("[ ]", "_");
+					name = matcher.group().replaceAll("[ ]", "_");
+					if(JavaKeywords.isJavaKeyword(name)) {
+						name = name + "_";
+					}
+					while(!termNames.add(name)) {
+						name = name + "_";
+					}
+					return name;
 				}
 			}
 		}
 		return "Unknown" + term.hashCode();
 	}
 
-	private void getMap(Term term, Map<Term, Concept> map) {
+	private void getMap(Term term, Map<Term, Concept> map, HashSet<String> termNames) {
 		if (map == null) {
 			throw new IllegalArgumentException("Map argument cannot be null.");
 		}
 		if(!term.isHidden()) {
-			map.put(term, new Concept(getConceptName(term)));
+			map.put(term, new Concept(getConceptName(term, termNames)));
 		}
 		for (Term childTerm : getUsableChildren(term)) {
-			getMap(childTerm, map);
+			getMap(childTerm, map, termNames);
 		}
 	}
 
@@ -288,7 +298,10 @@ public class YajcoGenerator {
 					term.getParent().getRelation() == RelationType.MUTUALLY_EXCLUSIVE 
 					|| term.getParent().getRelation() == RelationType.MUTUALLY_NOT_EXCLUSIVE
 					)
-				) && term.getComponentInfoType() != ComponentInfoType.FUNCTIONAL;
+				) && (
+						!DomainModelEditor.getInstance().getSetting().isExtractFunctionalComponents() &&
+						term.getComponentInfoType() != ComponentInfoType.FUNCTIONAL
+				);
 	}
 
 	private <T> List<List<T>> getPermutations(List<T> list) {
