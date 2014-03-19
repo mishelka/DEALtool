@@ -63,6 +63,8 @@ public abstract class DomainIdentifiable<T> {
 		if(Util.isEmpty(name))
 			name = removeUnwantedCharacters(getBorderTitle(component));
 		
+		t.setName(name);
+		
 		t.setDescription(getDomainDescriptor(component));
 		
 		t.setLabelForComponent(getDomainLabelDescriptor(component));
