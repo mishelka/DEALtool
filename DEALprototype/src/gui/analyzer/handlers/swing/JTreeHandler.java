@@ -11,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
 public class JTreeHandler extends DomainIdentifiable<JTree> {
 
@@ -44,6 +45,7 @@ public class JTreeHandler extends DomainIdentifiable<JTree> {
 			return treeTerm;
 		}
 		
+		
 		TreeModel tm = component.getModel();
 		Object root = tm.getRoot();
 		if(root instanceof TreeNode) {
@@ -55,6 +57,7 @@ public class JTreeHandler extends DomainIdentifiable<JTree> {
 	
 	private void createTermsFromNodes(TreeNode thisTreeNode, Term parentTerm, DomainModel domainModel, JTree component) {
 		Term thisTerm = createTerm(thisTreeNode, domainModel);
+		thisTerm.setRelation(getRelation(thisTreeNode, component));
 		parentTerm.addChild(thisTerm);
 		thisTerm.setComponent(component);
 		thisTerm.setComponentClass(component.getClass());
@@ -62,6 +65,32 @@ public class JTreeHandler extends DomainIdentifiable<JTree> {
 		for(int i = 0; i < thisTreeNode.getChildCount(); i++) {
 			createTermsFromNodes(thisTreeNode.getChildAt(i), thisTerm, domainModel, component);
 		}
+	}
+	
+	private RelationType getRelation(TreeNode treeNode, JTree component) {
+		if(treeNode.getChildCount() == 0)
+			return RelationType.AND;
+		
+		boolean hasOnlyLeafs = true;
+		
+		for(int i = 0; i < treeNode.getChildCount(); i++) {
+			TreeNode tn = treeNode.getChildAt(i);
+			if(tn.getChildCount() != 0) 
+				hasOnlyLeafs = false;
+		}
+		
+		if(hasOnlyLeafs) {
+			return getRelationForSelectionMode(component);
+		}
+		return RelationType.AND;
+	}
+	
+	private RelationType getRelationForSelectionMode(JTree component) {
+		int selMode = component.getSelectionModel().getSelectionMode();
+		
+		if(selMode == TreeSelectionModel.SINGLE_TREE_SELECTION) {
+			return RelationType.MUTUALLY_EXCLUSIVE;
+		} else return RelationType.MUTUALLY_NOT_EXCLUSIVE;
 	}
 	
 	@Override
