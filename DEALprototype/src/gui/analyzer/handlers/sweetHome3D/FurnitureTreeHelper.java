@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeSelectionModel;
 
 public class FurnitureTreeHelper extends DomainIdentifiable<JTree> {
 
@@ -127,7 +128,17 @@ public class FurnitureTreeHelper extends DomainIdentifiable<JTree> {
 	public Term createTermForCategory(String name, DomainModel domainModel, JTree component) {
 		Term t = super.createTerm(component, domainModel);
 		t.setName(name);
+		t.setRelation(getRelationForSelectionMode(component));
+		
 		return t;
+	}
+	
+	protected RelationType getRelationForSelectionMode(JTree component) {
+		int selMode = component.getSelectionModel().getSelectionMode();
+		
+		if(selMode == TreeSelectionModel.SINGLE_TREE_SELECTION) {
+			return RelationType.MUTUALLY_EXCLUSIVE;
+		} else return RelationType.MUTUALLY_NOT_EXCLUSIVE;
 	}
 	
 	private List<?> getFurnitureList(Object furnitureCategoryObject) {
