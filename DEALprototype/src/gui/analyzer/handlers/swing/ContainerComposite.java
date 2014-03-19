@@ -7,10 +7,7 @@ import gui.model.domain.ComponentInfoType;
 import java.awt.Container;
 
 import javax.swing.Icon;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 /**
@@ -28,16 +25,6 @@ public class ContainerComposite extends DomainIdentifiable<Container> implements
 
 	@Override
 	public String getDomainIdentifier(Container component) {
-		if(component instanceof JPanel) {
-			JPanel jp = (JPanel) component;
-			Border border = jp.getBorder();
-			if(border != null && border instanceof TitledBorder) {
-				TitledBorder tb = (TitledBorder) border;
-				String title = tb.getTitle();
-				return title;
-			}
-		}
-		
 		return null;
 	}
 
