@@ -17,7 +17,7 @@ public class Main {
 		String url = dialog.getValidatedText();
 		
 		if(url != null) {
-			if (url.contains("http://")) {
+			if (url.contains("http://") || url.contains("https://")) {
 				HtmlAnalyzer wpa = new HtmlAnalyzer(url);
 				wpa.analyze();
 			} else {

@@ -9,13 +9,14 @@ import org.apache.commons.io.FilenameUtils;
 
 @SuppressWarnings("serial")
 public class DealFileChooser extends JFileChooser {
-	public static final String OPEN_XML_DIALOG_NAME = "Open Ranorex xml file";
+	public static final String OPEN_XML_DIALOG_NAME = "Open Ranorex file";
 	public static final String OPEN_DEAL_DIALOG_NAME = "Open existing DEAL file";
 	public static final String OWL_DIALOG_NAME = "Open OWL file";
 	
 	public static final String DEAL_FILE_EXT = "deal";
 	public static final String XML_FILE_EXT = "xml";
 	public static final String OWL_FILE_EXT = "owl";
+	public static final String RANOREX_FILE_EXT = "rxsnp";
 
 	public DealFileChooser() {
 		super();
@@ -29,13 +30,13 @@ public class DealFileChooser extends JFileChooser {
 		switch(type) {
 			case DEAL: setDealSettings();
 			case OWL: setOwlSettings();
-			case XML: setXmlSettings();
+			case RANOREX: setRanorexSettings();
 		}
 	}
 
-	private void setXmlSettings() {
+	private void setRanorexSettings() {
 		setAccessibleInfo(OPEN_XML_DIALOG_NAME);
-		XmlFileFilter filter = new XmlFileFilter();
+		RanorexFileFilter filter = new RanorexFileFilter();
 		setFileFilter(filter);
 	}
 
@@ -57,17 +58,19 @@ public class DealFileChooser extends JFileChooser {
 		setDialogTitle(name);
 	}
 
-	private class XmlFileFilter extends FileFilter {
+	private class RanorexFileFilter extends FileFilter {
 		@Override
 		public boolean accept(File f) {
+			String extension = FilenameUtils.getExtension(f.getPath());
 			return f.isDirectory()
-					|| FilenameUtils.getExtension(f.getPath())
-					.equalsIgnoreCase(XML_FILE_EXT);
+					|| extension
+					.equalsIgnoreCase(XML_FILE_EXT)
+					|| extension.equalsIgnoreCase(RANOREX_FILE_EXT);
 		}
 
 		@Override
 		public String getDescription() {
-			return "XML files *." + XML_FILE_EXT;
+			return "RANOREX files *." + XML_FILE_EXT + ", *." + RANOREX_FILE_EXT;
 		}
 	}
 
@@ -103,6 +106,6 @@ public class DealFileChooser extends JFileChooser {
 	}
 	
 	public enum DealFileChooserType {
-		OWL, XML, DEAL;
+		OWL, DEAL, RANOREX;
 	}
 }
