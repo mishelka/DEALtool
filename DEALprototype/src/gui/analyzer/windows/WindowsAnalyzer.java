@@ -59,11 +59,14 @@ public class WindowsAnalyzer {
 		generator = new DomainModelGenerator(null, windowsExtractor);
 		dm = generator.createDomainModel(wps);
 		
+		Term root = dm.getRoot();
+		if(root != null) {
+			root.setName(dm.getName());
+		}
+		
 		return wps;
 	}
 	
-	//TODO: Peter implementovat parser pre XML, ktory vrati dom Document v baliku parser a tu ho pouzit
-	//parser pouzije filePath cestu k suboru, ktora je ulozena tu v tejto triede
 	private Document parseGUI() {
 		WindowsGUIParser winGuiParser = new WindowsGUIParser();
 	    Document document = winGuiParser.parse(filePath);
