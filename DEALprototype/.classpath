@@ -15,6 +15,7 @@
 	<classpathentry kind="lib" path="examples/SweetHome3D/SweetHome3D-4.1.jar"/>
 	<classpathentry kind="lib" path="examples/finanx-12c-0.1.2/finanx.jar"/>
 	<classpathentry kind="lib" path="examples/Calculator2.jar"/>
+	<classpathentry kind="lib" path="lib/jtidy-r938.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7"/>
 	<classpathentry kind="lib" path="lib/yajco/beaver.jar"/>
 	<classpathentry kind="lib" path="lib/yajco/jalopy.jar"/>
