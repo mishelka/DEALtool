@@ -61,7 +61,7 @@ public class HtmlGUIParser {
 			uc.connect();
 	        
 			//prejdenie dokumentu parserom
-	        //doc = tidy.parseDOM(uc.getInputStream(), System.out);
+	        //doc = tidy.parseDOM(uc.getInputStream(), System.out); -> System out znamena, ze ten vysledok len napise do vystupu. Neviem ci to nebude treba spravit tak ako Peter, ze vysledok zapisat do suboru a potom ten vysledny subor parsovat. Poradte sa s nim
 			doc = tidy.parseDOM(uc.getInputStream(), null);
 			doc.normalizeDocument();
 			
