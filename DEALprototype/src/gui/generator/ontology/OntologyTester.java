@@ -1,25 +1,21 @@
 package gui.generator.ontology;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import gui.model.application.scenes.Scene;
+import gui.editor.DomainModelEditor;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 import gui.model.domain.relation.RelationType;
-import gui.editor.DomainModelEditor;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLDataProperty;
 
 public class OntologyTester {
 	
@@ -40,7 +36,7 @@ public class OntologyTester {
 		Runnable task = new Runnable() {
 			@Override 
 			public void run() {
-				performTest(DomainModelEditor.getDomainModels());
+				performTest(DomainModelEditor.getInstance().getDomainModels());
 			}	
 		};
 		

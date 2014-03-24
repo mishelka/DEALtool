@@ -30,7 +30,7 @@ public class DuplicateSceneDetector {
 	 */
 	public Scene<?> detect(Window window, DomainModel windowDomainModel) {
 		if(windowDomainModel == null) return null;
-		for (DomainModel dm : DomainModelEditor.getDomainModels()) {
+		for (DomainModel dm : DomainModelEditor.getInstance().getDomainModels()) {
 			if(dm != null && dm.getScene() != null && dm.getScene().getSceneContainer() != null) {
 				if (dm.getScene().getSceneContainer() instanceof Window) {
 					//if the window and the scene container are same instances, return the scene

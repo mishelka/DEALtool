@@ -315,11 +315,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 		return componentJTree;
 	}
 
-	public static Application getApplication() {
+	public Application getApplication() {
 		return application;
 	}
 
-	public static List<DomainModel> getDomainModels() {
+	public List<DomainModel> getDomainModels() {
 		return application.getDomainModels();
 	}
 	
@@ -1520,7 +1520,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		if (saveFile!=null) {
 			if (!FilenameUtils.getExtension(saveFile.getName()).equalsIgnoreCase(DealFileChooser.OWL_FILE_EXT))
 				saveFile = new File(saveFile.getAbsolutePath()+"." + DealFileChooser.OWL_FILE_EXT);
-			OntologyTester.generateOntology(DomainModelEditor.getDomainModels(), saveFile);
+			OntologyTester.generateOntology(DomainModelEditor.getInstance().getDomainModels(), saveFile);
 			invokeOpenDir(saveFile.getParent());
 		}
 	}
@@ -1716,7 +1716,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 									&& f.getComponent().equals(object))) {
 								return node.getPath();
 							}
-						} else if (node.getUserObject().equals(object)) {
+						} else if (node.getUserObject() != null && node.getUserObject().equals(object)) {
 							return node.getPath();
 						}
 					}

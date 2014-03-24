@@ -30,6 +30,7 @@ public class HtmlButtonHandler extends AbstractHtmlHandler {
 		if (element.hasAttribute(VALUE_ATTR_NAME)) {
 			value = element.getAttribute(VALUE_ATTR_NAME);
 		}
+		System.out.println(element);
 		
 		//get text content of the node
 		if(Util.isEmpty(value)) {
@@ -64,7 +65,9 @@ public class HtmlButtonHandler extends AbstractHtmlHandler {
 	@Override
 	public boolean matches(Element element) {
 		if(element == null) return false;
-		return isButton(element) || isSubmit(element);
+		boolean matches = isButton(element) || isSubmit(element);
+		System.out.println(matches);
+		return matches;
 	}
 	
 	//<button type="button">Click Me!</button>

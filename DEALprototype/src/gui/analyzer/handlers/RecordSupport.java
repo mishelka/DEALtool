@@ -67,7 +67,7 @@ public abstract class RecordSupport<T> implements RecordSupportRegister<T> {
 	}
 
 	protected Term getTermForComponent(Component component) {
-		Collection<DomainModel> domainModels = DomainModelEditor
+		Collection<DomainModel> domainModels = DomainModelEditor.getInstance()
 				.getDomainModels();
 		
 		Term term = null;
@@ -83,7 +83,7 @@ public abstract class RecordSupport<T> implements RecordSupportRegister<T> {
 	}
 
 	protected Scene<?> getSceneForComponent(T component) {
-		List<Scene<?>> scenes = DomainModelEditor.getApplication().getScenes();
+		List<Scene<?>> scenes = DomainModelEditor.getInstance().getApplication().getScenes();
 
 		Scene<?> scene = ComponentFinder.getInstance()
 				.getSceneContainingComponent(scenes, component);
