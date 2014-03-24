@@ -188,7 +188,7 @@ public class YajcoGenerator {
 		String languageName = model.getName();
 		
 		if(languageName == null) {
-			languageName = "DealLanguage" + DomainModelEditor.getDomainModels().indexOf(model);
+			languageName = "DealLanguage" + DomainModelEditor.getInstance().getDomainModels().indexOf(model);
 		}
 		
 		Logger.logError(languageName);

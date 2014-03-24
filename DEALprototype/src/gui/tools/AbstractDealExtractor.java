@@ -55,12 +55,12 @@ public abstract class AbstractDealExtractor {
 			this.sceneName = scene.getName();
 			this.domainModel = scene.getDomainModel();
 		} else
-			throw new ExtractionException("scene must not be null");
+			throw new ExtractionException("Scene must not be null");
 
 		if (domainModel != null) {
 			this.rootTerm = domainModel.getRoot();
 		} else
-			throw new ExtractionException("domainModel must not be null");
+			throw new ExtractionException("DomainModel must not be null");
 
 		eXTRACT();
 

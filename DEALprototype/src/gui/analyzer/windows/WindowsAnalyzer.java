@@ -1,6 +1,5 @@
 package gui.analyzer.windows;
 
-import gui.analyzer.util.Logger;
 import gui.analyzer.windows.handlers.AbstractWindowsHandler;
 import gui.analyzer.windows.handlers.WindowsHandlers;
 import gui.analyzer.windows.parser.WindowsGUIParser;
@@ -30,18 +29,10 @@ public class WindowsAnalyzer {
 		application.addObserver(editor);
 	}
 	
-	public void analyze() {
+	public void analyze() throws ExtractionException {
 		Document document = parseGUI();
-		
-		try {
-			WindowsScene wps = generateScene(document.getDocumentElement());
-			
-			application.addScene(wps);
-			
-		} catch (ExtractionException e) {
-			Logger.logError("Extraction unsuccessful");
-			e.printStackTrace();
-		}		
+		WindowsScene wps = generateScene(document.getDocumentElement());
+		application.addScene(wps);
 	}
 	
 	private WindowsScene generateScene(Element document) throws ExtractionException {		
