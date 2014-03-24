@@ -464,8 +464,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	}
 	
 	private void browseButtonActionPerformed(ActionEvent evt) {
-		DealFileChooser chooser = new DealFileChooser("Record");
-		chooser.setSettingsFor(DealFileChooserType.DEAL);
+		DealFileChooser chooser = new DealFileChooser("Record", DealFileChooserType.DEAL);
 		int returnVal = chooser.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File f = chooser.getSelectedFile();
@@ -1504,15 +1503,18 @@ public class DomainModelEditor extends JFrame implements Observer {
 		return language;
 	}
 
-	//TODO: treba ontologie ukladat do tohto adresara v buducnosti, netreba nam tym padom ziadny JFileChooser.
-	//TODO: tuto premennu presunut do OntologyHelper a OntologyHelper premenovat na OntologyGenerator
-	public static final String OWL_DIR = "src" + File.separatorChar + "owl";
+	public static final String OWL_DIR = "owl";
 	
 	private void generateOntologyFromDomainModelItemActionPerformed(java.awt.event.ActionEvent evt) {
 		File saveFile = null;
-		DealFileChooser fc = new DealFileChooser();
-		fc.setSettingsFor(DealFileChooserType.OWL);
+		File owlDir = new File(OWL_DIR);
+		if(!owlDir.exists()) {
+			owlDir.mkdir();
+		}
+		DealFileChooser fc = new DealFileChooser(DealFileChooserType.OWL);
+		fc.setCurrentDirectory(owlDir);
 		int dialogValue = fc.showSaveDialog(this.getContentPane());
+		
 		if (dialogValue == JFileChooser.APPROVE_OPTION) {
 			saveFile = fc.getSelectedFile();
 		}
