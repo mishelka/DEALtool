@@ -1,5 +1,6 @@
 package gui.analyzer.aspects;
 
+import gui.analyzer.Main;
 import gui.editor.DealFileChooser;
 import gui.editor.DomainModelEditor;
 import gui.editor.FindDialog;
@@ -133,8 +134,9 @@ public privileged aspect ModelGeneratorAspect {
 		if(w instanceof Dialog) {
 			Dialog d = (Dialog) w;
 			isJFCH = DealFileChooser.OWL_DIALOG_NAME.equals(d.getTitle());
-			isJFCH = isJFCH || (DealFileChooser.OPEN_XML_DIALOG_NAME.equals(d.getTitle()));
-			isJFCH = isJFCH || (DealFileChooser.OPEN_DEAL_DIALOG_NAME.equals(d.getTitle()));
+			isJFCH |= (DealFileChooser.OPEN_XML_DIALOG_NAME.equals(d.getTitle()));
+			isJFCH |= (DealFileChooser.OPEN_DEAL_DIALOG_NAME.equals(d.getTitle()));
+			isJFCH |= Main.DEAL_UNSUCCESSFUL.equals(d.getTitle());
 		}
 		
 		return ((w instanceof DomainModelEditor)

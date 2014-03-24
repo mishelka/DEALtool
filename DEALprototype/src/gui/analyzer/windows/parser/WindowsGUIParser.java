@@ -1,7 +1,8 @@
 package gui.analyzer.windows.parser;
 
+import gui.tools.exception.ParsingException;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -26,7 +27,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * @author Pinko
@@ -37,7 +37,7 @@ public class WindowsGUIParser {
     private Document newDoc;
     private String filePath;
     
-    public Document parse(String filePath) {
+    public Document parse(String filePath) throws ParsingException {
     	this.filePath = filePath;
         doc = loadXMLFile();
         Node root = getAppRoot(doc);
@@ -85,38 +85,38 @@ public class WindowsGUIParser {
      * loads an XML file into a DOM object without making any changes
      *
      */
-    public Document loadXMLFile() {
-        try {
+    @SuppressWarnings("unused")
+	public Document loadXMLFile() throws ParsingException {
+        Document doc;
+    	try {
             File fXmlFile = new File(filePath);
+            if(fXmlFile == null) {
+            	throw new ParsingException("No such file found.");
+            }
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-            return doc;
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(WindowsGUIParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(WindowsGUIParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(WindowsGUIParser.class.getName()).log(Level.SEVERE, null, ex);
+            doc = dBuilder.parse(fXmlFile);
+        } catch (Exception ex) {
+            throw new ParsingException(ex.getMessage());
         }
-        return null;
+        return doc;
     }
 
     /**
      * creates a new Document that starts with application GUI root
      */
-    public Document createNewDocument(Node root) {
-        try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.newDocument();
-            Node newNode = doc.importNode(root, true);
-            doc.appendChild(newNode);
-            return doc;
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(WindowsGUIParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+    public Document createNewDocument(Node root) throws ParsingException {
+    	Document doc;
+    	try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			doc = dBuilder.newDocument();
+			Node newNode = doc.importNode(root, true);
+			doc.appendChild(newNode);
+    	} catch (ParserConfigurationException ex) {
+    		throw new ParsingException(ex.getMessage());
+    	}
+		return doc;	
     }
 
     /**
