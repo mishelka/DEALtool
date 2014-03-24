@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 public class Main {
 	public static boolean ASPECTJ_MODE = true;
+	public static final String DEAL_UNSUCCESSFUL = "DEAL analysis unsuccessful";
 	
 	public Main() {
 		ASPECTJ_MODE = false;
@@ -27,9 +28,9 @@ public class Main {
 				tryParse(url);
 				success = true;
 			} catch (ParsingException e) {
-				JOptionPane.showMessageDialog(DomainModelEditor.getInstance(), "Parsing error, " + e.getMessage());
+				JOptionPane.showMessageDialog(DomainModelEditor.getInstance(), "Parsing error, " + e.getMessage(), DEAL_UNSUCCESSFUL, JOptionPane.ERROR_MESSAGE);
 			} catch (ExtractionException e) {
-				JOptionPane.showMessageDialog(DomainModelEditor.getInstance(), "Extraction error, " + e.getMessage());
+				JOptionPane.showMessageDialog(DomainModelEditor.getInstance(), "Extraction error, " + e.getMessage(), DEAL_UNSUCCESSFUL, JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

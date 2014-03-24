@@ -11,6 +11,7 @@ import gui.model.domain.Term;
 import gui.tools.DomainModelGenerator;
 import gui.tools.WindowsExtractor;
 import gui.tools.exception.ExtractionException;
+import gui.tools.exception.ParsingException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -29,7 +30,7 @@ public class WindowsAnalyzer {
 		application.addObserver(editor);
 	}
 	
-	public void analyze() throws ExtractionException {
+	public void analyze() throws ExtractionException, ParsingException {
 		Document document = parseGUI();
 		WindowsScene wps = generateScene(document.getDocumentElement());
 		application.addScene(wps);
@@ -58,7 +59,7 @@ public class WindowsAnalyzer {
 		return wps;
 	}
 	
-	private Document parseGUI() {
+	private Document parseGUI() throws ParsingException {
 		WindowsGUIParser winGuiParser = new WindowsGUIParser();
 	    Document document = winGuiParser.parse(filePath);
 	    return document;
