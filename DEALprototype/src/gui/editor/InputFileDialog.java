@@ -113,8 +113,7 @@ public class InputFileDialog extends JDialog {
 	private final String RANOREX_XML_PATH = "examples" + File.separator + "windowsGUIs";
 	
 	private void browseButtonActionPerformed(ActionEvent evt) {
-		DealFileChooser chooser = new DealFileChooser(RANOREX_XML_PATH);
-		chooser.setSettingsFor(DealFileChooserType.RANOREX);
+		DealFileChooser chooser = new DealFileChooser(RANOREX_XML_PATH, DealFileChooserType.RANOREX);
 		int returnVal = chooser.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File f = chooser.getSelectedFile();

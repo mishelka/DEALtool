@@ -11,26 +11,28 @@ import org.apache.commons.io.FilenameUtils;
 public class DealFileChooser extends JFileChooser {
 	public static final String OPEN_XML_DIALOG_NAME = "Open Ranorex file";
 	public static final String OPEN_DEAL_DIALOG_NAME = "Open existing DEAL file";
-	public static final String OWL_DIALOG_NAME = "Open OWL file";
+	public static final String OWL_DIALOG_NAME = "Enter the name of the OWL file";
 	
 	public static final String DEAL_FILE_EXT = "deal";
 	public static final String XML_FILE_EXT = "xml";
 	public static final String OWL_FILE_EXT = "owl";
 	public static final String RANOREX_FILE_EXT = "rxsnp";
 
-	public DealFileChooser() {
+	public DealFileChooser(DealFileChooserType type) {
 		super();
+		this.setSettingsFor(type);
 	}
 	
-	public DealFileChooser(String filePath) {
+	public DealFileChooser(String filePath, DealFileChooserType type) {
 		super(filePath);
+		this.setSettingsFor(type);
 	}
 	
-	public void setSettingsFor(DealFileChooserType type) {
+	private void setSettingsFor(DealFileChooserType type) {
 		switch(type) {
-			case DEAL: setDealSettings();
-			case OWL: setOwlSettings();
-			case RANOREX: setRanorexSettings();
+			case DEAL: setDealSettings(); break;
+			case OWL: setOwlSettings(); break;
+			case RANOREX: setRanorexSettings(); break;
 		}
 	}
 
@@ -48,7 +50,7 @@ public class DealFileChooser extends JFileChooser {
 
 	private void setOwlSettings() {
 		setAccessibleInfo(OWL_DIALOG_NAME);
-		setAcceptAllFileFilterUsed(false);
+		//setAcceptAllFileFilterUsed(false);
 		OwlFileFilter filter = new OwlFileFilter();
 		setFileFilter(filter);
 	}
