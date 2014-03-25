@@ -10,18 +10,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/*
- * <element capabilities="accessible" enabled="True" hasfocus="True"
- * index="4" role="menuitem" visible="False">
- * 
- * <attribute name="text" type="System.String"> Save copy as... </attribute>
- * 
- * 
- * 
- * 
- * <children/> </element>
- */
-public class WindowsMenuItemHandler extends AbstractWindowsHandler {
+
+public class WindowsMenuBarHandler extends AbstractWindowsHandler {
 
 	@Override
 	/**
@@ -40,7 +30,6 @@ public class WindowsMenuItemHandler extends AbstractWindowsHandler {
 				if(!Util.isEmpty(attr) && attr.equals("text")) {
 					value = e.getTextContent();
 					if(!Util.isEmpty(value)) value = value.trim();
-					System.out.println(value);
 				}
 			}
 		}
@@ -83,24 +72,24 @@ public class WindowsMenuItemHandler extends AbstractWindowsHandler {
 	 */
 	@Override
 	public ComponentInfoType getComponentInfoType(Element element) {
-		return ComponentInfoType.FUNCTIONAL;
+		return ComponentInfoType.CONTAINERS;
 	}
 
 	/**
-	 * vrati true ak je to menuitem, false ak nie je
+	 * vrati true ak je to menu bar, false ak nie je
 	 */
 	@Override
 	public boolean matches(Element element) {
 		if(element == null) return false;
-		return isMenuItem(element);
+		return isMenuBar(element);
 	}
 
-	private boolean isMenuItem(Element element) {
+	private boolean isMenuBar(Element element) {
 		String elemName = element.getNodeName();
 		if(elemName.equals("element")) {
 			String roleAttr = element.getAttribute("role");
 			if (roleAttr != null) {
-				if (roleAttr.equalsIgnoreCase("menuitem") && !isSeparator(element)) {
+				if (roleAttr.equalsIgnoreCase("text")) {
 					return true;
 				}
 			}
@@ -109,36 +98,16 @@ public class WindowsMenuItemHandler extends AbstractWindowsHandler {
 		return false;
 	}
 	
-	private boolean isSeparator(Element element) {
-		String value = null;
-		
-		NodeList nl = element.getElementsByTagName("attribute");
-		for(int i = 0; i < nl.getLength(); i++) {
-			Node n = nl.item(i);
-			if(n instanceof Element) {
-				Element e = (Element) n;
-				
-				String attr = e.getAttribute("name");
-				if(!Util.isEmpty(attr) && attr.equals("text")) {
-					value = e.getTextContent().trim();
-					if (value.equals("-"))
-						return true;
-			}
-		}
-		}
-		return false;
-	}
-	
 	/*************** Singleton pattern *************/
-	private static WindowsMenuItemHandler instance;
+	private static WindowsMenuBarHandler instance;
 	
-	public static WindowsMenuItemHandler getInstance() {
+	public static WindowsMenuBarHandler getInstance() {
 		if(instance == null) {
-			instance  = new WindowsMenuItemHandler();
+			instance  = new WindowsMenuBarHandler();
 		}
-		return (WindowsMenuItemHandler) instance;
+		return (WindowsMenuBarHandler) instance;
 	}
 	
-	private WindowsMenuItemHandler() {}
+	private WindowsMenuBarHandler() {}
 	/*********** End singleton pattern ************/
 }
