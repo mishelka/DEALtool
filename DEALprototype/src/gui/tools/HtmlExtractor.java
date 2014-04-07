@@ -5,6 +5,8 @@ import gui.analyzer.html.handlers.HtmlHandlers;
 import gui.model.domain.Term;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class HtmlExtractor extends AbstractDealExtractor {
 
@@ -20,11 +22,14 @@ public class HtmlExtractor extends AbstractDealExtractor {
 		Term thisTerm = handler.createTerm(thisElement, domainModel);
 		parentTerm.addChild(thisTerm);
 
-		//TODO: Valika doplnit
-		/*
-		 * for(each child of thisElement) {
-		 *    extractSubelement(child, thisTerm);
-		 *}
-		*/
+		NodeList nl = thisElement.getChildNodes();
+		for(int i = 0; i < nl.getLength(); i++) {
+			Node node = nl.item(i);
+			if(node instanceof Element) {
+				Element e = (Element) node;
+				extractSubelement(e, thisTerm);
+			}
+		}
+		
 	}
 }
