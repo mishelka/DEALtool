@@ -3,6 +3,7 @@ package gui.analyzer.windows.parser;
 import gui.tools.exception.ParsingException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -177,8 +178,8 @@ public class WindowsGUIParser {
     public void removeAllUnnecessaryElements() {
         ArrayList<String> neededElements = new ArrayList<String>();
         ArrayList<Element> elementsToDelete = new ArrayList<Element>();
-        Collections.addAll(neededElements, "snapshot", "appicon", "AccessibleDescription", "AccessibleKeyboardShortcut",
-                "AccessibleName", "AccessibleRole", "AccessibleState", "text", "class",
+        Collections.addAll(neededElements, "snapshot", "appicon", "accessibledescription", "accessiblekeyboardshortcut",
+                "accessiblename", "accessiblerole", "accessiblestate", "text", "class",
                 "index", "title");
 
         NodeList elementList = newDoc.getElementsByTagName("attribute");
@@ -211,14 +212,19 @@ public class WindowsGUIParser {
         try {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "no");
-            Result output = new StreamResult(new File("/windows/temp/output.xml"));
+            File outputFile = new File("temp/output.xml");
+            outputFile.mkdirs();
+            outputFile.createNewFile();
+            Result output = new StreamResult(outputFile);
             Source input = new DOMSource(newDoc);
             transformer.transform(input, output);
         } catch (TransformerConfigurationException ex) {
             Logger.getLogger(WindowsGUIParser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerException ex) {
             Logger.getLogger(WindowsGUIParser.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        } catch (IOException ex) {
+        	Logger.getLogger(WindowsGUIParser.class.getName()).log(Level.SEVERE, null, ex);
+		} 
 
     }
 

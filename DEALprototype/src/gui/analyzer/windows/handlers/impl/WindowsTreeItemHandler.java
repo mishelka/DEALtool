@@ -11,7 +11,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-public class WindowsLabelHandler extends AbstractWindowsHandler {
+public class WindowsTreeItemHandler extends AbstractWindowsHandler {
 
 	@Override
 	/**
@@ -20,16 +20,37 @@ public class WindowsLabelHandler extends AbstractWindowsHandler {
 	public String getDomainIdentifier(Element element) {
 		String value = null;
 		
-		NodeList nl = element.getElementsByTagName("attribute");
+		/*tu bol problem, nemoze sa v tomto pripade vyberat cez
+		 * getElementsByTagName(...) pretoze tento nod obsahuje
+		 * dalsie podelementy s tym istym tag name. Preto potom v cykle
+		 * to prechadzalo aj podelementy a pridavalo to aj to, co nemalo
+		 * (teda nazvy z dcerskych elementov). Posledny nazov ostal vzdy vo value
+		 * teda bol to nazov nejakeho dcerskeho elementu. Preto to nesedelo.
+		 * Ak robite nejaky item ktory moze obsahovat elementy s tym
+		 * istym nazvom, tak je to lepsie robit cez getChildNodes
+		 * alebo pomocou XPath.
+		 * Na to je tu trieda XPathHelper - Valika s nim robila, vysvetli
+		 * Vam ako na to, je to jednoduche.
+		 * Cez XPath viete nastavit presnu cestu k elementu/atributu
+		 * co je vyhodnejsie pretoze to nehlada potom v podelementoch.
+		 * Ak je to nieco take ako Button, tak nemame problem lebo v nom
+		 * uz nic nebude, ale ak je to vnoreny element napr. v tabe, tak
+		 * to je problem.
+		 * Prejdite si este raz vsetky handlery a zistite ci niekde nie je rovnaky
+		 * problem (alebo moznost rovnakeho problemu) a ak ano, tak tam nastavte
+		 * staticky cestu cez XPath alebo pouzite getChildNodes().  
+		*/
+		NodeList nl = element.getChildNodes();
 		for(int i = 0; i < nl.getLength(); i++) {
 			Node n = nl.item(i);
-			if(n instanceof Element) {
+			if(n.getNodeName().equals("attribute") && n instanceof Element) {
 				Element e = (Element) n;
 				
 				String attr = e.getAttribute("name");
 				if(!Util.isEmpty(attr) && attr.equals("text")) {
 					value = e.getTextContent();
 					if(!Util.isEmpty(value)) value = value.trim();
+					System.out.println(">> this should be: " + value);
 				}
 			}
 		}
@@ -44,10 +65,10 @@ public class WindowsLabelHandler extends AbstractWindowsHandler {
 	public String getDomainDescriptor(Element element) {
 		String value = null;
 		
-		NodeList nl = element.getElementsByTagName("attribute");
+		NodeList nl = element.getChildNodes();
 		for(int i = 0; i < nl.getLength(); i++) {
 			Node n = nl.item(i);
-			if(n instanceof Element) {
+			if(n.getNodeName().equals("attribute") && n instanceof Element) {
 				Element e = (Element) n;
 				
 				String attr = e.getAttribute("name");
@@ -72,24 +93,24 @@ public class WindowsLabelHandler extends AbstractWindowsHandler {
 	 */
 	@Override
 	public ComponentInfoType getComponentInfoType(Element element) {
-		return ComponentInfoType.DESCRIPTIVE;
+		return ComponentInfoType.LOGICALLY_GROUPING;
 	}
 
 	/**
-	 * vrati true ak je to label, false ak nie je
+	 * vrati true ak je to treeitem, false ak nie je
 	 */
 	@Override
 	public boolean matches(Element element) {
 		if(element == null) return false;
-		return isLabel(element);
+		return isTreeItem(element);
 	}
 
-	private boolean isLabel(Element element) {
+	private boolean isTreeItem(Element element) {
 		String elemName = element.getNodeName();
 		if(elemName.equals("element")) {
 			String roleAttr = element.getAttribute("role");
 			if (roleAttr != null) {
-				if (roleAttr.equalsIgnoreCase("label")) {
+				if (roleAttr.equalsIgnoreCase("treeitem")) {
 					return true;
 				}
 			}
@@ -99,15 +120,15 @@ public class WindowsLabelHandler extends AbstractWindowsHandler {
 	}
 	
 	/*************** Singleton pattern *************/
-	private static WindowsLabelHandler instance;
+	private static WindowsTreeItemHandler instance;
 	
-	public static WindowsLabelHandler getInstance() {
+	public static WindowsTreeItemHandler getInstance() {
 		if(instance == null) {
-			instance  = new WindowsLabelHandler();
+			instance  = new WindowsTreeItemHandler();
 		}
-		return (WindowsLabelHandler) instance;
+		return (WindowsTreeItemHandler) instance;
 	}
 	
-	private WindowsLabelHandler() {}
+	private WindowsTreeItemHandler() {}
 	/*********** End singleton pattern ************/
 }

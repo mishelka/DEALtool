@@ -89,7 +89,7 @@ public class WindowsRadioButtonHandler extends AbstractWindowsHandler {
 		if(elemName.equals("element")) {
 			String roleAttr = element.getAttribute("role");
 			if (roleAttr != null) {
-				if (roleAttr.equalsIgnoreCase("text")) {
+				if (roleAttr.equalsIgnoreCase("radiobutton")) {
 					return true;
 				}
 			}

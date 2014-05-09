@@ -11,7 +11,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-public class WindowsLabelHandler extends AbstractWindowsHandler {
+
+public class WindowsTabPageHandler extends AbstractWindowsHandler {
 
 	@Override
 	/**
@@ -72,24 +73,24 @@ public class WindowsLabelHandler extends AbstractWindowsHandler {
 	 */
 	@Override
 	public ComponentInfoType getComponentInfoType(Element element) {
-		return ComponentInfoType.DESCRIPTIVE;
+		return ComponentInfoType.CONTAINERS;
 	}
 
 	/**
-	 * vrati true ak je to label, false ak nie je
+	 * vrati true ak je to text, false ak nie je
 	 */
 	@Override
 	public boolean matches(Element element) {
 		if(element == null) return false;
-		return isLabel(element);
+		return isTabPage(element);
 	}
 
-	private boolean isLabel(Element element) {
+	private boolean isTabPage(Element element) {
 		String elemName = element.getNodeName();
 		if(elemName.equals("element")) {
 			String roleAttr = element.getAttribute("role");
 			if (roleAttr != null) {
-				if (roleAttr.equalsIgnoreCase("label")) {
+				if (roleAttr.equalsIgnoreCase("tabpagelist")) {
 					return true;
 				}
 			}
@@ -99,15 +100,15 @@ public class WindowsLabelHandler extends AbstractWindowsHandler {
 	}
 	
 	/*************** Singleton pattern *************/
-	private static WindowsLabelHandler instance;
+	private static WindowsTabPageHandler instance;
 	
-	public static WindowsLabelHandler getInstance() {
+	public static WindowsTabPageHandler getInstance() {
 		if(instance == null) {
-			instance  = new WindowsLabelHandler();
+			instance  = new WindowsTabPageHandler();
 		}
-		return (WindowsLabelHandler) instance;
+		return (WindowsTabPageHandler) instance;
 	}
 	
-	private WindowsLabelHandler() {}
+	private WindowsTabPageHandler() {}
 	/*********** End singleton pattern ************/
 }

@@ -36,21 +36,25 @@ public class WindowsAnalyzer {
 		application.addScene(wps);
 	}
 	
-	private WindowsScene generateScene(Element document) throws ExtractionException {		
+	private WindowsScene generateScene(Element document) throws ExtractionException {
+		//create new windows scene with the document title and a new domain model
 		WindowsScene wps = new WindowsScene(document);
 		String documentTitle = wps.getName();
 		DomainModel dm = new DomainModel(documentTitle);
 		wps.setDomainModel(dm);
 		
+		//get a handler for the root element to create the root term with the app name
 		AbstractWindowsHandler handler = WindowsHandlers.getInstance().getWindowsHandler(document);
 		Term t = handler.createTerm(document, dm);
-		
+
 		dm.replaceRoot(t);
 		
+		//extract information from the document into the domain model
 		WindowsExtractor windowsExtractor = new WindowsExtractor();
 		generator = new DomainModelGenerator(null, windowsExtractor);
 		dm = generator.createDomainModel(wps);
 		
+		//set app name to the root element
 		Term root = dm.getRoot();
 		if(root != null) {
 			root.setName(dm.getName());
