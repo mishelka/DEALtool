@@ -1263,32 +1263,9 @@ public class DomainModelEditor extends JFrame implements Observer {
 		visualizationPanel = new VisualizationPanel();
 		
 		rightJTabbedPane.addTab("", new VerticalTextIcon(" Visualisation ", false),
-				visualizationPanel, "Model");
-		rightJTabbedPane.addTab("", new VerticalTextIcon(" Model ", false),
-				modelSplitPane, "ComponentTree and TermTree");
-		
-//		rightJTabbedPane.addChangeListener(new ChangeListener() {
-//			
-//			@Override
-//			public void stateChanged(ChangeEvent e) {
-//				if(rightJTabbedPane.getSelectedIndex() == 1){
-//					visualizationPanel.initializeView(showInfoTypesCheckBox.isSelected());
-//				} else {
-//					//clear view
-//					visualizationPanel.removeAll();
-//				}
-//			}
-//		});
-
-//		editorTextArea.setColumns(20);
-//		editorTextArea.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
-//		editorTextArea.setRows(5);
-//		editorTextArea
-//				.setText("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n\t<domainModel>\n\t\t<struct>\n\t\t\t<and mandatory=\"true\" name=\"My Notepad\">\n\t\t\t\t<domain name=\"Cut daco\" description=\"This domain is for cutting something\"/>\n\t\t\t\t<domain name=\"Finder of Wizards\" description=\"This finds your favourite wizard\"/>\n\t\t\t\t<domain name=\"Undo step\" description=\"Returns back one step\"/>\n\t\t\t</and>\n\t\t</struct>\n\t</domainModel>");
-//		editorScrollPane.setViewportView(editorTextArea);
-
-//		rightJTabbedPane.addTab("", new VerticalTextIcon(" Editor ", false),
-//				editorScrollPane, "Editor");
+				visualizationPanel, "Model visualization");
+		rightJTabbedPane.addTab("", new VerticalTextIcon(" Trees ", false),
+				modelSplitPane, "Component tree and Term tree");
 
 		infoSplitPane.setRightComponent(rightJTabbedPane);
 		rightJTabbedPane.getAccessibleContext()
