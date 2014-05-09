@@ -10,6 +10,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/*
+ * komponenty: PropertyGrid, DomainUpDown(spinner), 
+ */
 
 public class WindowsContainerHandler extends AbstractWindowsHandler {
 

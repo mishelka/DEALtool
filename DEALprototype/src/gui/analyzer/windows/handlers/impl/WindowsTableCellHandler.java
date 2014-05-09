@@ -11,7 +11,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-public class WindowsLabelHandler extends AbstractWindowsHandler {
+
+public class WindowsTableCellHandler extends AbstractWindowsHandler {
 
 	@Override
 	/**
@@ -72,24 +73,24 @@ public class WindowsLabelHandler extends AbstractWindowsHandler {
 	 */
 	@Override
 	public ComponentInfoType getComponentInfoType(Element element) {
-		return ComponentInfoType.DESCRIPTIVE;
+		return ComponentInfoType.FUNCTIONAL;
 	}
 
 	/**
-	 * vrati true ak je to label, false ak nie je
+	 * vrati true ak je to text, false ak nie je
 	 */
 	@Override
 	public boolean matches(Element element) {
 		if(element == null) return false;
-		return isLabel(element);
+		return isTableCell(element);
 	}
 
-	private boolean isLabel(Element element) {
+	private boolean isTableCell(Element element) {
 		String elemName = element.getNodeName();
 		if(elemName.equals("element")) {
 			String roleAttr = element.getAttribute("role");
 			if (roleAttr != null) {
-				if (roleAttr.equalsIgnoreCase("label")) {
+				if (roleAttr.equalsIgnoreCase("text")) {
 					return true;
 				}
 			}
@@ -99,15 +100,15 @@ public class WindowsLabelHandler extends AbstractWindowsHandler {
 	}
 	
 	/*************** Singleton pattern *************/
-	private static WindowsLabelHandler instance;
+	private static WindowsTableCellHandler instance;
 	
-	public static WindowsLabelHandler getInstance() {
+	public static WindowsTableCellHandler getInstance() {
 		if(instance == null) {
-			instance  = new WindowsLabelHandler();
+			instance  = new WindowsTableCellHandler();
 		}
-		return (WindowsLabelHandler) instance;
+		return (WindowsTableCellHandler) instance;
 	}
 	
-	private WindowsLabelHandler() {}
+	private WindowsTableCellHandler() {}
 	/*********** End singleton pattern ************/
 }
