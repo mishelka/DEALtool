@@ -7,6 +7,7 @@ import gui.editor.tree.TreeCellRenderer;
 import gui.editor.tree.TreeModel;
 import gui.editor.tree.TreeNode;
 import gui.editor.visualization.events.Visualization;
+import gui.editor.visualization.graph.VisualizationPanel;
 import gui.generator.GeneratorException;
 import gui.generator.dsl.YajcoGenerator;
 import gui.generator.itask.ITaskGenerator;
@@ -117,7 +118,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		UIManager.put("TabbedPane.textIconGap", new Integer(-8));
 		initComponents();
 
-		this.setTitle("DEAL (Domain Extraction ALgorithm) tool prototype");
+		setTitle("DEAL (Domain Extraction ALgorithm) tool prototype");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(InputFileDialog.class.getResource("/gui/editor/resources/tree/model.png")));
 
 		ToolTipManager.sharedInstance().registerComponent(domainJTree);
@@ -126,6 +127,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 		expandAll(domainJTree, true);
 		
 		yajcoGenerator = new YajcoGenerator();
+		
+		//setSize(1080, 716);
 	}
 	
 	public void saveCurrentSetting() {
@@ -150,6 +153,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 			addDomainModel(appEvt.getSourceScene());
 
 			setupComponentTreeModel();
+			
+			updateVisualizationPanel();
 		} else {
 			// we're not testing remove/name_changed, because the
 			// setupDomainTreeModel and setupComponetnTreeModel() will be called
@@ -228,6 +233,10 @@ public class DomainModelEditor extends JFrame implements Observer {
 		componentScrollPane.setViewportView(componentJTree);
 
 		repaint();
+	}
+	
+	private void updateVisualizationPanel() {
+		visualizationPanel.update(showInfoTypesCheckBox.isSelected());
 	}
 
 	/**
@@ -442,6 +451,12 @@ public class DomainModelEditor extends JFrame implements Observer {
 		expandAll(componentJTree, true);
 		expandAll(domainJTree, true);
 	}
+	
+	private void updateVisualization() {
+		if(visualizationPanel != null && visualizationPanel.isInited()){
+			visualizationPanel.actionPerformedInfoTypeCheckBox(showInfoTypesCheckBox.isSelected());
+		}
+	}
 	//</editor-fold>
 
 	//<editor-fold defaultstate="collapsed" desc="Recorder stuff">
@@ -548,6 +563,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 		}
 
 		reloadTrees();
+		
+		updateVisualization();
 	}
 	//</editor-fold>
 
@@ -619,7 +636,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("DEAL");
-		setBounds(0, 0, 866, 716);
+		setBounds(0, 0, 1080, 716);
 		setMinimumSize(new java.awt.Dimension(600, 500));
 
 		infoSplitPane.setDividerLocation(250);
@@ -1243,10 +1260,25 @@ public class DomainModelEditor extends JFrame implements Observer {
 
 		modelSplitPane.setLeftComponent(componentTreePanel);
 
-		rightJTabbedPane.addTab("", new VerticalTextIcon(" Model ", false),
-				modelSplitPane, "Model");
+		visualizationPanel = new VisualizationPanel();
+		
 		rightJTabbedPane.addTab("", new VerticalTextIcon(" Visualisation ", false),
-				new JPanel(), "Visualisation");
+				visualizationPanel, "Model");
+		rightJTabbedPane.addTab("", new VerticalTextIcon(" Model ", false),
+				modelSplitPane, "ComponentTree and TermTree");
+		
+//		rightJTabbedPane.addChangeListener(new ChangeListener() {
+//			
+//			@Override
+//			public void stateChanged(ChangeEvent e) {
+//				if(rightJTabbedPane.getSelectedIndex() == 1){
+//					visualizationPanel.initializeView(showInfoTypesCheckBox.isSelected());
+//				} else {
+//					//clear view
+//					visualizationPanel.removeAll();
+//				}
+//			}
+//		});
 
 //		editorTextArea.setColumns(20);
 //		editorTextArea.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
@@ -1379,8 +1411,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 				javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE));
 		layout.setVerticalGroup(layout.createParallelGroup(
 				javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-				infoSplitPane, javax.swing.GroupLayout.Alignment.TRAILING));
-
+				infoSplitPane, javax.swing.GroupLayout.Alignment.TRAILING));		
 		pack();
 	}//</editor-fold>
 
@@ -1913,6 +1944,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private GridBagConstraints gridBagConstraints_10;
 	private javax.swing.JSeparator recordSeparator;
 	private javax.swing.ButtonGroup recordButtonGroup;
+	private VisualizationPanel visualizationPanel;	
 //</editor-fold>
 
 	//<editor-fold  defaultstate="collapsed" desc="Private classes: PopupMenu, PopClickListener, RecordingThread, DealFileFilter">
