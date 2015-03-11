@@ -1,7 +1,18 @@
 package gui.analyzer.html.handlers;
 
+
 import gui.analyzer.html.handlers.impl.HtmlButtonHandler;
+import gui.analyzer.html.handlers.impl.HtmlHeadlineHandler;
+import gui.analyzer.html.handlers.impl.HtmlImageHandler;
+import gui.analyzer.html.handlers.impl.HtmlInputHandler;
+import gui.analyzer.html.handlers.impl.HtmlLabelHandler;
+import gui.analyzer.html.handlers.impl.HtmlLinkHandler;
+import gui.analyzer.html.handlers.impl.HtmlListHandler;
+import gui.analyzer.html.handlers.impl.HtmlSelectHandler;
+import gui.analyzer.html.handlers.impl.HtmlTableCompHandler;
+import gui.analyzer.html.handlers.impl.HtmlTableHandler;
 import gui.analyzer.html.handlers.impl.HtmlTextComponentHandler;
+import gui.analyzer.html.handlers.impl.HtmlTextHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +25,21 @@ public class HtmlHandlers {
 	
 	private static HtmlHandlers instance;
 	
-	//TODO: Valika ak bude novy handler, tu doplnit
+	
 	public HtmlHandlers() {
 		htmlHandlers.add(HtmlButtonHandler.getInstance());
+		htmlHandlers.add(HtmlLinkHandler.getInstance());
+		htmlHandlers.add(HtmlTableHandler.getInstance());
 		htmlHandlers.add(HtmlTextComponentHandler.getInstance());
-		//TODO: add new handlers into the htmlHandlers list, otherwise they won't work
-		//htmlHandlers.add(...);
-		//htmlHandlers.add(...);
-		//htmlHandlers.add(...);
-		//...
+		htmlHandlers.add(HtmlSelectHandler.getInstance());
+		htmlHandlers.add(HtmlLabelHandler.getInstance());
+		htmlHandlers.add(HtmlHeadlineHandler.getInstance());
+		htmlHandlers.add(HtmlTextHandler.getInstance());
+		htmlHandlers.add(HtmlImageHandler.getInstance());
+		htmlHandlers.add(HtmlInputHandler.getInstance());
+		htmlHandlers.add(HtmlTableCompHandler.getInstance());
+		htmlHandlers.add(HtmlListHandler.getInstance());
+		
 	}
 	
 	public AbstractHtmlHandler getHtmlHandler(Element element) {

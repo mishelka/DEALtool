@@ -798,13 +798,6 @@ public class Term {
 	public boolean hasLabelForComponent() {
 		return labelForComponent != null;
 	}
-	
-	/**
-	 * @return true if this term has a reference to an application component, false otherwise
-	 */
-	public boolean hasComponent() {
-		return component != null;
-	}
 
 	/**
 	 * Each term is extracted from a component.
@@ -865,7 +858,7 @@ public class Term {
 	 */
 	public List<Term> getAllTerms(List<Term> list) {
 		list.add(this);
-		for (Term t : this.getChildren()) {
+		for (Term t : children) {
 			t.getAllTerms(list);
 		}
 		return list;
