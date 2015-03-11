@@ -272,6 +272,7 @@ public abstract class AbstractDealExtractor {
 					// move all children of label to the component
 					if (labelTerm.hasChildren())
 						componentTerm.addAll(labelTerm.getChildren());
+
 					// transfer name and description from label to component
 					if (!componentTerm.hasName())
 						componentTerm.setName(labelTerm.getName());
@@ -279,12 +280,6 @@ public abstract class AbstractDealExtractor {
 						componentTerm.setDescription(componentTerm.getLabelForComponent().getText());
 					if (!componentTerm.hasIcon())
 						componentTerm.setIcon(labelTerm.getIcon());
-					if (!componentTerm.hasComponent()) {
-						//toto je pre umelo pridane termy, ktore nemaju ziadnu referenciu na komponent, ale maju label for
-						componentTerm.setComponent(labelTerm.getComponent());
-						componentTerm.setComponentClass(labelTerm.getComponentClass());
-						componentTerm.setComponentInfoType(labelTerm.getComponentInfoType());
-					}
 					
 					// empty the label term and prepare it to be removed in the next deal stage == remove name, description and icon
 					labelTerm.removeDomainInformation();
