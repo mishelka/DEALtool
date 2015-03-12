@@ -72,6 +72,7 @@ public class HtmlGUIParser {
 		return doc;
 	}
 	
+	@SuppressWarnings("unused")
 	private void printNode(Node node) {
 		System.out.println(node.getNodeName() + " value=\"" + node.getNodeValue() + "\"" + " type=" + node.getNodeType());
 		if(node instanceof Element) {

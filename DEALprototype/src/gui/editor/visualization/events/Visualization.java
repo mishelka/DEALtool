@@ -22,7 +22,10 @@ import com.mxgraph.view.mxCellState;
 import com.mxgraph.view.mxGraph;
 
 public class Visualization extends JFrame implements UiEventListener {
-	private Object group1;
+	/**
+	 * Default serial version ID
+	 */
+	private static final long serialVersionUID = 1L;
 	private mxGraph graph;
 	private UIEvent uievnt;
 	private UiEvent uient;
@@ -59,11 +62,14 @@ public class Visualization extends JFrame implements UiEventListener {
 			}
 		};
 
-		// createGraphObject(graph);
 		if (uievnt != null) {
 			createVisualizedAction(graph);
 		}
 		mxGraphComponent graphComponent = new mxGraphComponent(graph) {
+			/**
+			 * Default serial version ID
+			 */
+			private static final long serialVersionUID = 1L;
 
 			public mxInteractiveCanvas createCanvas() {
 				return new SwingCanvas(this);
@@ -96,14 +102,11 @@ public class Visualization extends JFrame implements UiEventListener {
 
 		public void drawVertex(mxCellState state, String label) {
 			vertexRenderer.setText(label);
-			// TODO: Configure other properties...
-
 			rendererPane.paintComponent(g, vertexRenderer, graphComponent,
 					(int) state.getX() + translate.x, (int) state.getY()
 							+ translate.y, (int) state.getWidth(),
 					(int) state.getHeight(), true);
 		}
-
 	}
 
 	public void startVisualization() {
@@ -114,34 +117,9 @@ public class Visualization extends JFrame implements UiEventListener {
 	}
 
 	private void createVisualizedAction(mxGraph graph) {
-
 		uient.getCause();
 		System.out.println(uient.getCause());
-
 	}
-
-	// private Object insertVertex(String name) {
-	// id++;
-	// System.out.println("id = " +id + " name = " + name);
-	// return graph.insertVertex(graph.getDefaultParent(), Integer.toString(id),
-	// name, 0, 0, GraphHelper.VERTEX_WIDTH, GraphHelper.VERTEX_HEIGHT);
-	// }
-
-	private void insertEdge(Object from, Object to) {
-		graph.insertEdge(graph.getDefaultParent(), null, "", from, to);
-	}
-
-	// private void makeGraphChilds(DefaultMutableTreeNode parent, Object
-	// parentGraphNode) {
-	// int iChildren = parent.getChildCount();
-	//
-	// DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-	// parent.getChildAt(i);
-	// Object childGraphNode = insertVertex(node.toString());
-	// insertEdge(parentGraphNode, childGraphNode);
-	// makeGraphChilds(node, childGraphNode);
-	//
-	// }
 
 	public void setEditable(boolean value) {
 		graph.setCellsResizable(value);
@@ -149,44 +127,8 @@ public class Visualization extends JFrame implements UiEventListener {
 		graph.setCellsMovable(value);
 	}
 
-	private void insertData(mxGraph graph) {
-		graph.getModel().beginUpdate();
-		try {
-			createVisualizedAction(graph);
-		} finally {
-			graph.getModel().endUpdate();
-		}
-	}
-
-	// public void createGraphObject(mxGraph graph){
-	// Object parent = graph.getDefaultParent();
-	//
-	// graph.getModel().beginUpdate();
-	// try
-	// {
-	//
-	//
-	// Object v1 = graph.insertVertex(parent, null, "Lol", 20, 20, 80,30);
-	// Object v2 = graph.insertVertex(parent, null, "Dva!", 240, 150,80, 30);
-	//
-	//
-	// Object[] objField = {v1,v2};
-	//
-	//
-	//
-	// graph.insertEdge(parent, null, "Edge", v1, v2);
-	// }
-	// finally
-	// {
-	// graph.getModel().endUpdate();
-	// }
-	//
-	//
-	// }
-
 	public void updateGraph(mxGraph graph) {
 		graph.getModel().beginUpdate();
-
 	}
 
 	public void getEventSeqeuenceName() {
@@ -195,15 +137,6 @@ public class Visualization extends JFrame implements UiEventListener {
 		UiEvent uiEvent = new UiEvent();
 		prnt = uiEvent.toString();
 		System.out.println(prnt + "     nta");
-	}
-
-	private void foldRepeatingSequences(mxGraph graph, Object[] objVertAdd,
-			Object objVertFold) {
-
-		graph.groupCells(objVertFold, 1, objVertAdd);
-		Object[] objField2 = { objVertFold };
-		graph.foldCells(true, true, objField2);
-
 	}
 
 	@Override

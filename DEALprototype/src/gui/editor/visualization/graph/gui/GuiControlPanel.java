@@ -23,53 +23,53 @@ import javax.swing.border.TitledBorder;
 import com.mxgraph.swing.mxGraphComponent;
 
 /**
- * Ovl‡dac’ komponent
- * @author D‡vid
+ * Controller component
+ * @author David
  *
  */
 public class GuiControlPanel implements IGui, ActionListener {
 
 	/**
-	 * graf komponent
+	 * Graph component
 	 */
 	private mxGraphComponent graphComponent;
 	/**
-	 * vizualiza‹nù panel
+	 * Visualization panel
 	 */
 	private VisualizationPanel parentPanel;
 	/**
-	 * komponent pre väetky ovl‡dacie prvky
+	 * Component for all control items
 	 */
 	private JPanel contentPanel;
 	/**
-	 * akutu‡lna hodnota pribl’ìenia
+	 * Actual value of zoom
 	 */
 	private double zoomPercentage;
 	/**
-	 * text aktu‡lneho pribl’ìenia
+	 * Actual text for displaying zoom
 	 */
 	private JLabel zoomPercentageLabel;
 	/**
-	 * komponenty pre ov‡dacie prvky
+	 * Control items
 	 */
 	private JPanel searchPanel, zoomPanel, settingsPanel, exportPanel;
 	/**
-	 * je ov‡dac’ panel skrytù
+	 * If control panel is hidden, isHidden is set to true.
 	 */
 	private boolean isHidden;
 	/**
-	 * tla‹idlo pre ukrytie ovl‡dacieho panelu
+	 * Button for hiding the control panel
 	 */
 	private JButton hideButton;
 	/**
-	 * vstupnŽ pole pre h¼adanie
+	 * Input field for searching
 	 */
 	private JTextField input;
 
 	/**
-	 * konätruktor
-	 * @param parentPanel rodi‹ovskù komponent
-	 * @param graphComponent graf komponent
+	 * Constructor
+	 * @param parentPanel parent component
+	 * @param graphComponent graph component
 	 */
 	public GuiControlPanel(VisualizationPanel parentPanel, mxGraphComponent graphComponent) {
 		this.parentPanel = parentPanel;
@@ -89,7 +89,7 @@ public class GuiControlPanel implements IGui, ActionListener {
 	}
 
 	/**
-	 * inicializ‡cia komponentov
+	 * Initializes all components
 	 */
 	private void initialize() {
 
@@ -112,33 +112,33 @@ public class GuiControlPanel implements IGui, ActionListener {
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.fill = gbc.VERTICAL;
+		gbc.fill = GridBagConstraints.VERTICAL;
 		contentPanel.add(settingsPanel, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 1;
-		gbc.fill = gbc.VERTICAL;
+		gbc.fill = GridBagConstraints.VERTICAL;
 		contentPanel.add(searchPanel, gbc);
 
 		gbc.gridx = 2;
 		gbc.gridy = 1;
-		gbc.fill = gbc.VERTICAL;
+		gbc.fill = GridBagConstraints.VERTICAL;
 		contentPanel.add(zoomPanel, gbc);
 
 		gbc.gridx = 3;
 		gbc.gridy = 1;
-		gbc.fill = gbc.VERTICAL;
+		gbc.fill = GridBagConstraints.VERTICAL;
 		contentPanel.add(exportPanel, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridwidth = 4;
-		gbc.anchor = gbc.FIRST_LINE_END;
+		gbc.anchor = GridBagConstraints.FIRST_LINE_END;
 		contentPanel.add(hideButton, gbc);
 	}
 
 	/**
-	 * inicializ‡cia okna pre uloìenie grafu do sœboru
+	 * Initializes the export panel (for saving the generated graph into a file)
 	 */
 	private void initExportPanel() {
 		exportPanel = new JPanel();
@@ -153,7 +153,7 @@ public class GuiControlPanel implements IGui, ActionListener {
 	}
 
 	/**
-	 * inicializ‡cia komponentov pre nastavenia vizualiz‡cie
+	 * Initializes components for visualization setup
 	 */
 	private void initSettingPanel() {
 
@@ -200,30 +200,30 @@ public class GuiControlPanel implements IGui, ActionListener {
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.fill = gbc.HORIZONTAL;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		settingsPanel.add(routingBox, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		gbc.fill = gbc.NONE;
+		gbc.fill = GridBagConstraints.NONE;
 		settingsPanel.add(minStackLabel, gbc);
 
 		gbc.gridx = 1;
-		gbc.fill = gbc.HORIZONTAL;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridy = 1;
 		settingsPanel.add(minStackBox, gbc);
 
 		gbc.gridx = 0;
 		gbc.gridy = 2;
-		gbc.fill = gbc.NONE;
+		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridwidth = 2;
-		gbc.anchor = gbc.CENTER;
+		gbc.anchor = GridBagConstraints.CENTER;
 		settingsPanel.add(editMode, gbc);
 
 	}
 
 	/**
-	 * inicializ‡cia komponentov pre pribl’ìenie
+	 * Initializes components for zooming
 	 */
 	private void initZoomPanel() {
 
@@ -256,13 +256,13 @@ public class GuiControlPanel implements IGui, ActionListener {
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridwidth = 2;
-		gbc.anchor = gbc.CENTER;
+		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.ipady = 15;
 		zoomPanel.add(zoomPercentageLabel, gbc);
 	}
 
 	/**
-	 * inicializ‡cia komponentov pre h¼adanie
+	 * Initializes components for searching
 	 */
 	private void initSearchPanel() {
 		JButton search = new JButton("Find");
@@ -288,7 +288,7 @@ public class GuiControlPanel implements IGui, ActionListener {
 	}
 
 	/**
-	 * zmena hodn™t komponentov po pribl’ìen’
+	 * Changes the values of the zooming components
 	 */
 	private void updateZoomPercentageLabel() {
 		String zoom = Double.toString(zoomPercentage);
@@ -313,7 +313,7 @@ public class GuiControlPanel implements IGui, ActionListener {
 		}
 
 		if (e.getActionCommand().equals("routing")) {
-			JComboBox cb = (JComboBox) e.getSource();
+			JComboBox<?> cb = (JComboBox<?>) e.getSource();
 			if (cb.getSelectedIndex() == 0) {
 				// top
 				parentPanel.getGraphVisualization().getLayout().setRoutingTop();
@@ -326,7 +326,7 @@ public class GuiControlPanel implements IGui, ActionListener {
 		}
 
 		if (e.getActionCommand().equals("minStack")) {
-			JComboBox cb = (JComboBox) e.getSource();
+			JComboBox<?> cb = (JComboBox<?>) e.getSource();
 			parentPanel.getGraphVisualization().getLayout().setMinLeafsToStack(cb.getSelectedIndex());
 			parentPanel.updateUI();
 			return;

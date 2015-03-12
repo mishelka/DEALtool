@@ -302,28 +302,7 @@ public class YajcoGenerator {
 						!DomainModelEditor.getInstance().getSetting().isExtractFunctionalComponents() &&
 						term.getComponentInfoType() != ComponentInfoType.FUNCTIONAL
 				);
-	}
-
-	private <T> List<List<T>> getPermutations(List<T> list) {
-		List<List<T>> pList = new ArrayList<List<T>>();
-		if (list.size() == 1) {
-			pList.add(list);
-			//pList.add(new ArrayList<T>());
-		} else {
-			List<List<T>> tempList = getPermutations(list.subList(1,
-					list.size()));
-			for (List<T> innerList : tempList) {
-				pList.add(innerList);
-
-				List<T> temp = new ArrayList<T>(innerList.size() + 1);
-				temp.addAll(innerList);
-				temp.add(list.get(0));
-				pList.add(temp);
-			}
-		}
-		return pList;
-	}
-	
+	}	
 
 	public Language getLanguage() {
 		return language;
