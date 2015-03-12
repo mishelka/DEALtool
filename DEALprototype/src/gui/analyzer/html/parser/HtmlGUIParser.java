@@ -65,7 +65,7 @@ public class HtmlGUIParser {
 			doc = tidy.parseDOM(uc.getInputStream(), null);
 			doc.normalizeDocument();
 			
-			printNode(doc.getDocumentElement());
+//			printNode(doc.getDocumentElement());
         } catch (IOException e) {
         	throw new ParsingException("Parsing unsuccessful");
         }

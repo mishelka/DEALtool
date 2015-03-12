@@ -38,7 +38,8 @@ public abstract class AbstractHtmlHandler extends DomainIdentifiable<Element> {
 		Term term = super.createDefaultTerm(element, domainModel);
 		if (element != null) {
 			if (matches(element)) {
-				return super.createTerm(element, domainModel);
+				term = super.createTerm(element, domainModel);
+				term.setComponentClassHtml(Util.nodeToClass(element));
 			}
 		}
 		return term;

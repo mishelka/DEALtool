@@ -8,6 +8,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.w3c.dom.Node;
 
 /**
  * A utility class for String operations.
@@ -62,5 +63,50 @@ public class Util {
 			str = str.replaceAll("[^\\w\\s-]*", "");
 		}
 		return str;
+	}
+	
+	public static String nodeToString(Node node) {
+		String nodeText = node.getNodeValue();
+		if(Util.isEmpty(nodeText)) {
+			nodeText = node.getTextContent();
+		}
+		if(Util.isEmpty(nodeText)) {
+			nodeText = node.getNodeName();
+		}
+		if(node.hasChildNodes()) {
+			if(Util.isEmpty(nodeText)) {
+				nodeText = node.getFirstChild().getTextContent();
+			}
+			if(Util.isEmpty(nodeText)) {
+				nodeText = node.getFirstChild().getNodeValue();
+			}
+		}
+		return nodeText;
+	}
+	
+	public static String nodeToClass(Node node) {
+		String nodeText = "";
+		String nodeName = node.getNodeName();
+		
+		switch(node.getNodeType()) {
+			case Node.DOCUMENT_NODE:
+			case Node.ELEMENT_NODE: nodeText = "<" + nodeName + ">"; break;
+			
+			case Node.ATTRIBUTE_NODE: nodeText = "attribute " + nodeName; break;
+			case Node.TEXT_NODE: nodeText = "text"; break;
+			
+			case Node.CDATA_SECTION_NODE: nodeText = "CDATA"; break;
+			
+			case Node.ENTITY_REFERENCE_NODE: nodeText = "entityRef"; break;
+			case Node.ENTITY_NODE: nodeText = "entity"; break;
+			
+			case Node.COMMENT_NODE: nodeText = "<!-- -->"; break;
+			
+			case Node.NOTATION_NODE: nodeText = "dtdNotation"; break;
+			
+			default: nodeText = nodeName;
+		}
+		
+		return nodeText;
 	}
 }
