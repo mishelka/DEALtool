@@ -11,7 +11,7 @@ import org.w3c.dom.Element;
 public class WebPageScene extends DomScene {
 
 	private final static String DOCUMENT_TITLE_XPATH 
-	= "html/head/title/text()";
+	= "head/title/text()";
 	
 	public WebPageScene(Element element) {
 		super(element, DOCUMENT_TITLE_XPATH);
