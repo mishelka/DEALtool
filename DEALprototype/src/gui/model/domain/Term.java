@@ -124,6 +124,11 @@ public class Term {
 	private Object component;
 
 	/**
+	 * Alternative for componentClass in HTML user interfaces.
+	 */
+	private String componentClassHtml;
+	
+	/**
 	 * Each term is extracted from a component and this component is included in
 	 * a group according to what information can be extracted from this
 	 * component.
@@ -203,6 +208,14 @@ public class Term {
 			@SuppressWarnings("rawtypes") Class objectClass) {
 		this.componentClass = objectClass;
 	}
+	
+	/**
+	 * Alternative for componentClass in HTML user interfaces.
+	 * @param componentClassHtml the HTML component class
+	 */
+	public void setComponentClassHtml(String componentClassHtml) {
+		this.componentClassHtml = componentClassHtml;
+	}
 
 	/**
 	 * Each term is generated from a component. This method gets the reference to the class of the component, from which this term was generated, and returns it's simple name.
@@ -219,6 +232,14 @@ public class Term {
 	@SuppressWarnings("rawtypes")
 	public Class getComponentClass() {
 		return componentClass;
+	}
+	
+	/**
+	 * Alternative for the componentClass in HTML user interfaces.
+	 * @return the component class in HTML user interfaces
+	 */
+	public String getComponentClassHtml() {
+		return componentClassHtml;
 	}
 
 	/**
@@ -880,7 +901,7 @@ public class Term {
 			return description;
 		if (componentClass != null)
 			return "\"\"";
-		return null;
+		return "";
 	}
 	
 	public String toPlainText(int indent) {

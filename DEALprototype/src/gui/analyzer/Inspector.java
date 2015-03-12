@@ -59,44 +59,40 @@ public class Inspector implements AWTEventListener {
 	 */
 	@Override
 	public void eventDispatched(AWTEvent event) {
-		DomainModelEditor fde = DomainModelEditor.getInstance();
+		DomainModelEditor editor = DomainModelEditor.getInstance();
 
-		Component clickedComponent = fde.getClickedComponent();
-		Color clickedComponentColor = fde.getClickedComponentColor();
-		boolean clickedComponentOpaque = fde.isClickedComponentOpaque();
+		Object clickedObj = editor.getClickedComponent();
+		
+		if(clickedObj == null) return;
 
-		if (event instanceof MouseEvent) {
-			if (event.getSource() instanceof Component && event.getID() == MouseEvent.MOUSE_CLICKED) {
-				if (clickedComponent != null) {
-					Window window = SwingUtilities
-							.getWindowAncestor(clickedComponent);
-					if (!(window instanceof DomainModelEditor)) {
-						clickedComponent.setBackground(clickedComponentColor);
-						if (clickedComponent instanceof JComponent)
-							((JComponent) clickedComponent)
-									.setOpaque(clickedComponentOpaque);
+		if (clickedObj instanceof Component) {
+			Component clickedComp = (Component) clickedObj;
+			Color clickedCompColor = editor.getClickedComponentColor();
+			boolean clickedCompOpaque = editor.isClickedComponentOpaque();
+			Window window = SwingUtilities.getWindowAncestor(clickedComp);
+			
+			if (event instanceof MouseEvent) {
+				if (event.getSource() instanceof Component
+						&& event.getID() == MouseEvent.MOUSE_CLICKED 
+						&& !(window instanceof DomainModelEditor)) {
+					
+					clickedComp.setBackground(clickedCompColor);
+					editor.setClickedComponentColor(clickedComp.getBackground());
+					clickedComp.setBackground(Color.YELLOW);
+					if (clickedComp instanceof JComponent) {
+						((JComponent) clickedComp).setOpaque(clickedCompOpaque);
+						JComponent jc = (JComponent) clickedComp;
+						editor.setClickedComponentOpaque(jc.isOpaque());
+						jc.setOpaque(true);
 					}
-				}
-				fde.setClickedComponent(clickedComponent = SwingUtilities
-						.getDeepestComponentAt((Component) event.getSource(),
-								((MouseEvent) event).getX(),
-								((MouseEvent) event).getY()));
-				if (clickedComponent != null) {
-					Window window = SwingUtilities
-							.getWindowAncestor(clickedComponent);
-					if (!(window instanceof DomainModelEditor)) {
-						fde.setClickedComponentColor(clickedComponent
-								.getBackground());
-						clickedComponent.setBackground(Color.YELLOW);
-						if (clickedComponent instanceof JComponent) {
-							JComponent jc = (JComponent) clickedComponent;
-							fde.setClickedComponentOpaque(jc.isOpaque());
-							jc.setOpaque(true);
-						}
-					}
-					if (event.getID() == MouseEvent.MOUSE_CLICKED) {
-						DomainModelEditor.getInstance().showComponentInTrees(event.getSource());
-					}
+					editor.setClickedComponent(clickedComp = SwingUtilities
+							.getDeepestComponentAt(
+									(Component) event.getSource(),
+									((MouseEvent) event).getX(),
+									((MouseEvent) event).getY()));
+					
+					DomainModelEditor.getInstance()
+							.showComponentInTrees(event.getSource());
 				}
 			}
 		}

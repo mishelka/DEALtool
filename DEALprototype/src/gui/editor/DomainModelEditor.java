@@ -1,6 +1,8 @@
 package gui.editor;
 
 import gui.analyzer.util.JLabelFinder;
+import gui.analyzer.util.Util;
+import gui.analyzer.util.XPathHelper;
 import gui.editor.DealFileChooser.DealFileChooserType;
 import gui.editor.tabpane.VerticalTextIcon;
 import gui.editor.tree.TreeCellRenderer;
@@ -18,6 +20,7 @@ import gui.model.application.observable.ApplicationEvent;
 import gui.model.application.observable.ApplicationEvent.ApplicationChangeState;
 import gui.model.application.scenes.DialogScene;
 import gui.model.application.scenes.Scene;
+import gui.model.application.scenes.WebPageScene;
 import gui.model.application.scenes.WindowScene;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
@@ -80,9 +83,11 @@ import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.io.FilenameUtils;
 
+import de.hunsicker.jalopy.printer.NodeWriter;
 import yajco.model.Language;
 
 @SuppressWarnings({ "rawtypes", "serial" })
@@ -93,7 +98,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 	private static Application application = new Application();
 	private static ArrayList<Window> windows = new ArrayList<Window>();
 
-	private Component clickedComponent;
+	private Object clickedComponent;
 	private Color clickedComponentColor;
 	private boolean clickedComponentOpaque;
 
@@ -209,9 +214,8 @@ public class DomainModelEditor extends JFrame implements Observer {
 				"Component tree");
 
 		for (Scene s : application.getScenes()) {
-			if (s instanceof WindowScene || s instanceof DialogScene) {
-				dmtn.add(setupPartOfTreeModelExtended((Window) s
-						.getSceneContainer()));
+			if (s instanceof WindowScene || s instanceof DialogScene || s instanceof WebPageScene) {
+				dmtn.add(createComponentTree(s.getSceneContainer()));
 			}
 		}
 
@@ -243,27 +247,42 @@ public class DomainModelEditor extends JFrame implements Observer {
 	 * If only a part of a tree has changed / only one window from the list of
 	 * windows changed -> then this method is called to add this part into the
 	 * tree model.
+	 * @param rootComponent the root component in the target application component tree
 	 */
-	private DefaultMutableTreeNode setupPartOfTreeModelExtended(Window frame) {
-		Component[] comp = frame.getComponents();
-		DefaultMutableTreeNode top = new DefaultMutableTreeNode(frame) {
+	private DefaultMutableTreeNode createComponentTree(Object rootComponent) {
+		DefaultMutableTreeNode top = new DefaultMutableTreeNode(rootComponent) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public String toString() {
 				if (super.userObject instanceof Dialog) {
-					return ((Dialog) super.userObject).getTitle();
+					return ((Dialog) this.userObject).getTitle();
 				} else if (super.userObject instanceof Frame) {
-					return ((Frame) super.userObject).getTitle();
+					return ((Frame) this.userObject).getTitle();
+				} else if (super.userObject instanceof org.w3c.dom.Node) {
+					return Util.nodeToString((org.w3c.dom.Node) this.userObject);
 				}
 				return super.userObject.getClass().getSimpleName();
 			}
 		};
-		helper(comp, top);
+		
+		if(rootComponent instanceof org.w3c.dom.Node) {
+			org.w3c.dom.NodeList nl = ((org.w3c.dom.Node) rootComponent).getChildNodes();
+			createComponentTreeNode(nl, top);
+		} else if(rootComponent instanceof Window) {
+			Component[] comps = ((Window) rootComponent).getComponents();
+			createComponentTreeNode(comps, top);
+		}
+		
 		return top;
 	}
 
-	private void helper(Component[] components, DefaultMutableTreeNode top) {
+	/**
+	 * Sets up component tree child node
+	 * @param components the list of components from which the component tree node should be created
+	 * @param treeRoot the component, to which the components should be added
+	 */
+	private void createComponentTreeNode(Component[] components, DefaultMutableTreeNode treeRoot) {
 		if (components == null) {
 			return;
 		}
@@ -286,13 +305,33 @@ public class DomainModelEditor extends JFrame implements Observer {
 						return this.userObject.getClass().getSimpleName();
 					}
 				};
-				top.add(cont);
+				treeRoot.add(cont);
 				if (components[i] instanceof JMenu) {
-					helper(((JMenu) components[i]).getMenuComponents(), cont);
+					createComponentTreeNode(((JMenu) components[i]).getMenuComponents(), cont);
 				} else {
-					helper(((Container) components[i]).getComponents(), cont);
+					createComponentTreeNode(((Container) components[i]).getComponents(), cont);
 				}
 			}
+		}
+	}
+	
+	private void createComponentTreeNode(org.w3c.dom.NodeList nodes, DefaultMutableTreeNode topTreeNode) {
+		if (nodes == null) {
+			return;
+		}
+		for (int i = 0; i < nodes.getLength(); i++) {
+			org.w3c.dom.Node node = nodes.item(i);
+			DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(node) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String toString() {
+					return Util.nodeToString((org.w3c.dom.Node) this.userObject);
+				}
+			};
+			
+			topTreeNode.add(treeNode);
+			createComponentTreeNode(node.getChildNodes(), treeNode);
 		}
 	}
 
@@ -351,13 +390,13 @@ public class DomainModelEditor extends JFrame implements Observer {
 		if(clickedObject != null) {
 			if (clickedObject instanceof Term) {
 				showInTrees((Term)clickedObject);
-			} else if (clickedObject instanceof Component) {
-				showInTrees((Component) clickedObject);
+			} else if (clickedObject instanceof Component || clickedObject instanceof org.w3c.dom.Node) {
+				showInTrees(clickedObject);
 			}
 		}
 	}
 	
-	public void showInTrees(Component component) {
+	public void showInTrees(Object component) {
 		unhighlightLastClickedComponent();
 		showClickedComponent(component);
 		Term targetTerm = ((gui.editor.tree.TreeModel) 
@@ -387,10 +426,11 @@ public class DomainModelEditor extends JFrame implements Observer {
 	}
 	
 	private void unhighlightLastClickedComponent() {
-		if (clickedComponent != null) {
-			clickedComponent.setBackground(clickedComponentColor);
-			if (clickedComponent instanceof JComponent)
-				((JComponent) clickedComponent)
+		if (clickedComponent != null && clickedComponent instanceof Component) {
+			Component comp = (Component) clickedComponent;
+			comp.setBackground(clickedComponentColor);
+			if (comp instanceof JComponent)
+				((JComponent) comp)
 						.setOpaque(clickedComponentOpaque);
 		}
 	}
@@ -406,6 +446,10 @@ public class DomainModelEditor extends JFrame implements Observer {
 				clickedComponentOpaque = jc.isOpaque();
 				jc.setOpaque(true);
 			}
+		} else if (component instanceof org.w3c.dom.Node) {
+			org.w3c.dom.Node clickedNode = (org.w3c.dom.Node) component;
+			this.clickedComponent = clickedNode;
+			
 		}
 	}
 
@@ -1664,10 +1708,34 @@ public class DomainModelEditor extends JFrame implements Observer {
 						text = text + ", ";
 					}
 				}
-			} else
+			} else {
 				text = "";
-		} else
+			}
+		} else if(component instanceof org.w3c.dom.Node) {
+			org.w3c.dom.Node node = (org.w3c.dom.Node) component;
+			//TODO: get node text content if there is one
+			text = Util.nodeToString(node);
+			
+			classField.setText(Util.nodeToClass(node));
+			
+			String tooltipText = "";
+			try {
+				tooltipText = XPathHelper.getString("@title", node);
+			} catch (XPathExpressionException e1) {
+				//  do nothing - there is no value
+			}
+			
+			if(Util.isEmpty(tooltipText)) {
+				try {
+					tooltipText = XPathHelper.getString("@alt", node);
+				} catch (XPathExpressionException e1) {
+					//  do nothing - there is no value
+				}
+			}
+			tooltipField.setText(tooltipText);
+		} else {
 			text = "";
+		}
 		contentField.setText(text);
 
 		if (component instanceof JComponent) {
@@ -1741,7 +1809,7 @@ public class DomainModelEditor extends JFrame implements Observer {
 		return emptyList;
 	}
 
-	public Component getClickedComponent() {
+	public Object getClickedComponent() {
 		return clickedComponent;
 	}
 
