@@ -16,7 +16,6 @@
 	<classpathentry kind="lib" path="examples/finanx-12c-0.1.2/finanx.jar"/>
 	<classpathentry kind="lib" path="examples/Calculator2.jar"/>
 	<classpathentry kind="lib" path="lib/jtidy-r938.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7"/>
 	<classpathentry kind="lib" path="lib/yajco/beaver.jar"/>
 	<classpathentry kind="lib" path="lib/yajco/jalopy.jar"/>
 	<classpathentry kind="lib" path="lib/yajco/javacc.jar"/>
@@ -36,5 +35,6 @@
 			<attribute name="org.eclipse.ajdt.inpath" value="org.eclipse.ajdt.inpath"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
