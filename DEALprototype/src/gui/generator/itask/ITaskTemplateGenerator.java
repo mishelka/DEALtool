@@ -7,7 +7,6 @@ import gui.model.domain.Term;
 import java.awt.MenuItem;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.List;
 import java.util.Map;
 
@@ -68,10 +67,7 @@ public abstract class ITaskTemplateGenerator extends TemplateGenerator {
         if(name == null)
         	name = template;
         
-        Formatter f = new Formatter();
-        f.format(format, name);
-        
-        return f.toString();
+        return String.format(format, name);
     }
 
     public String formatQualifiedName(String name, String template) {
@@ -262,7 +258,7 @@ public abstract class ITaskTemplateGenerator extends TemplateGenerator {
     	return getTermsOfComponentType(JButton.class);
     }
     
-    private List<Term> getTermsOfComponentType(Class type) {
+    private List<Term> getTermsOfComponentType(Class<?> type) {
     	List<Term> termsOfType = new ArrayList<Term>();
     	for(Term t : super.getDomainModel().getAllTerms()) {
     		if(t.getComponent() != null)

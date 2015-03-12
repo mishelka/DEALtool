@@ -47,10 +47,6 @@ public class DEALLayout extends mxGraphLayout {
 	 */
 	private ArrayList<Term> root;
 	/**
-	 * rodicovsky objekt
-	 */
-	private Object parent;
-	/**
 	 * objekt vizualizacie
 	 */
 	private GraphVisualization visualization;
@@ -81,7 +77,6 @@ public class DEALLayout extends mxGraphLayout {
 		super.execute(parent);
 		mxIGraphModel model = graph.getModel();
 		model.beginUpdate();
-		this.parent = parent;
 		this.root = root;
 		double graphWidth = 0;
 		minLeafsToStack = minLeafs;

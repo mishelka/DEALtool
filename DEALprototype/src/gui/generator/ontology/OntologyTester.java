@@ -229,22 +229,6 @@ public class OntologyTester {
 		}
 	}
 	
-	private static Term makeClassHiearchy(Term term) {
-		//System.out.println("printterm = " + term.toString());
-		if (term.getChildrenCount()==0) {
-			return term;
-		}
-		else {
-			offset++;
-			for (Term child : term.getChildren()) {
-				System.out.println(getOffsetString(offset) + child.toString());
-				printAllChilds(child);
-			}
-			offset--;
-		}
-                return term;
-	}
-	
 	private static String getOffsetString(int offset) {
 		System.out.println("offset = " + offset);
 		String offsetString = "";
