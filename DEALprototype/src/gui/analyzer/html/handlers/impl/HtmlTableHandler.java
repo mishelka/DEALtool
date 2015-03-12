@@ -13,7 +13,7 @@ import org.w3c.dom.Element;
 
 public class HtmlTableHandler extends AbstractHtmlHandler {
 	
-	private final String TABLE = "table"; 
+	private final String TABLE = "table";
 	
 	/**
 	 * Metoda vracia identifikator elementu.
@@ -38,8 +38,12 @@ public class HtmlTableHandler extends AbstractHtmlHandler {
 				}
 			}
 			
-			if(Util.isEmpty(value)) {
-				value = "TABLE";
+			if (Util.isEmpty(value)) {
+				try {
+					value = XPathHelper.getString("caption/text()", element);
+				} catch (XPathExpressionException e1) {
+					// do nothing - there is no value
+				}
 			}
 			
 			return value;
@@ -51,12 +55,10 @@ public class HtmlTableHandler extends AbstractHtmlHandler {
 		@Override
 		public String getDomainDescriptor(Element element) {
 			return super.getDomainDescriptor(element);
-			
 		}
 
 		@Override
 		public Icon getIcon(Element element) {
-			
 			return null;
 		}
 

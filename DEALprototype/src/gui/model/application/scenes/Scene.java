@@ -17,6 +17,8 @@ import java.util.List;
 public abstract class Scene<T> {
 	/** The name of the scene, usually extracted from the GUI scene title. */
 	protected String name;
+	/** The description of the scene. WIMP scenes usually do not have any description, HTML pages however, can have a description saved in a meta tag. */
+	protected String description;
 	/** The container, from which the scene was extracted. */
 	protected T sceneContainer;
 	/** The domain model, which was extracted from this scene. */
@@ -43,6 +45,10 @@ public abstract class Scene<T> {
 		this.name = getSceneName(sceneContainer);
 	}
 	
+	public void updateDescription(T sceneContainer) {
+		this.description = getSceneDescription(sceneContainer);
+	}
+	
 	/**
 	 * Returns the string name of the scene, depending on the scene type T.
 	 * @param sceneContainer the container, from which the name should be extracted.
@@ -51,10 +57,26 @@ public abstract class Scene<T> {
 	protected abstract String getSceneName(T sceneContainer);
 	
 	/**
+	 * Returns the string name of the scene, depending on the scene type T.
+	 * WIMP scenes usually do not have any description, HTML pages however, can have a description saved in a meta tag.
+	 * This method should be overriden only in scenes, which can contain such a description, i.e. HTML scenes.
+	 */
+	protected String getSceneDescription(T sceneContainer) {
+		return "";
+	}
+	
+	/**
 	 * @return the name of this scene
 	 */
 	public String getName() {
 		return this.name;
+	}
+	
+	/**
+	 * @return the description of this scene
+	 */
+	public String getDescription() {
+		return description;
 	}
 	
 	/**

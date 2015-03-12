@@ -61,6 +61,14 @@ public class HtmlImageHandler extends AbstractHtmlHandler{
 			}
 		}
 		
+		if (Util.isEmpty(value)) {
+			try {
+				value = XPathHelper.getString("caption/text()", element);
+			} catch (XPathExpressionException e1) {
+				// do nothing - there is no value
+			}
+		}
+		
 		return value;
 	}
 	

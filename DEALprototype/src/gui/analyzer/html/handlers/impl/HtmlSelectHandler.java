@@ -76,8 +76,13 @@ public class HtmlSelectHandler extends AbstractHtmlHandler {
 			}
 		}
 		
-		if(Util.isEmpty(value)){
-			value = "SELECT";
+		if(Util.isEmpty(value)) {
+			try {
+				//try first option to be the description
+				value = XPathHelper.getString("option[1]/text()", element);
+			} catch (XPathExpressionException e) {
+				// do nothing - there is no value
+			}
 		}
 		
 		return value;
@@ -102,15 +107,14 @@ public class HtmlSelectHandler extends AbstractHtmlHandler {
 	 */
 	@Override
 	public RelationType getRelation(Element element) {
-		if (isSelect(element)){
-        return RelationType.MUTUALLY_EXCLUSIVE;
-			}
+		if (isSelect(element)) {
+			return RelationType.MUTUALLY_EXCLUSIVE;
+		}
 		return null;
     }
 
 	@Override
 	public ComponentInfoType getComponentInfoType(Element element) {
-		
 		return ComponentInfoType.LOGICALLY_GROUPING;
 	}
 	

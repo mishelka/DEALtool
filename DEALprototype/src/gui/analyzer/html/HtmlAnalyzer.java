@@ -40,6 +40,8 @@ public class HtmlAnalyzer {
 	private WebPageScene generateScene(Element document) throws ExtractionException {		
 		WebPageScene wps = new WebPageScene(document);
 		String documentTitle = wps.getName();
+		String documentDescription = wps.getDescription();
+		
 		DomainModel dm = new DomainModel(documentTitle);
 		wps.setDomainModel(dm);
 		
@@ -55,6 +57,7 @@ public class HtmlAnalyzer {
 		Term root = dm.getRoot();
 		if(root != null) {
 			root.setName(dm.getName());
+			t.setDescription(documentDescription);
 		}
 		
 		return wps;
