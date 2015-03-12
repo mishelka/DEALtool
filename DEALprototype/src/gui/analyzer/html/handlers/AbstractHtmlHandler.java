@@ -42,6 +42,12 @@ public abstract class AbstractHtmlHandler extends DomainIdentifiable<Element> {
 				term.setComponentClassHtml(Util.nodeToClass(element));
 			}
 		}
+		try {
+			String href = XPathHelper.getString("@href", element);
+			term.setComponentHrefHtml(href);
+		} catch (XPathExpressionException e1) {
+			// do nothing - there is no value
+		}
 		return term;
 	}
 }

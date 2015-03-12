@@ -129,6 +129,11 @@ public class Term {
 	private String componentClassHtml;
 	
 	/**
+	 * HTML href if the term was an html link
+	 */
+	private String componentHrefHtml;
+	
+	/**
 	 * Each term is extracted from a component and this component is included in
 	 * a group according to what information can be extracted from this
 	 * component.
@@ -215,6 +220,22 @@ public class Term {
 	 */
 	public void setComponentClassHtml(String componentClassHtml) {
 		this.componentClassHtml = componentClassHtml;
+	}
+	
+	/**
+	 * HTML href if the term was an html link
+	 * @return html href, if the term was an html link, null otherwise
+	 */
+	public String getComponentHrefHtml() {
+		return componentHrefHtml;
+	}
+	
+	/**
+	 * HTML href if the term was an html link
+	 * @param html href, if the term was an html link, null otherwise
+	 */
+	public void setComponentHrefHtml(String componentHrefHtml) {
+		this.componentHrefHtml = componentHrefHtml;
 	}
 
 	/**
@@ -514,6 +535,38 @@ public class Term {
 		setName(Util.removeBadCharacters(getName()));
 		setDescription(Util.removeBadCharacters(getDescription()));
 	}
+	
+	/**
+	 * Finds stereotypes in html and transforms the terms accordingly.
+	 * Example of a stereotype: 
+	 * <div>
+	 * 	<h5>some title<h5>
+	 * 	<ul>
+	 * 		some items
+	 * 	</ul>
+	 * </div>
+	 * The "some title" title is bound with the underlying list by applying the div element. 
+	 */
+	public void transformHtmlTags() {
+		if(this.getComponentInfoType() == ComponentInfoType.CONTAINERS && this.hasChildren()) {
+			System.out.println(">>>> " + this);
+	
+			Term t = this.getFirstChild();
+			if(t.getComponentClassHtml() != null)
+				switch(t.getComponentClassHtml()) {
+					case "<h6>": case "<h5>": case "<h4>": case "<h3>": case "<h2>": case "<h1>": case "<span>": 
+						this.setName(t.getName()); 
+						this.setDescription(t.getDescription());
+						t.setName(null);
+						t.setDescription(null);
+						break;
+				}
+		}
+		
+		for(Term child : this.children) {
+			child.transformHtmlTags();
+		}
+	}
 
 	/**
 	 * Removes all leafs with no relevant domain information 
@@ -541,7 +594,7 @@ public class Term {
 		i = iterator();
 		while (i.hasNext()) {
 			Term t = i.next();
-			if (t.isLeaf() && t.canBeRemoved()) {
+			if ((t.isLeaf() && t.canBeRemoved()) || (t.isLeaf() && t.hasNoInfoExceptRelation())) {
 				i.remove();
 				removed = true;
 			}

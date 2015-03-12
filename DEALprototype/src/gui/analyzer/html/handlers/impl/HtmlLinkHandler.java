@@ -4,6 +4,8 @@ import gui.analyzer.html.handlers.AbstractHtmlHandler;
 import gui.analyzer.util.Util;
 import gui.analyzer.util.XPathHelper;
 import gui.model.domain.ComponentInfoType;
+import gui.model.domain.DomainModel;
+import gui.model.domain.Term;
 
 import javax.swing.Icon;
 import javax.xml.xpath.XPathExpressionException;
@@ -47,13 +49,11 @@ public class HtmlLinkHandler extends AbstractHtmlHandler {
 	@Override
 	public String getDomainDescriptor(Element element) {
 		return super.getDomainDescriptor(element);
-		
 	}
 	
 
 	@Override
 	public Icon getIcon(Element element) {
-		
 		return null;
 	}
 	

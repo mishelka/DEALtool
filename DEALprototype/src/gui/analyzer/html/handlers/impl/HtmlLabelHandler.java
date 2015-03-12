@@ -15,8 +15,6 @@ public class HtmlLabelHandler extends AbstractHtmlHandler {
 	//nastavi sa v matches
 		private static final String LABEL = "label";
 		
-		
-		
 		/**
 		 * Metoda vracia identifikator elementu.
 		 */
@@ -62,7 +60,7 @@ public class HtmlLabelHandler extends AbstractHtmlHandler {
 
 		@Override
 		public ComponentInfoType getComponentInfoType(Element element) {
-			return ComponentInfoType.TEXTUAL;
+			return ComponentInfoType.DESCRIPTIVE;
 		}
 
 		

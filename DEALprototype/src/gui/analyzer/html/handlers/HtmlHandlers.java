@@ -1,18 +1,7 @@
 package gui.analyzer.html.handlers;
 
 
-import gui.analyzer.html.handlers.impl.HtmlButtonHandler;
-import gui.analyzer.html.handlers.impl.HtmlHeadlineHandler;
-import gui.analyzer.html.handlers.impl.HtmlImageHandler;
-import gui.analyzer.html.handlers.impl.HtmlInputHandler;
-import gui.analyzer.html.handlers.impl.HtmlLabelHandler;
-import gui.analyzer.html.handlers.impl.HtmlLinkHandler;
-import gui.analyzer.html.handlers.impl.HtmlListHandler;
-import gui.analyzer.html.handlers.impl.HtmlSelectHandler;
-import gui.analyzer.html.handlers.impl.HtmlTableCompHandler;
-import gui.analyzer.html.handlers.impl.HtmlTableHandler;
-import gui.analyzer.html.handlers.impl.HtmlTextComponentHandler;
-import gui.analyzer.html.handlers.impl.HtmlTextHandler;
+import gui.analyzer.html.handlers.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +17,18 @@ public class HtmlHandlers {
 	
 	public HtmlHandlers() {
 		htmlHandlers.add(HtmlButtonHandler.getInstance());
-		htmlHandlers.add(HtmlLinkHandler.getInstance());
-		htmlHandlers.add(HtmlTableHandler.getInstance());
-		htmlHandlers.add(HtmlTextComponentHandler.getInstance());
-		htmlHandlers.add(HtmlSelectHandler.getInstance());
-		htmlHandlers.add(HtmlLabelHandler.getInstance());
+		htmlHandlers.add(HtmlContainerHandler.getInstance());
+		htmlHandlers.add(HtmlHeadHandler.getInstance());
 		htmlHandlers.add(HtmlHeadlineHandler.getInstance());
-		htmlHandlers.add(HtmlTextHandler.getInstance());
 		htmlHandlers.add(HtmlImageHandler.getInstance());
 		htmlHandlers.add(HtmlInputHandler.getInstance());
-		htmlHandlers.add(HtmlTableCompHandler.getInstance());
+		htmlHandlers.add(HtmlLabelHandler.getInstance());
+		htmlHandlers.add(HtmlLinkHandler.getInstance());
 		htmlHandlers.add(HtmlListHandler.getInstance());
-		
+		htmlHandlers.add(HtmlSelectHandler.getInstance());
+		htmlHandlers.add(HtmlTableCompHandler.getInstance());
+		htmlHandlers.add(HtmlTableHandler.getInstance());
+		htmlHandlers.add(HtmlTextComponentHandler.getInstance());
 	}
 	
 	public AbstractHtmlHandler getHtmlHandler(Element element) {

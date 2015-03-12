@@ -102,6 +102,7 @@ public class Simplifier {
 	 */
 	private void simplifyModel() {
 		domainModel.removeBadCharacters();
+		domainModel.transformHtmlTags();
 
 		boolean wasRemoved;
 		do {

@@ -166,6 +166,21 @@ public class DomainModel {
 	}
 	
 	/**
+	 * Finds stereotypes in html and transforms the terms accordingly.
+	 * Example of a stereotype: 
+	 * <div>
+	 * 	<h5>some title<h5>
+	 * 	<ul>
+	 * 		some items
+	 * 	</ul>
+	 * </div>
+	 * The "some title" title is bound with the underlying list by applying the div element. 
+	 */
+	public void transformHtmlTags() {
+		root.transformHtmlTags();
+	}
+	
+	/**
 	 * Removes all empty leaves in the model
 	 * @return true if anything was removed, false otherwise
 	 */

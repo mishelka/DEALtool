@@ -74,10 +74,10 @@ public class HtmlListHandler extends AbstractHtmlHandler{
 				// do nothing - there is no value
 			}
 		}
-		
-		if(Util.isEmpty(value)){
-			value = "<LIST>";
-		}
+//		
+//		if(Util.isEmpty(value)){
+//			value = "<LIST>";
+//		}
 		
 		return value;
 	}
@@ -98,7 +98,7 @@ public class HtmlListHandler extends AbstractHtmlHandler{
 
 	@Override
 	public ComponentInfoType getComponentInfoType(Element element) {
-		return ComponentInfoType.TEXTUAL;
+		return isList(element) ? ComponentInfoType.LOGICALLY_GROUPING : ComponentInfoType.TEXTUAL;
 	}
 	
 	/**
@@ -106,10 +106,11 @@ public class HtmlListHandler extends AbstractHtmlHandler{
 	 */
 	@Override
 	public RelationType getRelation(Element element) {
-		if (isList(element)){
-        return RelationType.MUTUALLY_EXCLUSIVE;
-			}
-		return null;
+		if (isList(element)) {
+			return RelationType.MUTUALLY_EXCLUSIVE;
+		} else {
+			return super.getRelation(element);
+		}
     }
 	
 	/*************** Singleton pattern *************/
