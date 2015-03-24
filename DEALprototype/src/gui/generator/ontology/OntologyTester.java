@@ -1,12 +1,12 @@
 package gui.generator.ontology;
 
-import gui.editor.DomainModelEditor;
 import gui.model.domain.DomainModel;
 import gui.model.domain.Term;
 import gui.model.domain.relation.RelationType;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -36,7 +36,7 @@ public class OntologyTester {
 		Runnable task = new Runnable() {
 			@Override 
 			public void run() {
-				performTest(DomainModelEditor.getInstance().getDomainModels());
+//				performTest(DomainModelEditor.getInstance().getDomainModels());
 			}	
 		};
 		
@@ -127,49 +127,6 @@ public class OntologyTester {
 		ontoHelper.saveOntology("d:\\Projects\\EclipseProjects\\DEALprototype\\bin\\owl\\test.owl");
 	}
 	
-	/*public static void performTest(HashMap<Scene<?>, DomainModel> models) {
-		OntologyHelper ontoHelper = new OntologyHelper("d:\\Projects\\EclipseProjects\\DEALprototype\\bin\\owl\\ontology.owl", false);
-		System.out.println("Ontology IRI : " + ontoHelper.getOntologyIRI());
-		OWLClass accountClass = ontoHelper.getClassByName("Account");
-		System.out.println("Account superclass owl class : " + accountClass.getSuperClasses(ontoHelper.getOntology()).toString());
-		//creating individual
-		OWLNamedIndividual subject = ontoHelper.createIndividual("Trip");
-		OWLNamedIndividual object = ontoHelper.createIndividual("John");
-		OWLObjectProperty objectProperty = ontoHelper.createObjectProperty("hasSon");
-		
-		ontoHelper.createAndAddObjectPropertyAxiom(objectProperty, subject, object);
-		
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		for (DomainModel dm : models.values()) {
-			printAllChilds(dm.getRoot());
-			
-			for (Term term : dm.getTerms()) {
-				Term testTerm = term;
-				System.out.println("TestTerm = " + testTerm);
-				while(testTerm.getChildrenCount()>0) {
-					testTerm = testTerm.getChildAt(0);
-					System.out.println("TestTermIteration = " + testTerm);
-				}
-				//create owl class
-				Term parentTerm = testTerm.getParent();
-				OWLClass termClass = ontoHelper.createClass(ontoHelper.convertToClassName(parentTerm.toString()));
-				System.out.println("parentTerm = " + testTerm.getParent().toString());
-				for(Term child : parentTerm.getChildren()) {
-					System.out.println("siblingTerm = " + child);
-					ontoHelper.createAndAddClassAserrtionAxiom(termClass, ontoHelper.createIndividual(ontoHelper.convertToClassName(child.toString())));
-				}
-			}
-			 
-		}
-		ontoHelper.saveOntology("d:\\Projects\\EclipseProjects\\DEALprototype\\bin\\owl\\test.owl");
-	}*/
-	
 	private static void hiearchyAllChilds(Term term, String className) {
 		//exclude also deal file chooser
 		if (term.getChildrenCount()==0 || (term.getName()!=null && term.getName().equals("DealFileChooser"))) {
@@ -181,27 +138,29 @@ public class OntologyTester {
 			//axioms for parent
 			assignStandardDataProperties(currentClass, term);
 
-			String[] classNames = new String[term.getChildrenCount()];
-			int index = 0;
+			HashMap<Term, String> termsWithClasses = new HashMap<Term, String>();
+			//String[] classNames = new String[term.getChildrenCount()];
+			//int index = 0;
 			List<OWLClass> classes = new ArrayList<OWLClass>();
 			for (Term child : term.getChildren()) {
 				System.out.println("Child class = " + child.getName());
-				if (child == null || child.getName()==null || child.isHidden()) continue;
-				String newClassName = ontoHelper.convertToClassName(child.getName()); 
-				classNames[index++] = newClassName;
-				OWLClass childClass = ontoHelper.createClass(newClassName); 
-				classes.add(childClass);
-				//axioms
-				ontoHelper.createAndAddSubClassAssertionAxiom(currentClass, childClass);
-				assignStandardDataProperties(childClass, child);
+				if (child != null && child.getName() != null && !child.isHidden()) {
+					String newClassName = ontoHelper.convertToClassName(child.getName()); 
+					termsWithClasses.put(child, newClassName);
+					OWLClass childClass = ontoHelper.createClass(newClassName); 
+					classes.add(childClass);
+					//axioms
+					ontoHelper.createAndAddSubClassAssertionAxiom(currentClass, childClass);
+					assignStandardDataProperties(childClass, child);
+				}
 			}
 			if (term.getRelation() == RelationType.MUTUALLY_EXCLUSIVE) {
 				ontoHelper.createAndAddDisjointClassAxiom(classes);
 			} else if (term.getRelation() == RelationType.MUTUALLY_NOT_EXCLUSIVE) {
 				ontoHelper.createAndAddMutuallyNotExclusiveAxiom(classes);
 			}
-			for (int i=0; i<term.getChildrenCount(); i++) {
-				hiearchyAllChilds(term.getChildAt(i), classNames[i]);
+			for (Term child : termsWithClasses.keySet()) {
+				hiearchyAllChilds(child, termsWithClasses.get(child));
 			}
 		}
 	}
